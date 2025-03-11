@@ -1,0 +1,49 @@
+#
+# Copyright (C) 2025 Xiaomi Corporation
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+include $(APPDIR)/Make.defs
+
+CXXEXT     := .cpp
+CXXFLAGS   += -std=c++17
+
+# workaround for gcc-13 warning
+GCC_VERSION := $(shell gcc -dumpversion)
+ifeq ($(shell expr $(GCC_VERSION) \>= 13), 1)
+  CFLAGS += --param=min-pagesize=0
+  CXXFLAGS += --param=min-pagesize=0
+endif
+
+ifeq ($(CONFIG_FRAMEWORKS_RUNTIMES_BASE),y)
+CXXFLAGS += ${INCDIR_PREFIX}$(APPDIR)/frameworks/runtimes
+CXXFLAGS += ${INCDIR_PREFIX}$(APPDIR)/system/zlib/zlib
+CXXFLAGS += ${INCDIR_PREFIX}$(APPDIR)/system/zlib/zlib/contrib
+
+CXXSRCS += $(wildcard $(APPDIR)/frameworks/runtimes/base/*.cpp)
+CXXSRCS += $(filter -out \
+        $(APPDIR)/frameworks/runtimes/base/file.cpp \
+        $(APPDIR)/frameworks/runtimes/base/zip_file.cpp \
+        $(APPDIR)/frameworks/runtimes/base/in_zip.cpp \
+        $(APPDIR)/frameworks/runtimes/base/out_zip.cpp \
+        $(APPDIR)/frameworks/runtimes/base/scoped_fd.cpp \
+        $(APPDIR)/frameworks/runtimes/base/device_info.cpp, \
+        $(wildcard $(APPDIR)/frameworks/runtimes/base/*.cpp))
+CXXSRCS += $(wildcard $(APPDIR)/frameworks/runtimes/base/message_loop/*.cpp)
+CXXSRCS += $(wildcard $(APPDIR)/frameworks/runtimes/base/threading/*.cpp)
+CXXSRCS += $(wildcard $(APPDIR)/frameworks/runtimes/base/time/*.cpp)
+CXXSRCS += $(wildcard $(APPDIR)/frameworks/runtimes/base/trace_event/*.cpp)
+endif
+
+include $(APPDIR)/Application.mk
