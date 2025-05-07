@@ -31,8 +31,7 @@ CXXFLAGS += ${INCDIR_PREFIX}$(APPDIR)/frameworks/runtimes
 CXXFLAGS += ${INCDIR_PREFIX}$(APPDIR)/system/zlib/zlib
 CXXFLAGS += ${INCDIR_PREFIX}$(APPDIR)/system/zlib/zlib/contrib
 
-CXXSRCS += $(wildcard $(APPDIR)/frameworks/runtimes/base/*.cpp)
-CXXSRCS += $(filter -out \
+CXXSRCS += $(filter-out \
         $(APPDIR)/frameworks/runtimes/base/file.cpp \
         $(APPDIR)/frameworks/runtimes/base/zip_file.cpp \
         $(APPDIR)/frameworks/runtimes/base/in_zip.cpp \
