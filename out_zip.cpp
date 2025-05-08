@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "base/out_zip.h"
+#include "ash/out_zip.h"
 
-#include "base/file.h"
-#include "base/logging.h"
+#include "ash/file.h"
+#include "ash/logging.h"
 #include "zlib.h"
 
 namespace ferry {

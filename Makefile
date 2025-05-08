@@ -32,17 +32,17 @@ CXXFLAGS += ${INCDIR_PREFIX}$(APPDIR)/system/zlib/zlib
 CXXFLAGS += ${INCDIR_PREFIX}$(APPDIR)/system/zlib/zlib/contrib
 
 CXXSRCS += $(filter-out \
-        $(APPDIR)/frameworks/runtimes/base/file.cpp \
-        $(APPDIR)/frameworks/runtimes/base/zip_file.cpp \
-        $(APPDIR)/frameworks/runtimes/base/in_zip.cpp \
-        $(APPDIR)/frameworks/runtimes/base/out_zip.cpp \
-        $(APPDIR)/frameworks/runtimes/base/scoped_fd.cpp \
-        $(APPDIR)/frameworks/runtimes/base/device_info.cpp, \
-        $(wildcard $(APPDIR)/frameworks/runtimes/base/*.cpp))
-CXXSRCS += $(wildcard $(APPDIR)/frameworks/runtimes/base/message_loop/*.cpp)
-CXXSRCS += $(wildcard $(APPDIR)/frameworks/runtimes/base/threading/*.cpp)
-CXXSRCS += $(wildcard $(APPDIR)/frameworks/runtimes/base/time/*.cpp)
-CXXSRCS += $(wildcard $(APPDIR)/frameworks/runtimes/base/trace_event/*.cpp)
+        $(APPDIR)/frameworks/runtimes/ash/file.cpp \
+        $(APPDIR)/frameworks/runtimes/ash/zip_file.cpp \
+        $(APPDIR)/frameworks/runtimes/ash/in_zip.cpp \
+        $(APPDIR)/frameworks/runtimes/ash/out_zip.cpp \
+        $(APPDIR)/frameworks/runtimes/ash/scoped_fd.cpp \
+        $(APPDIR)/frameworks/runtimes/ash/device_info.cpp, \
+        $(wildcard $(APPDIR)/frameworks/runtimes/ash/*.cpp))
+CXXSRCS += $(wildcard $(APPDIR)/frameworks/runtimes/ash/message_loop/*.cpp)
+CXXSRCS += $(wildcard $(APPDIR)/frameworks/runtimes/ash/threading/*.cpp)
+CXXSRCS += $(wildcard $(APPDIR)/frameworks/runtimes/ash/time/*.cpp)
+CXXSRCS += $(wildcard $(APPDIR)/frameworks/runtimes/ash/trace_event/*.cpp)
 endif
 
 include $(APPDIR)/Application.mk

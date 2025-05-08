@@ -17,7 +17,7 @@
 #define BASE_TIME_TIME_H_
 
 #include <cstdint>
-#include "base/time/duration.h"
+#include "ash/time/duration.h"
 
 namespace ferry {
 

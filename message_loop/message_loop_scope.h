@@ -16,7 +16,7 @@
 #ifndef BASE_MESSAGE_LOOP_MESSAGE_LOOP_SCOPE_H_
 #define BASE_MESSAGE_LOOP_MESSAGE_LOOP_SCOPE_H_
 
-#include "base/message_loop/message_loop.h"
+#include "ash/message_loop/message_loop.h"
 
 namespace ferry {
 

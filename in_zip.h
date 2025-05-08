@@ -20,7 +20,7 @@
 #include <map>
 #include <memory>
 #include <string>
-#include "base/scoped_fd.h"
+#include "ash/scoped_fd.h"
 
 #define MIN_ECDR_SIZE 22
 #define MAX_ECDR_SIZE 65536

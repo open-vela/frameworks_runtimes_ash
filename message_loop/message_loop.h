@@ -17,8 +17,8 @@
 #define BASE_MESSAGE_LOOP_MESSAGE_LOOP_H_
 
 #include <memory>
-#include "base/message_loop/message_pump.h"
-#include "base/message_loop/message_queue.h"
+#include "ash/message_loop/message_pump.h"
+#include "ash/message_loop/message_queue.h"
 
 #include <uv.h>
 
