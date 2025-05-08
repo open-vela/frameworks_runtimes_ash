@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "base/message_loop/message_queue.h"
+#include "ash/message_loop/message_queue.h"
 
-#include "base/trace_event/trace_event.h"
+#include "ash/trace_event/trace_event.h"
 
 namespace ferry {
 

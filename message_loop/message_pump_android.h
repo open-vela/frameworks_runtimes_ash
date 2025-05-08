@@ -19,8 +19,8 @@
 #if defined(__ANDROID__)
 
 #include <android/looper.h>
-#include "base/message_loop/message_pump.h"
-#include "base/scoped_fd.h"
+#include "ash/message_loop/message_pump.h"
+#include "ash/scoped_fd.h"
 
 namespace ferry {
 

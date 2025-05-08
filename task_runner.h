@@ -17,7 +17,7 @@
 #define BASE_TASK_RUNNER_H_
 
 #include <functional>
-#include "base/time/duration.h"
+#include "ash/time/duration.h"
 
 namespace ferry {
 

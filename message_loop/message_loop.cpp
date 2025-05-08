@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "base/message_loop/message_loop.h"
+#include "ash/message_loop/message_loop.h"
 
-#include "base/logging.h"
-#include "base/message_loop/message_pump_android.h"
-#include "base/message_loop/message_pump_impl.h"
-#include "base/message_loop/message_pump_uv.h"
+#include "ash/logging.h"
+#include "ash/message_loop/message_pump_android.h"
+#include "ash/message_loop/message_pump_impl.h"
+#include "ash/message_loop/message_pump_uv.h"
 
 namespace ferry {
 

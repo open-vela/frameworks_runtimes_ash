@@ -16,7 +16,7 @@
 #ifndef BASE_STRING_CONVERTER_H_
 #define BASE_STRING_CONVERTER_H_
 
-#include "base/string_converter.h"
+#include "ash/string_converter.h"
 
 namespace ferry {
 

@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "base/in_zip.h"
+#include "ash/in_zip.h"
 
-#include "base/file.h"
-#include "base/input_stream.h"
-#include "base/logging.h"
-#include "base/trace_event/trace_event.h"
+#include "ash/file.h"
+#include "ash/input_stream.h"
+#include "ash/logging.h"
+#include "ash/trace_event/trace_event.h"
 #include "zlib.h"
 
 namespace ferry {

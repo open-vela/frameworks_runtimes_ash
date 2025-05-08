@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "base/threading/thread.h"
+#include "ash/threading/thread.h"
 
-#include "base/logging.h"
-#include "base/message_loop/message_loop.h"
-#include "base/message_loop/message_loop_scope.h"
+#include "ash/logging.h"
+#include "ash/message_loop/message_loop.h"
+#include "ash/message_loop/message_loop_scope.h"
 
 namespace ferry {
 

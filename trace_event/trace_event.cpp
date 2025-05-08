@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "base/trace_event/trace_event.h"
+#include "ash/trace_event/trace_event.h"
 
 #if defined(__NuttX__)
 #include <nuttx/sched_note.h>

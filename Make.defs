@@ -13,4 +13,4 @@
 # limitations under the License.
 #
 
-CONFIGURED_APPS += $(APPDIR)/frameworks/runtimes/base
+CONFIGURED_APPS += $(APPDIR)/frameworks/runtimes/ash
