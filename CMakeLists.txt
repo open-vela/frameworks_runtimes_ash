@@ -33,7 +33,7 @@ if (CONFIG_LIB_ASH)
   target_include_directories(
     ash
     PRIVATE
-    ${NUTTX_APPS_DIR}/frameworks/runtimes
+    ${NUTTX_APPS_DIR}/frameworks/runtimes/ash/include
     ${NUTTX_APPS_DIR}/system/zlib/zlib
     ${NUTTX_APPS_DIR}/system/zlib/zlib/contrib)
 endif()
