@@ -20,8 +20,8 @@ namespace ash {
 
 MessagePumpImpl::MessagePumpImpl() : running_(true) {
   epoll_ = epoll_create(16);
-  CHECK(epoll_ >= 0);
-  CHECK(pipe(pipefd_) == 0);
+  ASH_CHECK(epoll_ >= 0);
+  ASH_CHECK(pipe(pipefd_) == 0);
 
   fcntl(pipefd_[0], F_SETFL, O_NONBLOCK);
 
@@ -69,7 +69,7 @@ void MessagePumpImpl::Run() {
       } else {
         auto it = fd_cbs_.find(events[i].data.fd);
         if (it == fd_cbs_.end()) {
-          LOG(TAG, ERROR) << "Unknown fd " << events[i].data.fd;
+          ASH_LOG(TAG, ERROR) << "Unknown fd " << events[i].data.fd;
           continue;
         }
         int fd = it->first;
@@ -96,7 +96,7 @@ void MessagePumpImpl::WatchFD(int fd,
                               FDWatchCB on_can_read,
                               FDWatchCB on_can_write,
                               FDWatchCB on_error) {
-  CHECK_NE(on_can_read || on_can_write || on_error, false)
+  ASH_CHECK_NE(on_can_read || on_can_write || on_error, false)
       << "fd: " << fd << ", all cbs are null!";
   struct epoll_event event {};
   if (on_can_read)
@@ -108,14 +108,14 @@ void MessagePumpImpl::WatchFD(int fd,
   event.events |= EPOLLET;
   event.data.fd = fd;
   int ret = epoll_ctl(epoll_, EPOLL_CTL_ADD, fd, &event);
-  CHECK_GE(ret, 0) << "WatchFD " << fd << " err: " << strerror(errno);
+  ASH_CHECK_GE(ret, 0) << "WatchFD " << fd << " err: " << strerror(errno);
   fd_cbs_.try_emplace(fd, FDWatchCBs{on_can_read, on_can_write, on_error});
   return;
 }
 
 void MessagePumpImpl::UnwatchFD(int fd) {
   int ret = epoll_ctl(epoll_, EPOLL_CTL_DEL, fd, nullptr);
-  CHECK_GE(ret, 0) << "UnwatchFD " << fd << " err: " << strerror(errno);
+  ASH_CHECK_GE(ret, 0) << "UnwatchFD " << fd << " err: " << strerror(errno);
   fd_cbs_.erase(fd);
   return;
 }

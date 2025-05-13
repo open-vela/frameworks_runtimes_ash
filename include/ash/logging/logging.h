@@ -18,52 +18,52 @@
 
 #include <sstream>
 
-#define LOG_STREAM(tag, level)                                             \
+#define ASH_LOG_STREAM(tag, level)                                             \
   ::ash::LogStream(tag, ::ash::LogLevel::k##level, __FILE__, __LINE__, \
                      __FUNCTION__)                                         \
       .stream()
 
-#define LAZY_STREAM(tag, level, condition)                                \
+#define ASH_LAZY_STREAM(tag, level, condition)                                \
   !(condition) ? (void)0                                                  \
                : ::ash::LogStreamVoidify() &                            \
                      ::ash::LogStream(tag, ::ash::LogLevel::k##level, \
                                         __FILE__, __LINE__, __FUNCTION__) \
                          .stream()
 
-#define LOG_IF(tag, level, condition) LAZY_STREAM(tag, level, condition)
+#define ASH_LOG_IF(tag, level, condition) ASH_LAZY_STREAM(tag, level, condition)
 
-#define LOG(tag, level) LOG_IF(tag, level, true)
+#define ASH_LOG(tag, level) ASH_LOG_IF(tag, level, true)
 
-#define CHECK(condition) \
-  LOG_IF("DEBUG", FATAL, !(condition)) << "check failed: " #condition " "
-#define CHECK_EQ(val1, val2) CHECK((val1) == (val2))
-#define CHECK_NE(val1, val2) CHECK((val1) != (val2))
-#define CHECK_LT(val1, val2) CHECK((val1) < (val2))
-#define CHECK_LE(val1, val2) CHECK((val1) <= (val2))
-#define CHECK_GT(val1, val2) CHECK((val1) > (val2))
-#define CHECK_GE(val1, val2) CHECK((val1) >= (val2))
-#define UNREACHED() LOG(FATAL) << "UNREACHED"
+#define ASH_CHECK(condition) \
+  ASH_LOG_IF("DEBUG", FATAL, !(condition)) << "check failed: " #condition " "
+#define ASH_CHECK_EQ(val1, val2) ASH_CHECK((val1) == (val2))
+#define ASH_CHECK_NE(val1, val2) ASH_CHECK((val1) != (val2))
+#define ASH_CHECK_LT(val1, val2) ASH_CHECK((val1) < (val2))
+#define ASH_CHECK_LE(val1, val2) ASH_CHECK((val1) <= (val2))
+#define ASH_CHECK_GT(val1, val2) ASH_CHECK((val1) > (val2))
+#define ASH_CHECK_GE(val1, val2) ASH_CHECK((val1) >= (val2))
+#define ASH_UNREACHED() ASH_LOG(FATAL) << "UNREACHED"
 
 #if defined(NDEBUG)
-#define DLOG_IF(tag, level, condition) LOG_IF(tag, level, condition)
-#define DLOG(tag, level) LOG(tag, level)
-#define DCHECK(condition) CHECK(condition)
-#define DCHECK_EQ(val1, val2) CHECK_EQ(val1, val2)
-#define DCHECK_NE(val1, val2) CHECK_NE(val1, val2)
-#define DCHECK_LT(val1, val2) CHECK_LT(val1, val2)
-#define DCHECK_LE(val1, val2) CHECK_LE(val1, val2)
-#define DCHECK_GT(val1, val2) CHECK_GT(val1, val2)
-#define DCHECK_GE(val1, val2) CHECK_GE(val1, val2)
+#define ASH_DLOG_IF(tag, level, condition) ASH_LOG_IF(tag, level, condition)
+#define ASH_DLOG(tag, level) ASH_LOG(tag, level)
+#define ASH_DCHECK(condition) ASH_CHECK(condition)
+#define ASH_DCHECK_EQ(val1, val2) ASH_CHECK_EQ(val1, val2)
+#define ASH_DCHECK_NE(val1, val2) ASH_CHECK_NE(val1, val2)
+#define ASH_DCHECK_LT(val1, val2) ASH_CHECK_LT(val1, val2)
+#define ASH_DCHECK_LE(val1, val2) ASH_CHECK_LE(val1, val2)
+#define ASH_DCHECK_GT(val1, val2) ASH_CHECK_GT(val1, val2)
+#define ASH_DCHECK_GE(val1, val2) ASH_CHECK_GE(val1, val2)
 #else
-#define DLOG_IF(tag, level, condition) LOG_IF(tag, level, false && (condition))
-#define DLOG(tag, level) LOG_IF(tag, level, false)
-#define DCHECK(condition) DLOG_IF("DEBUG", FATAL, !(condition))
-#define DCHECK_EQ(val1, val2) DCHECK(val1 == val2)
-#define DCHECK_NE(val1, val2) DCHECK(val1 != val2)
-#define DCHECK_LT(val1, val2) DCHECK(val1 < val2)
-#define DCHECK_LE(val1, val2) DCHECK(val1 <= val2)
-#define DCHECK_GT(val1, val2) DCHECK(val1 > val2)
-#define DCHECK_GE(val1, val2) DCHECK(val1 >= val2)
+#define ASH_DLOG_IF(tag, level, condition) ASH_LOG_IF(tag, level, false && (condition))
+#define ASH_DLOG(tag, level) ASH_LOG_IF(tag, level, false)
+#define ASH_DCHECK(condition) ASH_DLOG_IF("DEBUG", FATAL, !(condition))
+#define ASH_DCHECK_EQ(val1, val2) ASH_DCHECK(val1 == val2)
+#define ASH_DCHECK_NE(val1, val2) ASH_DCHECK(val1 != val2)
+#define ASH_DCHECK_LT(val1, val2) ASH_DCHECK(val1 < val2)
+#define ASH_DCHECK_LE(val1, val2) ASH_DCHECK(val1 <= val2)
+#define ASH_DCHECK_GT(val1, val2) ASH_DCHECK(val1 > val2)
+#define ASH_DCHECK_GE(val1, val2) ASH_DCHECK(val1 >= val2)
 #endif
 
 namespace ash {

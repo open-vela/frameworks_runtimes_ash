@@ -90,7 +90,7 @@ ZipFile::ZipFile(ScopedFD fd) : fd_(std::move(fd)) {
       continue;
 
     std::string path(file_name, file_name_length);
-    LOG("ASH", INFO) << "AddEntry: " << path;
+    ASH_LOG("ASH", INFO) << "AddEntry: " << path;
     entries_.try_emplace(
         std::move(path),
         EntryInfo{static_cast<uint32_t>(offset), uncompressed_size});
