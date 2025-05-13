@@ -27,7 +27,7 @@ ifeq ($(shell expr $(GCC_VERSION) \>= 13), 1)
 endif
 
 ifeq ($(CONFIG_LIB_ASH),y)
-CXXFLAGS += ${INCDIR_PREFIX}$(APPDIR)/frameworks/runtimes
+CXXFLAGS += ${INCDIR_PREFIX}$(APPDIR)/frameworks/runtimes/ash/include
 CXXFLAGS += ${INCDIR_PREFIX}$(APPDIR)/system/zlib/zlib
 CXXFLAGS += ${INCDIR_PREFIX}$(APPDIR)/system/zlib/zlib/contrib
 
