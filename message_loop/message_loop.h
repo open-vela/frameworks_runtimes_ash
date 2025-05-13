@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef BASE_MESSAGE_LOOP_MESSAGE_LOOP_H_
-#define BASE_MESSAGE_LOOP_MESSAGE_LOOP_H_
+#ifndef ASH_MESSAGE_LOOP_MESSAGE_LOOP_H_
+#define ASH_MESSAGE_LOOP_MESSAGE_LOOP_H_
 
 #include <memory>
 #include "ash/message_loop/message_pump.h"
@@ -26,7 +26,7 @@
 #include <android/looper.h>
 #endif  // defined(__ANDROID__)
 
-namespace ferry {
+namespace ash {
 
 class MessageLoop {
  public:
@@ -66,6 +66,6 @@ class MessageLoop {
   std::shared_ptr<MessageQueue> queue_;
 };
 
-}  // namespace ferry
+}  // namespace ash
 
-#endif  // BASE_MESSAGE_LOOP_MESSAGE_LOOP_H_
+#endif  // ASH_MESSAGE_LOOP_MESSAGE_LOOP_H_

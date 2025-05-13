@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef BASE_DEVICE_INFO_H_
-#define BASE_DEVICE_INFO_H_
+#ifndef ASH_DEVICE_INFO_H_
+#define ASH_DEVICE_INFO_H_
 
 #include <string>
 
-namespace ferry {
+namespace ash {
 
 class DeviceInfo {
  public:
@@ -44,6 +44,6 @@ class DeviceInfo {
 #endif
 };
 
-}  // namespace ferry
+}  // namespace ash
 
-#endif  // BASE_DEVICE_INFO_H_
+#endif  // ASH_DEVICE_INFO_H_

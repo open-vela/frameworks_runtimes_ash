@@ -19,7 +19,7 @@
 #include <nuttx/sched_note.h>
 #endif  // defined(__NuttX__)
 
-namespace ferry {
+namespace ash {
 
 void TraceEvent::Begin(const char* name) {
 #if defined(__NuttX__)
@@ -41,4 +41,4 @@ ScopedTraceEvent::~ScopedTraceEvent() {
   TraceEvent::End(name_);
 }
 
-}  // namespace ferry
+}  // namespace ash

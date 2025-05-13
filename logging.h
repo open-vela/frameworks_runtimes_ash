@@ -13,20 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef BASE_LOGGING_H_
-#define BASE_LOGGING_H_
+#ifndef ASH_LOGGING_H_
+#define ASH_LOGGING_H_
 
 #include <sstream>
 
 #define LOG_STREAM(tag, level)                                             \
-  ::ferry::LogStream(tag, ::ferry::LogLevel::k##level, __FILE__, __LINE__, \
+  ::ash::LogStream(tag, ::ash::LogLevel::k##level, __FILE__, __LINE__, \
                      __FUNCTION__)                                         \
       .stream()
 
 #define LAZY_STREAM(tag, level, condition)                                \
   !(condition) ? (void)0                                                  \
-               : ::ferry::LogStreamVoidify() &                            \
-                     ::ferry::LogStream(tag, ::ferry::LogLevel::k##level, \
+               : ::ash::LogStreamVoidify() &                            \
+                     ::ash::LogStream(tag, ::ash::LogLevel::k##level, \
                                         __FILE__, __LINE__, __FUNCTION__) \
                          .stream()
 
@@ -66,7 +66,7 @@
 #define DCHECK_GE(val1, val2) DCHECK(val1 >= val2)
 #endif
 
-namespace ferry {
+namespace ash {
 
 enum class LogLevel {
   kVERBOSE,
@@ -102,6 +102,6 @@ class LogStreamVoidify {
   void operator&(std::ostream&) {}
 };
 
-}  // namespace ferry
+}  // namespace ash
 
-#endif  // BASE_LOGGING_H_
+#endif  // ASH_LOGGING_H_

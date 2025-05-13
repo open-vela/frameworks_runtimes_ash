@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef BASE_MESSAGE_LOOP_MESSAGE_PUMP_H_
-#define BASE_MESSAGE_LOOP_MESSAGE_PUMP_H_
+#ifndef ASH_MESSAGE_LOOP_MESSAGE_PUMP_H_
+#define ASH_MESSAGE_LOOP_MESSAGE_PUMP_H_
 
 #include <functional>
 #include "ash/time/time.h"
 
-namespace ferry {
+namespace ash {
 
 class MessageQueue;
 
@@ -50,6 +50,6 @@ class MessagePump {
   friend class MessageLoop;
 };
 
-}  // namespace ferry
+}  // namespace ash
 
-#endif  // BASE_MESSAGE_LOOP_MESSAGE_PUMP_H_
+#endif  // ASH_MESSAGE_LOOP_MESSAGE_PUMP_H_

@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef BASE_FILE_PATH_H_
-#define BASE_FILE_PATH_H_
+#ifndef ASH_FILE_PATH_H_
+#define ASH_FILE_PATH_H_
 
 #include <string>
 
-namespace ferry {
+namespace ash {
 
 class FilePath {
  public:
@@ -51,6 +51,6 @@ class FilePath {
 #endif  // defined(__WINDOWS__)
 };
 
-}  // namespace ferry
+}  // namespace ash
 
-#endif  // BASE_FILE_PATH_H_
+#endif  // ASH_FILE_PATH_H_

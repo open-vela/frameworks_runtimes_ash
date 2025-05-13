@@ -17,7 +17,7 @@
 
 #include <chrono>
 
-namespace ferry {
+namespace ash {
 
 Time::Time() : nanos_(0) {}
 
@@ -135,4 +135,4 @@ bool Time::operator>=(const Time& time) const {
   return nanos_ >= time.ToNano();
 }
 
-}  // namespace ferry
+}  // namespace ash

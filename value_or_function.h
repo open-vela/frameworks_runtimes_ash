@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef BASE_VALUE_OR_FUNCTION_H_
-#define BASE_VALUE_OR_FUNCTION_H_
+#ifndef ASH_VALUE_OR_FUNCTION_H_
+#define ASH_VALUE_OR_FUNCTION_H_
 
 #include <functional>
 #include <variant>
 
-namespace ferry {
+namespace ash {
 
 template <typename T>
 class ValueOrFunction {
@@ -60,6 +60,6 @@ class ValueOrFunction {
   std::variant<T, std::function<T()>> value_;
 };
 
-}  // namespace ferry
+}  // namespace ash
 
-#endif  // BASE_VALUE_OR_FUNCTION_H_
+#endif  // ASH_VALUE_OR_FUNCTION_H_

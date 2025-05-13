@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef BASE_LIFECYCLE_WATCHER_H_
-#define BASE_LIFECYCLE_WATCHER_H_
+#ifndef ASH_LIFECYCLE_WATCHER_H_
+#define ASH_LIFECYCLE_WATCHER_H_
 
 #include <memory>
 
-namespace ferry {
+namespace ash {
 
 class LifecycleWatcher {
  public:
@@ -30,6 +30,6 @@ class LifecycleWatcher {
 
 using LifecycleWatcherPtr = std::shared_ptr<LifecycleWatcher>;
 
-}  // namespace ferry
+}  // namespace ash
 
-#endif  // BASE_LIFECYCLE_WATCHER_H_
+#endif  // ASH_LIFECYCLE_WATCHER_H_

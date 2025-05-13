@@ -13,25 +13,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-if (CONFIG_FRAMEWORKS_RUNTIMES_BASE)
-  set(BASE_DIR ${CMAKE_CURRENT_LIST_DIR})
+if (CONFIG_LIB_ASH)
+  set(ASH_DIR ${CMAKE_CURRENT_LIST_DIR})
 
-  file(GLOB_RECURSE BASE_APPEND_SRCS ${BASE_DIR}/**/*.cpp)
-  list(APPEND BASE_SRCS ${BASE_APPEND_SRCS})
-  file(GLOB BASE_APPEND_SRCS ${BASE_DIR}/*.cpp)
-  list(APPEND BASE_SRCS ${BASE_APPEND_SRCS})
-  list(REMOVE_ITEM BASE_SRCS
-        ${BASE_DIR}/device_info.cpp
-        ${BASE_DIR}/file.cpp
-        ${BASE_DIR}/in_zip.cpp
-        ${BASE_DIR}/out_zip.cpp
-        ${BASE_DIR}/scoped_fd.cpp
-        ${BASE_DIR}/zip_file.cpp)
+  file(GLOB_RECURSE ASH_APPEND_SRCS ${ASH_DIR}/**/*.cpp)
+  list(APPEND ASH_SRCS ${ASH_APPEND_SRCS})
+  file(GLOB ASH_APPEND_SRCS ${ASH_DIR}/*.cpp)
+  list(APPEND ASH_SRCS ${ASH_APPEND_SRCS})
+  list(REMOVE_ITEM ASH_SRCS
+        ${ASH_DIR}/device_info.cpp
+        ${ASH_DIR}/file.cpp
+        ${ASH_DIR}/in_zip.cpp
+        ${ASH_DIR}/out_zip.cpp
+        ${ASH_DIR}/scoped_fd.cpp
+        ${ASH_DIR}/zip_file.cpp)
 
-  nuttx_add_library(runtimes_base)
-  target_sources(runtimes_base PRIVATE ${BASE_SRCS})
+  nuttx_add_library(ash)
+  target_sources(ash PRIVATE ${ASH_SRCS})
   target_include_directories(
-    runtimes_base
+    ash
     PRIVATE
     ${NUTTX_APPS_DIR}/frameworks/runtimes
     ${NUTTX_APPS_DIR}/system/zlib/zlib

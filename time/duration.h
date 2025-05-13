@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef BASE_TIME_DURATION_H_
-#define BASE_TIME_DURATION_H_
+#ifndef ASH_TIME_DURATION_H_
+#define ASH_TIME_DURATION_H_
 
 #include <stdint.h>
 
-namespace ferry {
+namespace ash {
 
 class Duration {
  public:
@@ -56,6 +56,6 @@ class Duration {
   int64_t nanos_;
 };
 
-}  // namespace ferry
+}  // namespace ash
 
-#endif  // BASE_TIME_DURATION_H_
+#endif  // ASH_TIME_DURATION_H_

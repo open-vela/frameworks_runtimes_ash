@@ -16,7 +16,7 @@
 #ifndef FRAMEWORK_TRACE_EVENT_TRACE_EVENT_H_
 #define FRAMEWORK_TRACE_EVENT_TRACE_EVENT_H_
 
-namespace ferry {
+namespace ash {
 
 class TraceEvent {
  public:
@@ -41,6 +41,6 @@ class ScopedTraceEvent {
   ScopedTraceEvent MAKE_SCOPED_TRACE_EVENT_NAME(scoped_trace_event_, \
                                                 __COUNTER__)(name)
 
-}  // namespace ferry
+}  // namespace ash
 
 #endif  // FRAMEWORK_TRACE_EVENT_TRACE_EVENT_H_

@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef BASE_IN_ZIP_H_
-#define BASE_IN_ZIP_H_
+#ifndef ASH_IN_ZIP_H_
+#define ASH_IN_ZIP_H_
 
 #include <stdint.h>
 #include <map>
@@ -24,7 +24,7 @@
 
 #define MIN_ECDR_SIZE 22
 #define MAX_ECDR_SIZE 65536
-namespace ferry {
+namespace ash {
 
 class InZip {
  public:
@@ -71,6 +71,6 @@ class InZip {
   std::map<std::string, Entry> entries_;
 };
 
-}  // namespace ferry
+}  // namespace ash
 
-#endif  // BASE_IN_ZIP_H_
+#endif  // ASH_IN_ZIP_H_

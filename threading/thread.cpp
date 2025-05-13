@@ -19,7 +19,7 @@
 #include "ash/message_loop/message_loop.h"
 #include "ash/message_loop/message_loop_scope.h"
 
-namespace ferry {
+namespace ash {
 
 Thread::Thread() : message_queue_(std::make_shared<MessageQueue>()) {
   pthread_t th;
@@ -56,4 +56,4 @@ void* Thread::Run(void* arg) {
   return nullptr;
 }
 
-}  // namespace ferry
+}  // namespace ash
