@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef BASE_NUMBER_STRING_CONVERSIONS_H_
-#define BASE_NUMBER_STRING_CONVERSIONS_H_
+#ifndef ASH_NUMBER_STRING_CONVERSIONS_H_
+#define ASH_NUMBER_STRING_CONVERSIONS_H_
 
 #include <cstdint>
 #include <string>
 
-namespace ferry {
+namespace ash {
 
 std::string doubleToString(double value);
 
@@ -27,6 +27,6 @@ std::string integerToString(int value);
 
 std::string intToHexString(uint32_t value, uint32_t width);
 
-}  // namespace ferry
+}  // namespace ash
 
-#endif  // BASE_NUMBER_STRING_CONVERSIONS_H_
+#endif  // ASH_NUMBER_STRING_CONVERSIONS_H_

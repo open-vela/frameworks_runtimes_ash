@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef BASE_OUT_ZIP_H_
-#define BASE_OUT_ZIP_H_
+#ifndef ASH_OUT_ZIP_H_
+#define ASH_OUT_ZIP_H_
 
 #include <stdint.h>
 #include <map>
@@ -23,7 +23,7 @@
 #include <vector>
 #include "ash/scoped_fd.h"
 
-namespace ferry {
+namespace ash {
 
 class OutZip {
  public:
@@ -74,6 +74,6 @@ class OutZip {
   std::vector<Record> records_;
 };
 
-}  // namespace ferry
+}  // namespace ash
 
-#endif  // BASE_OUT_ZIP_H_
+#endif  // ASH_OUT_ZIP_H_

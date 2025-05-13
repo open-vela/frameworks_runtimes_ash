@@ -18,7 +18,7 @@
 #include <iomanip>
 #include <sstream>
 
-namespace ferry {
+namespace ash {
 //TODO(xuyan): 考虑使用性能刚好的std::from_chars和std::to_chars
 
 std::string doubleToString(double value) {
@@ -39,4 +39,4 @@ std::string intToHexString(uint32_t value, uint32_t width) {
   return oss.str();
 }
 
-}  // namespace ferry
+}  // namespace ash

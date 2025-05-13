@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef BASE_CONVERTER_H_
-#define BASE_CONVERTER_H_
+#ifndef ASH_CONVERTER_H_
+#define ASH_CONVERTER_H_
 
 #include <string>
 
-namespace ferry {
+namespace ash {
 
 template <typename T>
 struct StringProcessor;
@@ -154,6 +154,6 @@ bool FromString(const std::string& input, T* value) {
   return StringConverter<T>::FromString(input, value);
 }
 
-}  // namespace ferry
+}  // namespace ash
 
-#endif  // BASE_CONVERTER_H_
+#endif  // ASH_CONVERTER_H_

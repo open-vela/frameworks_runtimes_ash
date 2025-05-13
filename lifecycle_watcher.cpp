@@ -15,10 +15,10 @@
  */
 #include "ash/lifecycle_watcher.h"
 
-namespace ferry {
+namespace ash {
 
 LifecycleWatcher::LifecycleWatcher() = default;
 
 LifecycleWatcher::~LifecycleWatcher() = default;
 
-}  // namespace ferry
+}  // namespace ash

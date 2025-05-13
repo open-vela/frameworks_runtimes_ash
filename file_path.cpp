@@ -16,7 +16,7 @@
 #include "ash/file_path.h"
 #include "ash/logging.h"
 
-namespace ferry {
+namespace ash {
 
 FilePath::FilePath(const std::string& path, bool force_unix) {
   ParseFrom(path, force_unix);
@@ -135,4 +135,4 @@ void FilePath::ParseFrom(const FilePath& path,
   }
 }
 
-}  // namespace ferry
+}  // namespace ash

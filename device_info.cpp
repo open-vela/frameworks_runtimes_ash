@@ -17,7 +17,7 @@
 
 #include "uv_ext.h"
 
-namespace ferry {
+namespace ash {
 
 namespace {
 
@@ -131,4 +131,4 @@ int DeviceInfo::bpp() {
 }
 #endif
 
-}  // namespace ferry
+}  // namespace ash

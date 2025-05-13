@@ -17,7 +17,7 @@
 
 #include "ash/message_loop/message_queue.h"
 
-namespace ferry {
+namespace ash {
 
 MessagePump::MessagePump() = default;
 
@@ -27,4 +27,4 @@ Duration MessagePump::Drive() {
   return queue_->Drive();
 }
 
-}  // namespace ferry
+}  // namespace ash

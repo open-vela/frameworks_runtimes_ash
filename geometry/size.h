@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef BASE_GEOMETRY_SIZE_H_
-#define BASE_GEOMETRY_SIZE_H_
+#ifndef ASH_GEOMETRY_SIZE_H_
+#define ASH_GEOMETRY_SIZE_H_
 
-namespace ferry {
+namespace ash {
 
 template <typename T>
 class SizeT {
@@ -42,6 +42,6 @@ class SizeT {
 using Size = SizeT<int>;
 using SizeF = SizeT<float>;
 
-}  // namespace ferry
+}  // namespace ash
 
-#endif  // BASE_GEOMETRY_SIZE_H_
+#endif  // ASH_GEOMETRY_SIZE_H_

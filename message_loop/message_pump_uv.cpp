@@ -19,7 +19,7 @@
 
 #include "ash/logging.h"
 
-namespace ferry {
+namespace ash {
 
 class MessagePumpUV::FDWatcher {
  public:
@@ -166,6 +166,6 @@ void MessagePumpUV::FDWatcher::UVPollCB(uv_poll_t* handle,
   }
 }
 
-}  // namespace ferry
+}  // namespace ash
 
 #endif  // defined(__NuttX__)

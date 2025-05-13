@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef BASE_INPUT_STREAM_H_
-#define BASE_INPUT_STREAM_H_
+#ifndef ASH_INPUT_STREAM_H_
+#define ASH_INPUT_STREAM_H_
 
 #include <cstddef>
 #include <cstdint>
 #include <string>
 
-namespace ferry {
+namespace ash {
 
 class InputStream {
  public:
@@ -42,6 +42,6 @@ class InputStream {
   uint8_t* end_;
 };
 
-}  // namespace ferry
+}  // namespace ash
 
-#endif  // BASE_INPUT_STREAM_H_
+#endif  // ASH_INPUT_STREAM_H_

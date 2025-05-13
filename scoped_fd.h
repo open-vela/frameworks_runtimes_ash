@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef BASE_SCOPED_FD_H_
-#define BASE_SCOPED_FD_H_
+#ifndef ASH_SCOPED_FD_H_
+#define ASH_SCOPED_FD_H_
 
 #include <cstddef>
 
-namespace ferry {
+namespace ash {
 
 class ScopedFD {
  public:
@@ -63,6 +63,6 @@ class ScopedFD {
   int fd_;
 };
 
-}  // namespace ferry
+}  // namespace ash
 
-#endif  // BASE_SCOPED_FD_H_
+#endif  // ASH_SCOPED_FD_H_

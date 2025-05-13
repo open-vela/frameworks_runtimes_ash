@@ -20,7 +20,7 @@
 #include "ash/message_loop/message_pump_impl.h"
 #include "ash/message_loop/message_pump_uv.h"
 
-namespace ferry {
+namespace ash {
 
 namespace {
 thread_local MessageLoop* tls = nullptr;
@@ -101,4 +101,4 @@ MessageLoop* MessageLoop::CreateForAndroid(ALooper* looper) {
 }
 #endif
 
-}  // namespace ferry
+}  // namespace ash

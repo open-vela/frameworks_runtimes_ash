@@ -21,7 +21,7 @@
 #include <unistd.h>
 #include "ash/logging.h"
 
-namespace ferry {
+namespace ash {
 
 MessagePumpAndroid::MessagePumpAndroid(ALooper* looper) : looper_(looper) {
   if (looper_) {
@@ -31,13 +31,13 @@ MessagePumpAndroid::MessagePumpAndroid(ALooper* looper) : looper_(looper) {
   }
 
   if (!looper_) {
-    LOG("BASE", ERROR) << "No valid looper.";
+    LOG("ASH", ERROR) << "No valid looper.";
     return;
   }
 
   int fds[2];
   if (pipe(fds) < 0) {
-    LOG("BASE", ERROR) << "Can't create pipe.";
+    LOG("ASH", ERROR) << "Can't create pipe.";
     return;
   }
 
@@ -47,23 +47,23 @@ MessagePumpAndroid::MessagePumpAndroid(ALooper* looper) : looper_(looper) {
   int flags = 0;
   flags = fcntl(fds[0], F_GETFL);
   if (flags < 0) {
-    LOG("BASE", ERROR) << "fcntl call failed.";
+    LOG("ASH", ERROR) << "fcntl call failed.";
     return;
   }
 
   if (fcntl(fds[0], F_SETFL, flags | O_NONBLOCK) < 0) {
-    LOG("BASE", ERROR) << "fcntl call failed.";
+    LOG("ASH", ERROR) << "fcntl call failed.";
     return;
   }
 
   flags = fcntl(fds[1], F_GETFL);
   if (flags < 0) {
-    LOG("BASE", ERROR) << "fcntl call failed.";
+    LOG("ASH", ERROR) << "fcntl call failed.";
     return;
   }
 
   if (fcntl(fds[1], F_SETFL, flags | O_NONBLOCK) < 0) {
-    LOG("BASE", ERROR) << "fcntl call failed.";
+    LOG("ASH", ERROR) << "fcntl call failed.";
     return;
   }
 
@@ -108,6 +108,6 @@ int MessagePumpAndroid::Callback(int fd, int events, void* data) {
   return 1;
 }
 
-}  // namespace ferry
+}  // namespace ash
 
 #endif  // defined(__ANDROID__)

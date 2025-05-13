@@ -19,7 +19,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
-namespace ferry {
+namespace ash {
 
 ScopedFD OpenFile(const std::string& path, OpenMode mode) {
   int flags = 0;
@@ -205,4 +205,4 @@ uint64_t Tell(const ScopedFD& fd) {
   return lseek(fd, 0, SEEK_CUR);
 }
 
-}  // namespace ferry
+}  // namespace ash

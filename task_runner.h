@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef BASE_TASK_RUNNER_H_
-#define BASE_TASK_RUNNER_H_
+#ifndef ASH_TASK_RUNNER_H_
+#define ASH_TASK_RUNNER_H_
 
 #include <functional>
 #include "ash/time/duration.h"
 
-namespace ferry {
+namespace ash {
 
 class TaskRunner {
  public:
@@ -30,6 +30,6 @@ class TaskRunner {
   virtual void PostDelayedTask(std::function<void()> task, Duration delay) = 0;
 };
 
-}  // namespace ferry
+}  // namespace ash
 
-#endif  // BASE_TASK_RUNNER_H_
+#endif  // ASH_TASK_RUNNER_H_

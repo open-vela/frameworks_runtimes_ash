@@ -23,7 +23,7 @@
 #include <syslog.h>
 #endif
 
-namespace ferry {
+namespace ash {
 
 LogStream::LogStream(const char* tag,
                      LogLevel level,
@@ -87,4 +87,4 @@ LogStream::~LogStream() {
     CrashImmediately();
 }
 
-}  // namespace ferry
+}  // namespace ash

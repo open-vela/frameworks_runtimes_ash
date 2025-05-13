@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef BASE_ZIP_FILE_H_
-#define BASE_ZIP_FILE_H_
+#ifndef ASH_ZIP_FILE_H_
+#define ASH_ZIP_FILE_H_
 
 #include <map>
 #include <string>
 #include "scoped_fd.h"
 
-namespace ferry {
+namespace ash {
 
 class ZipFile {
  public:
@@ -44,6 +44,6 @@ class ZipFile {
 
 bool repackZip(const char* src, const char* dest);
 
-}  // namespace ferry
+}  // namespace ash
 
-#endif  // BASE_ZIP_FILE_H_
+#endif  // ASH_ZIP_FILE_H_

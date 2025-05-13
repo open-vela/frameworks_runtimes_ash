@@ -26,7 +26,7 @@ ifeq ($(shell expr $(GCC_VERSION) \>= 13), 1)
   CXXFLAGS += --param=min-pagesize=0
 endif
 
-ifeq ($(CONFIG_FRAMEWORKS_RUNTIMES_BASE),y)
+ifeq ($(CONFIG_LIB_ASH),y)
 CXXFLAGS += ${INCDIR_PREFIX}$(APPDIR)/frameworks/runtimes
 CXXFLAGS += ${INCDIR_PREFIX}$(APPDIR)/system/zlib/zlib
 CXXFLAGS += ${INCDIR_PREFIX}$(APPDIR)/system/zlib/zlib/contrib

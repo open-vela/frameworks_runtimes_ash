@@ -21,7 +21,7 @@
 #include "ash/trace_event/trace_event.h"
 #include "zlib.h"
 
-namespace ferry {
+namespace ash {
 
 namespace {
 
@@ -81,13 +81,13 @@ std::unique_ptr<InZip> InZip::Open(ScopedFD fd) {
   bool found = false;
   for (int i = 0; i < MAX_ECDR_SIZE; ++i) {
     if (!Seek(fd, -MIN_ECDR_SIZE - i, SeekMode::kEnd)) {
-      LOG("BASE", ERROR) << "Failed to seek to end of file";
+      LOG("ASH", ERROR) << "Failed to seek to end of file";
       return nullptr;
     }
 
     uint32_t magic;
     if (!ReadFile(fd, &magic, sizeof(magic))) {
-      LOG("BASE", ERROR) << "Failed to read magic";
+      LOG("ASH", ERROR) << "Failed to read magic";
       return nullptr;
     }
 
@@ -98,13 +98,13 @@ std::unique_ptr<InZip> InZip::Open(ScopedFD fd) {
   }
 
   if (!found) {
-    LOG("BASE", ERROR) << "Failed to find end of central directory record";
+    LOG("ASH", ERROR) << "Failed to find end of central directory record";
     return nullptr;
   }
 
   uint8_t ecdr[18];
   if (!ReadFile(fd, ecdr, sizeof(ecdr))) {
-    LOG("BASE", ERROR) << "Failed to read end of central directory record";
+    LOG("ASH", ERROR) << "Failed to read end of central directory record";
     return nullptr;
   }
 
@@ -114,14 +114,14 @@ std::unique_ptr<InZip> InZip::Open(ScopedFD fd) {
   uint32_t central_directory_offset = ecdr_stream.ReadU32();
 
   if (!Seek(fd, central_directory_offset, SeekMode::kBegin)) {
-    LOG("BASE", ERROR) << "Failed to seek to central directory";
+    LOG("ASH", ERROR) << "Failed to seek to central directory";
     return nullptr;
   }
 
   std::unique_ptr<uint8_t[]> central_directory_data(
       new uint8_t[central_directory_size]);
   if (!ReadFile(fd, central_directory_data.get(), central_directory_size)) {
-    LOG("BASE", ERROR) << "Failed to read central directory";
+    LOG("ASH", ERROR) << "Failed to read central directory";
     return nullptr;
   }
 
@@ -144,7 +144,7 @@ std::unique_ptr<InZip> InZip::Open(ScopedFD fd) {
     uint32_t offset = central_directory_stream.ReadU32();
     if (central_directory_stream.available() <
         size_t(file_name_length + extra_field_length + file_comment_length)) {
-      LOG("BASE", ERROR) << "Invalid central directory record";
+      LOG("ASH", ERROR) << "Invalid central directory record";
       break;
     }
     std::string path(central_directory_stream.ReadString(file_name_length));
@@ -154,7 +154,7 @@ std::unique_ptr<InZip> InZip::Open(ScopedFD fd) {
       continue;
 
     if (compression_method != 0 && compression_method != 8) {
-      LOG("BASE", ERROR) << "Unsupported compression method: "
+      LOG("ASH", ERROR) << "Unsupported compression method: "
                          << compression_method << " for " << path;
       continue;
     }
@@ -193,14 +193,14 @@ std::unique_ptr<uint8_t[]> InZip::LoadEntry(const Entry* entry,
   SCOPED_TRACE_EVENT("InZip::LoadEntry");
 
   if (!Seek(fd_, entry->offset(), SeekMode::kBegin)) {
-    LOG("BASE", ERROR) << "Failed to seek to entry";
+    LOG("ASH", ERROR) << "Failed to seek to entry";
     return nullptr;
   }
 
   std::unique_ptr<uint8_t[]> compressed_data(
       new uint8_t[entry->compressed_size() + extra_size]);
   if (!ReadFile(fd_, compressed_data.get(), entry->compressed_size())) {
-    LOG("BASE", ERROR) << "Failed to read data";
+    LOG("ASH", ERROR) << "Failed to read data";
     return nullptr;
   }
 
@@ -209,7 +209,7 @@ std::unique_ptr<uint8_t[]> InZip::LoadEntry(const Entry* entry,
   }
 
   if (entry->compression_method() != CompressionMethod::kDeflate) {
-    LOG("BASE", ERROR) << "Unsupported compression method";
+    LOG("ASH", ERROR) << "Unsupported compression method";
     return nullptr;
   }
 
@@ -217,7 +217,7 @@ std::unique_ptr<uint8_t[]> InZip::LoadEntry(const Entry* entry,
       new uint8_t[entry->uncompressed_size() + extra_size]);
   if (!Uncompress(uncompressed_data.get(), entry->uncompressed_size(),
                   compressed_data.get(), entry->compressed_size())) {
-    LOG("BASE", ERROR) << "Failed to uncompress data";
+    LOG("ASH", ERROR) << "Failed to uncompress data";
     return nullptr;
   }
 
@@ -228,7 +228,7 @@ std::unique_ptr<uint8_t[]> InZip::LoadEntry(const std::string& path,
                                             size_t extra_size) {
   const Entry* entry = GetEntry(path);
   if (!entry) {
-    LOG("BASE", ERROR) << "Entry not found" << path;
+    LOG("ASH", ERROR) << "Entry not found" << path;
     return nullptr;
   }
   return LoadEntry(entry, extra_size);
@@ -237,20 +237,20 @@ std::unique_ptr<uint8_t[]> InZip::LoadEntry(const std::string& path,
 bool InZip::ExtractEntry(const std::string& path, const std::string& dest) {
   const Entry* entry = GetEntry(path);
   if (!entry) {
-    LOG("BASE", ERROR) << "Entry not found" << path;
+    LOG("ASH", ERROR) << "Entry not found" << path;
     return false;
   }
 
   std::unique_ptr<uint8_t[]> data = LoadEntry(entry);
   if (!data) {
-    LOG("BASE", ERROR) << "Failed to load entry";
+    LOG("ASH", ERROR) << "Failed to load entry";
     return false;
   }
 
   CreateDirectory(GetParentDirectory(dest));
 
   if (!WriteFile(dest, data.get(), entry->uncompressed_size())) {
-    LOG("BASE", ERROR) << "Failed to write file";
+    LOG("ASH", ERROR) << "Failed to write file";
     return false;
   }
 
@@ -260,4 +260,4 @@ bool InZip::ExtractEntry(const std::string& path, const std::string& dest) {
 InZip::InZip(ScopedFD fd, std::map<std::string, Entry> entries)
     : fd_(std::move(fd)), entries_(std::move(entries)) {}
 
-}  // namespace ferry
+}  // namespace ash

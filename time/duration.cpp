@@ -17,7 +17,7 @@
 
 #include <limits>
 
-namespace ferry {
+namespace ash {
 
 Duration::Duration() : nanos_(0) {}
 
@@ -113,4 +113,4 @@ Duration Duration::Infinity() {
   return Duration(std::numeric_limits<int64_t>::max());
 }
 
-}  // namespace ferry
+}  // namespace ash

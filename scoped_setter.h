@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef BASE_SCOPED_SETTER_H_
-#define BASE_SCOPED_SETTER_H_
+#ifndef ASH_SCOPED_SETTER_H_
+#define ASH_SCOPED_SETTER_H_
 
-namespace ferry {
+namespace ash {
 
 template <typename T>
 class ScopedSetter {
@@ -30,6 +30,6 @@ class ScopedSetter {
   T old_value_;
 };
 
-}  // namespace ferry
+}  // namespace ash
 
-#endif  // BASE_SCOPED_SETTER_H_
+#endif  // ASH_SCOPED_SETTER_H_

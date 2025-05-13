@@ -17,7 +17,7 @@
 
 #include "ash/trace_event/trace_event.h"
 
-namespace ferry {
+namespace ash {
 
 MessageQueue::MessageQueue()
     : pump_(nullptr), next_schedule_time_(Time::Forever()) {}
@@ -83,4 +83,4 @@ bool MessageQueue::TaskComparator::operator()(const Task& lhs,
   return lhs.time > rhs.time;
 }
 
-}  // namespace ferry
+}  // namespace ash

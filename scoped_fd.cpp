@@ -17,7 +17,7 @@
 
 #include <unistd.h>
 
-namespace ferry {
+namespace ash {
 
 ScopedFD::ScopedFD() : fd_(-1) {}
 
@@ -95,4 +95,4 @@ void ScopedFD::Reset() {
   fd_ = -1;
 }
 
-}  // namespace ferry
+}  // namespace ash

@@ -19,7 +19,7 @@
 #include "ash/logging.h"
 #include "zlib.h"
 
-namespace ferry {
+namespace ash {
 
 namespace {
 
@@ -193,39 +193,39 @@ bool OutZip::WriteData(const ScopedFD& fd) {
     std::unique_ptr<uint8_t[]> uncompressed_data = entry->GetData();
 
     if (!WriteFile(fd, &magic, sizeof(magic))) {
-      LOG("BASE", ERROR) << "Failed to write magic number";
+      LOG("ASH", ERROR) << "Failed to write magic number";
       return false;
     }
 
     if (!WriteFile(fd, &version, sizeof(version))) {
-      LOG("BASE", ERROR) << "Failed to write version";
+      LOG("ASH", ERROR) << "Failed to write version";
       return false;
     }
 
     if (!WriteFile(fd, &flag, sizeof(flag))) {
-      LOG("BASE", ERROR) << "Failed to write flag";
+      LOG("ASH", ERROR) << "Failed to write flag";
       return false;
     }
 
     compression_method = (uint16_t)entry->compression_method();
     if (!WriteFile(fd, &compression_method, sizeof(compression_method))) {
-      LOG("BASE", ERROR) << "Failed to write compression method";
+      LOG("ASH", ERROR) << "Failed to write compression method";
       return false;
     }
 
     if (!WriteFile(fd, &modification_time, sizeof(modification_time))) {
-      LOG("BASE", ERROR) << "Failed to write modification time";
+      LOG("ASH", ERROR) << "Failed to write modification time";
       return false;
     }
 
     if (!WriteFile(fd, &modification_date, sizeof(modification_date))) {
-      LOG("BASE", ERROR) << "Failed to write modification date";
+      LOG("ASH", ERROR) << "Failed to write modification date";
       return false;
     }
 
     crc = crc32(0, uncompressed_data.get(), uncompressed_size);
     if (!WriteFile(fd, &crc, sizeof(crc))) {
-      LOG("BASE", ERROR) << "Failed to write crc";
+      LOG("ASH", ERROR) << "Failed to write crc";
       return false;
     }
 
@@ -235,62 +235,62 @@ bool OutZip::WriteData(const ScopedFD& fd) {
     // Write actual compressed size later.
     compressed_size = 0;
     if (!WriteFile(fd, &compressed_size, sizeof(compressed_size))) {
-      LOG("BASE", ERROR) << "Failed to write compressed size";
+      LOG("ASH", ERROR) << "Failed to write compressed size";
       return false;
     }
 
     if (!WriteFile(fd, &uncompressed_size, sizeof(uncompressed_size))) {
-      LOG("BASE", ERROR) << "Failed to write uncompressed size";
+      LOG("ASH", ERROR) << "Failed to write uncompressed size";
       return false;
     }
 
     file_name_length = entry->path().size();
     if (!WriteFile(fd, &file_name_length, sizeof(file_name_length))) {
-      LOG("BASE", ERROR) << "Failed to write file name length";
+      LOG("ASH", ERROR) << "Failed to write file name length";
       return false;
     }
 
     if (!WriteFile(fd, &extra_field_length, sizeof(extra_field_length))) {
-      LOG("BASE", ERROR) << "Failed to write extra field length";
+      LOG("ASH", ERROR) << "Failed to write extra field length";
       return false;
     }
 
     if (!WriteFile(fd, entry->path().c_str(), file_name_length)) {
-      LOG("BASE", ERROR) << "Failed to write file name";
+      LOG("ASH", ERROR) << "Failed to write file name";
       return false;
     }
 
     if (compression_method == Z_BINARY) {
       if (!WriteFile(fd, uncompressed_data.get(), uncompressed_size)) {
-        LOG("BASE", ERROR) << "Failed to write data";
+        LOG("ASH", ERROR) << "Failed to write data";
         return false;
       }
       compressed_size = uncompressed_size;
     } else if (compression_method == Z_DEFLATED) {
       if (!Compress(fd, uncompressed_data.get(), uncompressed_size,
                     &compressed_size)) {
-        LOG("BASE", ERROR) << "Failed to compress data";
+        LOG("ASH", ERROR) << "Failed to compress data";
         return false;
       }
     } else {
-      LOG("BASE", ERROR) << "Unsupported compression method: "
+      LOG("ASH", ERROR) << "Unsupported compression method: "
                          << compression_method;
       return false;
     }
 
     uint64_t end_pos = Tell(fd);
     if (!Seek(fd, compressed_size_pos, SeekMode::kBegin)) {
-      LOG("BASE", ERROR) << "Failed to seek to compressed size position";
+      LOG("ASH", ERROR) << "Failed to seek to compressed size position";
       return false;
     }
 
     if (!WriteFile(fd, &compressed_size, sizeof(compressed_size))) {
-      LOG("BASE", ERROR) << "Failed to write compressed size";
+      LOG("ASH", ERROR) << "Failed to write compressed size";
       return false;
     }
 
     if (!Seek(fd, end_pos, SeekMode::kBegin)) {
-      LOG("BASE", ERROR) << "Failed to seek to end position";
+      LOG("ASH", ERROR) << "Failed to seek to end position";
       return false;
     }
 
@@ -305,112 +305,112 @@ bool OutZip::WriteCentralDirectory(const ScopedFD& fd) {
   uint32_t magic = 0x02014b50;
   for (const Record& record : records_) {
     if (!WriteFile(fd, &magic, sizeof(magic))) {
-      LOG("BASE", ERROR) << "Failed to write magic number";
+      LOG("ASH", ERROR) << "Failed to write magic number";
       return false;
     }
 
     uint16_t version_made_by = 20;
     if (!WriteFile(fd, &version_made_by, sizeof(version_made_by))) {
-      LOG("BASE", ERROR) << "Failed to write version made by";
+      LOG("ASH", ERROR) << "Failed to write version made by";
       return false;
     }
 
     uint16_t version_needed_to_extract = 20;
     if (!WriteFile(fd, &version_needed_to_extract,
                    sizeof(version_needed_to_extract))) {
-      LOG("BASE", ERROR) << "Failed to write version needed to extract";
+      LOG("ASH", ERROR) << "Failed to write version needed to extract";
       return false;
     }
 
     uint16_t flag = 0;
     if (!WriteFile(fd, &flag, sizeof(flag))) {
-      LOG("BASE", ERROR) << "Failed to write flag";
+      LOG("ASH", ERROR) << "Failed to write flag";
       return false;
     }
 
     uint16_t compression_method = record.compression_method;
     if (!WriteFile(fd, &compression_method, sizeof(compression_method))) {
-      LOG("BASE", ERROR) << "Failed to write compression method";
+      LOG("ASH", ERROR) << "Failed to write compression method";
       return false;
     }
 
     uint16_t modification_time = 0;
     if (!WriteFile(fd, &modification_time, sizeof(modification_time))) {
-      LOG("BASE", ERROR) << "Failed to write modification time";
+      LOG("ASH", ERROR) << "Failed to write modification time";
       return false;
     }
 
     uint16_t modification_date = 0;
     if (!WriteFile(fd, &modification_date, sizeof(modification_date))) {
-      LOG("BASE", ERROR) << "Failed to write modification date";
+      LOG("ASH", ERROR) << "Failed to write modification date";
       return false;
     }
 
     uint32_t crc = 0;
     if (!WriteFile(fd, &crc, sizeof(crc))) {
-      LOG("BASE", ERROR) << "Failed to write crc";
+      LOG("ASH", ERROR) << "Failed to write crc";
       return false;
     }
 
     uint32_t compressed_size = record.compressed_size;
     if (!WriteFile(fd, &compressed_size, sizeof(compressed_size))) {
-      LOG("BASE", ERROR) << "Failed to write compressed size";
+      LOG("ASH", ERROR) << "Failed to write compressed size";
       return false;
     }
 
     uint32_t uncompressed_size = record.uncompressed_size;
     if (!WriteFile(fd, &uncompressed_size, sizeof(uncompressed_size))) {
-      LOG("BASE", ERROR) << "Failed to write uncompressed size";
+      LOG("ASH", ERROR) << "Failed to write uncompressed size";
       return false;
     }
 
     uint16_t file_name_length = record.path.size();
     if (!WriteFile(fd, &file_name_length, sizeof(file_name_length))) {
-      LOG("BASE", ERROR) << "Failed to write file name length";
+      LOG("ASH", ERROR) << "Failed to write file name length";
       return false;
     }
 
     uint16_t extra_field_length = 0;
     if (!WriteFile(fd, &extra_field_length, sizeof(extra_field_length))) {
-      LOG("BASE", ERROR) << "Failed to write extra field length";
+      LOG("ASH", ERROR) << "Failed to write extra field length";
       return false;
     }
 
     uint16_t file_comment_length = 0;
     if (!WriteFile(fd, &file_comment_length, sizeof(file_comment_length))) {
-      LOG("BASE", ERROR) << "Failed to write file comment length";
+      LOG("ASH", ERROR) << "Failed to write file comment length";
       return false;
     }
 
     uint16_t disk_number_start = 0;
     if (!WriteFile(fd, &disk_number_start, sizeof(disk_number_start))) {
-      LOG("BASE", ERROR) << "Failed to write disk number start";
+      LOG("ASH", ERROR) << "Failed to write disk number start";
       return false;
     }
 
     uint16_t internal_file_attributes = 0;
     if (!WriteFile(fd, &internal_file_attributes,
                    sizeof(internal_file_attributes))) {
-      LOG("BASE", ERROR) << "Failed to write internal file attributes";
+      LOG("ASH", ERROR) << "Failed to write internal file attributes";
       return false;
     }
 
     uint32_t external_file_attributes = 0;
     if (!WriteFile(fd, &external_file_attributes,
                    sizeof(external_file_attributes))) {
-      LOG("BASE", ERROR) << "Failed to write external file attributes";
+      LOG("ASH", ERROR) << "Failed to write external file attributes";
       return false;
     }
 
     uint32_t relative_offset_of_local_header = record.offset;
     if (!WriteFile(fd, &relative_offset_of_local_header,
                    sizeof(relative_offset_of_local_header))) {
-      LOG("BASE", ERROR) << "Failed to write relative offset of local header";
+      LOG("ASH", ERROR) << "Failed to write relative offset of local header";
       return false;
     }
 
     if (!WriteFile(fd, record.path.c_str(), file_name_length)) {
-      LOG("BASE", ERROR) << "Failed to write file name";
+      LOG("ASH", ERROR) << "Failed to write file name";
       return false;
     }
   }
@@ -428,50 +428,50 @@ bool OutZip::WriteEndOfCentralDirectory(const ScopedFD& fd,
   uint16_t comment_length = 0;
 
   if (!WriteFile(fd, &magic, sizeof(magic))) {
-    LOG("BASE", ERROR) << "Failed to write magic number";
+    LOG("ASH", ERROR) << "Failed to write magic number";
     return false;
   }
 
   if (!WriteFile(fd, &disk_number, sizeof(disk_number))) {
-    LOG("BASE", ERROR) << "Failed to write disk number";
+    LOG("ASH", ERROR) << "Failed to write disk number";
     return false;
   }
 
   if (!WriteFile(fd, &central_directory_disk_number,
                  sizeof(central_directory_disk_number))) {
-    LOG("BASE", ERROR) << "Failed to write central directory disk number";
+    LOG("ASH", ERROR) << "Failed to write central directory disk number";
     return false;
   }
 
   if (!WriteFile(fd, &number_of_entries_on_disk,
                  sizeof(number_of_entries_on_disk))) {
-    LOG("BASE", ERROR) << "Failed to write number of entries on disk";
+    LOG("ASH", ERROR) << "Failed to write number of entries on disk";
     return false;
   }
 
   if (!WriteFile(fd, &number_of_entries, sizeof(number_of_entries))) {
-    LOG("BASE", ERROR) << "Failed to write number of entries";
+    LOG("ASH", ERROR) << "Failed to write number of entries";
     return false;
   }
 
   if (!WriteFile(fd, &central_directory_size_on_disk,
                  sizeof(central_directory_size_on_disk))) {
-    LOG("BASE", ERROR) << "Failed to write central directory size on disk";
+    LOG("ASH", ERROR) << "Failed to write central directory size on disk";
     return false;
   }
 
   if (!WriteFile(fd, &central_directory_offset,
                  sizeof(central_directory_offset))) {
-    LOG("BASE", ERROR) << "Failed to write central directory offset";
+    LOG("ASH", ERROR) << "Failed to write central directory offset";
     return false;
   }
 
   if (!WriteFile(fd, &comment_length, sizeof(comment_length))) {
-    LOG("BASE", ERROR) << "Failed to write comment length";
+    LOG("ASH", ERROR) << "Failed to write comment length";
     return false;
   }
 
   return true;
 }
 
-}  // namespace ferry
+}  // namespace ash

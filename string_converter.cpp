@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef BASE_STRING_CONVERTER_H_
-#define BASE_STRING_CONVERTER_H_
+#ifndef ASH_STRING_CONVERTER_H_
+#define ASH_STRING_CONVERTER_H_
 
 #include "ash/string_converter.h"
 
-namespace ferry {
+namespace ash {
 
 bool LiteralProcessor::Build(std::string& output, const char* literal) {
   output.append(literal);
@@ -212,6 +212,6 @@ bool StringProcessor<double>::Parse(const char** input, double* value) {
   return true;
 }
 
-}  // namespace ferry
+}  // namespace ash
 
-#endif  // BASE_STRING_CONVERTER_H_
+#endif  // ASH_STRING_CONVERTER_H_

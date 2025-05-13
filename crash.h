@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef BASE_CRASH_H_
-#define BASE_CRASH_H_
+#ifndef ASH_CRASH_H_
+#define ASH_CRASH_H_
 
-namespace ferry {
+namespace ash {
 
 void CrashImmediately();
 
-}  // namespace ferry
+}  // namespace ash
 
-#endif  // BASE_CRASH_H_
+#endif  // ASH_CRASH_H_

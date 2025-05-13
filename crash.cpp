@@ -16,11 +16,11 @@
 #include "ash/crash.h"
 #include "crash.h"
 
-namespace ferry {
+namespace ash {
 
 void CrashImmediately() {
   int* p = 0;
   *p = 0;
 }
 
-}  // namespace ferry
+}  // namespace ash

@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef BASE_THREADING_THREAD_H_
-#define BASE_THREADING_THREAD_H_
+#ifndef ASH_THREADING_THREAD_H_
+#define ASH_THREADING_THREAD_H_
 
 #include <pthread.h>
 #include "ash/message_loop/message_queue.h"
 
-namespace ferry {
+namespace ash {
 
 class Thread {
  public:
@@ -35,6 +35,6 @@ class Thread {
   std::shared_ptr<MessageQueue> message_queue_;
 };
 
-}  // namespace ferry
+}  // namespace ash
 
-#endif  // BASE_THREADING_THREAD_H_
+#endif  // ASH_THREADING_THREAD_H_

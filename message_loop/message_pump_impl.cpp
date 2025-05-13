@@ -16,7 +16,7 @@
 #include "ash/message_loop/message_pump_impl.h"
 
 #define TAG "MessagePumpImpl"
-namespace ferry {
+namespace ash {
 
 MessagePumpImpl::MessagePumpImpl() : running_(true) {
   epoll_ = epoll_create(16);
@@ -120,4 +120,4 @@ void MessagePumpImpl::UnwatchFD(int fd) {
   return;
 }
 
-}  // namespace ferry
+}  // namespace ash

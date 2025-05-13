@@ -16,7 +16,7 @@
 #include "ash/input_stream.h"
 
 #include "ash/logging.h"
-namespace ferry {
+namespace ash {
 
 InputStream::InputStream(uint8_t* data, size_t size)
     : begin_(data), end_(data + size) {}
@@ -59,4 +59,4 @@ std::string InputStream::ReadString(size_t length) {
   return result;
 }
 
-}  // namespace ferry
+}  // namespace ash

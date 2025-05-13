@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef BASE_WEAK_PTR_H_
-#define BASE_WEAK_PTR_H_
+#ifndef ASH_WEAK_PTR_H_
+#define ASH_WEAK_PTR_H_
 
 #include <memory>
 #include "ash/lifecycle_watcher.h"
 
-namespace ferry {
+namespace ash {
 
 template <typename T>
 class WeakPtrImpl : public LifecycleWatcher {
@@ -74,6 +74,6 @@ class SupportsWeakPtr {
   std::shared_ptr<WeakPtrImpl<T>> owner_;
 };
 
-}  // namespace ferry
+}  // namespace ash
 
-#endif  // BASE_WEAK_PTR_H_
+#endif  // ASH_WEAK_PTR_H_

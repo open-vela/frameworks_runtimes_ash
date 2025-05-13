@@ -20,7 +20,7 @@
 #include "minizip/unzip.h"
 #include "minizip/zip.h"
 
-namespace ferry {
+namespace ash {
 
 ZipFile::ZipFile(const std::string& path)
     : ZipFile(OpenFile(path, OpenMode::kRead)) {}
@@ -90,7 +90,7 @@ ZipFile::ZipFile(ScopedFD fd) : fd_(std::move(fd)) {
       continue;
 
     std::string path(file_name, file_name_length);
-    LOG("BASE", INFO) << "AddEntry: " << path;
+    LOG("ASH", INFO) << "AddEntry: " << path;
     entries_.try_emplace(
         std::move(path),
         EntryInfo{static_cast<uint32_t>(offset), uncompressed_size});
@@ -170,4 +170,4 @@ bool repackZip(const char* src, const char* dest) {
   return true;
 }
 
-}  // namespace ferry
+}  // namespace ash
