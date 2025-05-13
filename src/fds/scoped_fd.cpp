@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 #include "ash/fds/scoped_fd.h"
-
 #include <unistd.h>
 
 namespace ash {
@@ -76,7 +75,7 @@ bool ScopedFD::IsValid() const {
   return fd_ >= 0;
 }
 
-//TODO(xuyan): 考虑限制类型转换运算符的使用
+// TODO(xuyan): 考虑限制类型转换运算符的使用
 ScopedFD::operator int() const {
   return fd_;
 }

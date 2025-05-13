@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 #include "ash/message_loop/message_queue.h"
-
 #include "ash/trace_event/trace_event.h"
 
 namespace ash {
@@ -48,7 +47,7 @@ void MessageQueue::Startup(MessagePump* pump) {
 }
 
 void MessageQueue::Shutdown() {
-  //TODO(xuyan): 考虑unique_lock和lock_guard的选择
+  // TODO(xuyan): 考虑unique_lock和lock_guard的选择
   std::unique_lock<std::mutex> lock(mutex_);
   pump_ = nullptr;
 }

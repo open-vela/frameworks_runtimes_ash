@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 #include "ash/message_loop/message_pump.h"
-
 #include "ash/message_loop/message_queue.h"
 
 namespace ash {

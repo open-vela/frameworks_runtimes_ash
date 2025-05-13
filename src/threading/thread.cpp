@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 #include "ash/threading/thread.h"
-
 #include "ash/logging/logging.h"
 #include "ash/message_loop/message_loop.h"
 #include "ash/message_loop/message_loop_scope.h"

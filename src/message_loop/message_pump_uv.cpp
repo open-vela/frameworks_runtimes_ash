@@ -131,8 +131,8 @@ MessagePumpUV::FDWatcher::FDWatcher(int fd,
 
   uv_poll_init(loop, &poll_, fd);
   uv_handle_set_data((uv_handle_t*)&poll_, this);
-  ASH_CHECK_EQ(uv_poll_start(&poll_, event, &MessagePumpUV::FDWatcher::UVPollCB),
-           0);
+  ASH_CHECK_EQ(
+      uv_poll_start(&poll_, event, &MessagePumpUV::FDWatcher::UVPollCB), 0);
 }
 
 void MessagePumpUV::FDWatcher::Destroy() {

@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 #include "ash/device_info/device_info.h"
-
 #include "uv_ext.h"
 
 namespace ash {

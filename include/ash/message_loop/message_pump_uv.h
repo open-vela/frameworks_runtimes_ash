@@ -18,10 +18,9 @@
 
 #if defined(__NuttX__)
 
-#include "ash/message_loop/message_pump.h"
-
 #include <uv.h>
 #include <map>
+#include "ash/message_loop/message_pump.h"
 
 namespace ash {
 

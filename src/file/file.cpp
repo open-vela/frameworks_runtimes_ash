@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 #include "ash/file/file.h"
-
 #include <fcntl.h>
 #include <sys/stat.h>
 #include <unistd.h>
@@ -94,7 +93,7 @@ bool WriteFile(const ScopedFD& fd, const void* buf, size_t bytes_write) {
   int r = 0;
   uint8_t* p = (uint8_t*)buf;
 
-  //TODO(xuyan)：考虑使用writev
+  // TODO(xuyan)：考虑使用writev
   while (bytes_write && (r = write(fd, p, bytes_write)) > 0) {
     p += r;
     bytes_write -= r;

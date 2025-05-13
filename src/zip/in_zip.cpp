@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 #include "ash/zip/in_zip.h"
-
 #include "ash/file/file.h"
-#include "ash/stream/input_stream.h"
 #include "ash/logging/logging.h"
+#include "ash/stream/input_stream.h"
 #include "ash/trace_event/trace_event.h"
 #include "zlib.h"
 
@@ -154,8 +153,9 @@ std::unique_ptr<InZip> InZip::Open(ScopedFD fd) {
       continue;
 
     if (compression_method != 0 && compression_method != 8) {
-      ASH_LOG("ASH", ERROR) << "Unsupported compression method: "
-                         << compression_method << " for " << path;
+      ASH_LOG("ASH", ERROR)
+          << "Unsupported compression method: " << compression_method << " for "
+          << path;
       continue;
     }
 

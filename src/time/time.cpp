@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 #include "ash/time/time.h"
-
 #include <chrono>
 
 namespace ash {

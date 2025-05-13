@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 #include "ash/time/duration.h"
-
 #include <limits>
 
 namespace ash {

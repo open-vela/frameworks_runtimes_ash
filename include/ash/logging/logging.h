@@ -18,16 +18,16 @@
 
 #include <sstream>
 
-#define ASH_LOG_STREAM(tag, level)                                             \
+#define ASH_LOG_STREAM(tag, level)                                     \
   ::ash::LogStream(tag, ::ash::LogLevel::k##level, __FILE__, __LINE__, \
-                     __FUNCTION__)                                         \
+                   __FUNCTION__)                                       \
       .stream()
 
-#define ASH_LAZY_STREAM(tag, level, condition)                                \
-  !(condition) ? (void)0                                                  \
+#define ASH_LAZY_STREAM(tag, level, condition)                          \
+  !(condition) ? (void)0                                                \
                : ::ash::LogStreamVoidify() &                            \
-                     ::ash::LogStream(tag, ::ash::LogLevel::k##level, \
-                                        __FILE__, __LINE__, __FUNCTION__) \
+                     ::ash::LogStream(tag, ::ash::LogLevel::k##level,   \
+                                      __FILE__, __LINE__, __FUNCTION__) \
                          .stream()
 
 #define ASH_LOG_IF(tag, level, condition) ASH_LAZY_STREAM(tag, level, condition)
@@ -55,7 +55,8 @@
 #define ASH_DCHECK_GT(val1, val2) ASH_CHECK_GT(val1, val2)
 #define ASH_DCHECK_GE(val1, val2) ASH_CHECK_GE(val1, val2)
 #else
-#define ASH_DLOG_IF(tag, level, condition) ASH_LOG_IF(tag, level, false && (condition))
+#define ASH_DLOG_IF(tag, level, condition) \
+  ASH_LOG_IF(tag, level, false && (condition))
 #define ASH_DLOG(tag, level) ASH_LOG_IF(tag, level, false)
 #define ASH_DCHECK(condition) ASH_DLOG_IF("DEBUG", FATAL, !(condition))
 #define ASH_DCHECK_EQ(val1, val2) ASH_DCHECK(val1 == val2)

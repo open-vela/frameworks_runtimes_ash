@@ -16,11 +16,10 @@
 #ifndef ASH_MESSAGE_LOOP_MESSAGE_LOOP_H_
 #define ASH_MESSAGE_LOOP_MESSAGE_LOOP_H_
 
+#include <uv.h>
 #include <memory>
 #include "ash/message_loop/message_pump.h"
 #include "ash/message_loop/message_queue.h"
-
-#include <uv.h>
 
 #if defined(__ANDROID__)
 #include <android/looper.h>

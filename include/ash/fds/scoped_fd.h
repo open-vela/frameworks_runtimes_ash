@@ -30,7 +30,7 @@ class ScopedFD {
 
   ScopedFD(const ScopedFD& other);
 
-  //TODO(xuyan): 考虑noexcept
+  // TODO(xuyan): 考虑noexcept
   ScopedFD(ScopedFD&& other);
 
   ~ScopedFD();
@@ -43,7 +43,7 @@ class ScopedFD {
 
   ScopedFD& operator=(ScopedFD&& other);
 
-  //TODO(xuyan): 考虑nullptr == ScopedFD的使用方式
+  // TODO(xuyan): 考虑nullptr == ScopedFD的使用方式
   bool operator==(std::nullptr_t) const;
 
   bool operator!=(std::nullptr_t) const;

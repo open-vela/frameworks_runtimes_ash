@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 #include "ash/stream/input_stream.h"
-
 #include "ash/logging/logging.h"
 namespace ash {
 

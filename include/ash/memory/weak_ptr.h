@@ -62,7 +62,7 @@ class WeakPtr {
 template <typename T>
 class SupportsWeakPtr {
  public:
- SupportsWeakPtr(T* owner) : owner_(std::make_shared<WeakPtrImpl<T>>(owner)) {}
+  SupportsWeakPtr(T* owner) : owner_(std::make_shared<WeakPtrImpl<T>>(owner)) {}
 
   ~SupportsWeakPtr() { owner_->Reset(); }
 

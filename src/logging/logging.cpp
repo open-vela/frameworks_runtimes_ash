@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 #include "ash/logging/logging.h"
-#include "ash/crash/crash.h"
-
 #include <cassert>
 #include <iostream>
+#include "ash/crash/crash.h"
 
 #ifdef __NuttX__
 #include <syslog.h>

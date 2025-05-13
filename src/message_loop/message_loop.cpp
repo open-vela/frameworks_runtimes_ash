@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 #include "ash/message_loop/message_loop.h"
-
 #include "ash/logging/logging.h"
 #include "ash/message_loop/message_pump_android.h"
 #include "ash/message_loop/message_pump_impl.h"
