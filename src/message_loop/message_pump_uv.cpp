@@ -77,7 +77,7 @@ void MessagePumpUV::WatchFD(int fd,
                             FDWatchCB on_error) {
   // TODO(xuyan): 检查当前线程是否是消息循环线程
 
-  DCHECK(watchers_.find(fd) == watchers_.end());
+  ASH_DCHECK(watchers_.find(fd) == watchers_.end());
 
   watchers_.emplace(
       fd, new FDWatcher(fd, std::move(on_can_read), std::move(on_can_write),
@@ -87,7 +87,7 @@ void MessagePumpUV::WatchFD(int fd,
 void MessagePumpUV::UnwatchFD(int fd) {
   // TODO(xuyan): 检查当前线程是否是消息循环线程
   auto it = watchers_.find(fd);
-  DCHECK(it != watchers_.end());
+  ASH_DCHECK(it != watchers_.end());
   it->second->Destroy();
   watchers_.erase(it);
 }
@@ -131,12 +131,12 @@ MessagePumpUV::FDWatcher::FDWatcher(int fd,
 
   uv_poll_init(loop, &poll_, fd);
   uv_handle_set_data((uv_handle_t*)&poll_, this);
-  CHECK_EQ(uv_poll_start(&poll_, event, &MessagePumpUV::FDWatcher::UVPollCB),
+  ASH_CHECK_EQ(uv_poll_start(&poll_, event, &MessagePumpUV::FDWatcher::UVPollCB),
            0);
 }
 
 void MessagePumpUV::FDWatcher::Destroy() {
-  CHECK_EQ(uv_poll_stop(&poll_), 0);
+  ASH_CHECK_EQ(uv_poll_stop(&poll_), 0);
 
   uv_close((uv_handle_t*)&poll_, [](uv_handle_t* handle) {
     delete reinterpret_cast<FDWatcher*>(uv_handle_get_data(handle));

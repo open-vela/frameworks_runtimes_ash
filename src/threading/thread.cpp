@@ -33,7 +33,7 @@ Thread::Thread() : message_queue_(std::make_shared<MessageQueue>()) {
 
   int r = pthread_create(&th, &attr, &Thread::Run,
                          new std::shared_ptr<MessageQueue>(message_queue_));
-  CHECK(r == 0) << "Failed to create thread";
+  ASH_CHECK(r == 0) << "Failed to create thread";
 }
 
 Thread::~Thread() = default;

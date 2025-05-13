@@ -31,13 +31,13 @@ MessagePumpAndroid::MessagePumpAndroid(ALooper* looper) : looper_(looper) {
   }
 
   if (!looper_) {
-    LOG("ASH", ERROR) << "No valid looper.";
+    ASH_LOG("ASH", ERROR) << "No valid looper.";
     return;
   }
 
   int fds[2];
   if (pipe(fds) < 0) {
-    LOG("ASH", ERROR) << "Can't create pipe.";
+    ASH_LOG("ASH", ERROR) << "Can't create pipe.";
     return;
   }
 
@@ -47,23 +47,23 @@ MessagePumpAndroid::MessagePumpAndroid(ALooper* looper) : looper_(looper) {
   int flags = 0;
   flags = fcntl(fds[0], F_GETFL);
   if (flags < 0) {
-    LOG("ASH", ERROR) << "fcntl call failed.";
+    ASH_LOG("ASH", ERROR) << "fcntl call failed.";
     return;
   }
 
   if (fcntl(fds[0], F_SETFL, flags | O_NONBLOCK) < 0) {
-    LOG("ASH", ERROR) << "fcntl call failed.";
+    ASH_LOG("ASH", ERROR) << "fcntl call failed.";
     return;
   }
 
   flags = fcntl(fds[1], F_GETFL);
   if (flags < 0) {
-    LOG("ASH", ERROR) << "fcntl call failed.";
+    ASH_LOG("ASH", ERROR) << "fcntl call failed.";
     return;
   }
 
   if (fcntl(fds[1], F_SETFL, flags | O_NONBLOCK) < 0) {
-    LOG("ASH", ERROR) << "fcntl call failed.";
+    ASH_LOG("ASH", ERROR) << "fcntl call failed.";
     return;
   }
 
