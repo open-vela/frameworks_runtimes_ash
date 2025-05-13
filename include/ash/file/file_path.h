@@ -24,8 +24,8 @@ class FilePath {
  public:
   explicit FilePath(const std::string& path, bool force_unix = false);
   explicit FilePath(const FilePath& directory,
-           const std::string& name,
-           bool force_unix = false);
+                    const std::string& name,
+                    bool force_unix = false);
 
   bool IsRelative() const;
   bool IsDirectory() const;

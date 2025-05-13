@@ -14,12 +14,11 @@
  * limitations under the License.
  */
 #include "ash/strings/number_string_conversions.h"
-
 #include <iomanip>
 #include <sstream>
 
 namespace ash {
-//TODO(xuyan): 考虑使用性能刚好的std::from_chars和std::to_chars
+// TODO(xuyan): 考虑使用性能刚好的std::from_chars和std::to_chars
 
 std::string doubleToString(double value) {
   std::ostringstream oss;

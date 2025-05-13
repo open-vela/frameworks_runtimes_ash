@@ -20,7 +20,7 @@ namespace ash {
 
 template <typename T>
 class SizeT {
-//TODO(xuyan): 限制模板参数类型
+  // TODO(xuyan): 限制模板参数类型
  public:
   SizeT() : width_(0), height_(0) {}
   SizeT(T width, T height) : width_(width), height_(height) {}

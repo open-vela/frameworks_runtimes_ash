@@ -23,7 +23,7 @@
 
 namespace ash {
 
-//TODO(xuyan): 考虑提供获取错误信息的接口
+// TODO(xuyan): 考虑提供获取错误信息的接口
 
 enum class OpenMode {
   kRead,

@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 #include "ash/zip/out_zip.h"
-
 #include "ash/file/file.h"
 #include "ash/logging/logging.h"
 #include "zlib.h"
@@ -273,8 +272,8 @@ bool OutZip::WriteData(const ScopedFD& fd) {
         return false;
       }
     } else {
-      ASH_LOG("ASH", ERROR) << "Unsupported compression method: "
-                         << compression_method;
+      ASH_LOG("ASH", ERROR)
+          << "Unsupported compression method: " << compression_method;
       return false;
     }
 
@@ -405,7 +404,8 @@ bool OutZip::WriteCentralDirectory(const ScopedFD& fd) {
     uint32_t relative_offset_of_local_header = record.offset;
     if (!WriteFile(fd, &relative_offset_of_local_header,
                    sizeof(relative_offset_of_local_header))) {
-      ASH_LOG("ASH", ERROR) << "Failed to write relative offset of local header";
+      ASH_LOG("ASH", ERROR)
+          << "Failed to write relative offset of local header";
       return false;
     }
 

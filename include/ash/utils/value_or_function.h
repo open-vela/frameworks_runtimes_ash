@@ -23,7 +23,7 @@ namespace ash {
 
 template <typename T>
 class ValueOrFunction {
-//TODO(xuyan): 限制模板参数类型
+  // TODO(xuyan): 限制模板参数类型
  public:
   ValueOrFunction() : value_(T()) {}
   ValueOrFunction(const T& value) : value_(value) {}
