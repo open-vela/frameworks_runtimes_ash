@@ -26,23 +26,32 @@ ifeq ($(shell expr $(GCC_VERSION) \>= 13), 1)
   CXXFLAGS += --param=min-pagesize=0
 endif
 
-ifeq ($(CONFIG_LIB_ASH),y)
-CXXFLAGS += ${INCDIR_PREFIX}$(APPDIR)/frameworks/runtimes/ash/include
+CXXFLAGS += ${INCDIR_PREFIX}$(CURDIR)/include
 CXXFLAGS += ${INCDIR_PREFIX}$(APPDIR)/system/zlib/zlib
 CXXFLAGS += ${INCDIR_PREFIX}$(APPDIR)/system/zlib/zlib/contrib
 
-CXXSRCS += $(filter-out \
-        $(APPDIR)/frameworks/runtimes/ash/file.cpp \
-        $(APPDIR)/frameworks/runtimes/ash/zip_file.cpp \
-        $(APPDIR)/frameworks/runtimes/ash/in_zip.cpp \
-        $(APPDIR)/frameworks/runtimes/ash/out_zip.cpp \
-        $(APPDIR)/frameworks/runtimes/ash/scoped_fd.cpp \
-        $(APPDIR)/frameworks/runtimes/ash/device_info.cpp, \
-        $(wildcard $(APPDIR)/frameworks/runtimes/ash/*.cpp))
-CXXSRCS += $(wildcard $(APPDIR)/frameworks/runtimes/ash/message_loop/*.cpp)
-CXXSRCS += $(wildcard $(APPDIR)/frameworks/runtimes/ash/threading/*.cpp)
-CXXSRCS += $(wildcard $(APPDIR)/frameworks/runtimes/ash/time/*.cpp)
-CXXSRCS += $(wildcard $(APPDIR)/frameworks/runtimes/ash/trace_event/*.cpp)
-endif
+CXXSRCS += ${CURDIR)/src/crash/crash.cpp \
+           ${CURDIR}/src/device_info/device_info.cpp \
+           ${CURDIR}/src/fds/scoped_fd.cpp \
+           ${CURDIR}/src/file/file.cpp \
+           ${CURDIR}/src/file/file_path.cpp \
+           ${CURDIR}/src/logging/logging.cpp \
+           ${CURDIR}/src/memory/lifecycle_watcher.cpp \
+           ${CURDIR}/src/message_loop/message_loop.cpp \
+           ${CURDIR}/src/message_loop/message_pump_android.cpp \
+           ${CURDIR}/src/message_loop/message_pump.cpp \
+           ${CURDIR}/src/message_loop/message_pump_impl.cpp \
+           ${CURDIR}/src/message_loop/message_pump_uv.cpp \
+           ${CURDIR}/src/message_loop/message_queue.cpp \
+           ${CURDIR}/src/stream/input_stream.cpp \
+           ${CURDIR}/src/strings/number_string_conversions.cpp \
+           ${CURDIR}/src/strings/string_converter.cpp \
+           ${CURDIR}/src/threading/thread.cpp \
+           ${CURDIR}/src/time/duration.cpp \
+           ${CURDIR}/src/time/time.cpp \
+           ${CURDIR}/src/trace_event/trace_event.cpp \
+           ${CURDIR}/src/zip/in_zip.cpp \
+           ${CURDIR}/src/zip/out_zip.cpp \
+           ${CURDIR}/src/zip/zip_file.cpp \
 
 include $(APPDIR)/Application.mk
