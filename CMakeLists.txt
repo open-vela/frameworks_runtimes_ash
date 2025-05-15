@@ -24,10 +24,10 @@ if (NOT "${CMAKE_CURRENT_BINARY_DIR}" STREQUAL "${CMAKE_BINARY_DIR}"
   return()
 endif()
 
-# Enable ash on nuttx only when CONFIG_LIBCXX is enabled.
+# Enable ash on nuttx only when CONFIG_LIBASH is enabled.
 # TODO(xuyan15): Using the root project name to identify the platform is urgly.
 # See blow.
-if ("${CMAKE_PROJECT_NAME}" STREQUAL NuttX AND NOT CONFIG_LIBCXX)
+if ("${CMAKE_PROJECT_NAME}" STREQUAL NuttX AND NOT CONFIG_LIBASH)
   return()
 endif()
 
