@@ -15,6 +15,7 @@
  */
 #include "ash/message_loop/message_loop.h"
 #include "ash/logging/logging.h"
+#include "ash/macros/compiler_macros.h"
 #include "ash/message_loop/message_pump_android.h"
 #include "ash/message_loop/message_pump_impl.h"
 #include "ash/message_loop/message_pump_uv.h"
@@ -83,21 +84,21 @@ MessageLoop* MessageLoop::Create(std::shared_ptr<MessageQueue> queue) {
   return new MessageLoop(std::move(pump), std::move(queue));
 }
 
-#if defined(__NuttX__)
+#if defined(ASH_OS_NUTTX)
 MessageLoop* MessageLoop::CreateForUV(uv_loop_t* uv_loop) {
   std::unique_ptr<MessagePump> pump = std::make_unique<MessagePumpUV>(uv_loop);
   std::shared_ptr<MessageQueue> queue = std::make_shared<MessageQueue>();
   return new MessageLoop(std::move(pump), std::move(queue));
 }
-#endif  // defined(__NuttX__)
+#endif  // defined(ASH_OS_NUTTX)
 
-#if defined(__ANDROID__)
+#if defined(ASH_OS_ANDROID)
 MessageLoop* MessageLoop::CreateForAndroid(ALooper* looper) {
   std::unique_ptr<MessagePump> pump =
       std::make_unique<MessagePumpAndroid>(looper);
   std::shared_ptr<MessageQueue> queue = std::make_shared<MessageQueue>();
   return new MessageLoop(std::move(pump), std::move(queue));
 }
-#endif
+#endif  // defined(ASH_OS_ANDROID)
 
 }  // namespace ash

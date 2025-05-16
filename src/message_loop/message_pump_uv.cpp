@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 #include "ash/message_loop/message_pump_uv.h"
+#include "ash/macros/compiler_macros.h"
 
-#if defined(__NuttX__)
+#if defined(ASH_OS_NUTTX)
 
 #include "ash/logging/logging.h"
 
@@ -168,4 +169,4 @@ void MessagePumpUV::FDWatcher::UVPollCB(uv_poll_t* handle,
 
 }  // namespace ash
 
-#endif  // defined(__NuttX__)
+#endif  // defined(ASH_OS_NUTTX)

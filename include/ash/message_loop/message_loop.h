@@ -16,14 +16,18 @@
 #ifndef ASH_MESSAGE_LOOP_MESSAGE_LOOP_H_
 #define ASH_MESSAGE_LOOP_MESSAGE_LOOP_H_
 
-#include <uv.h>
 #include <memory>
+#include "ash/macros/compiler_macros.h"
 #include "ash/message_loop/message_pump.h"
 #include "ash/message_loop/message_queue.h"
 
-#if defined(__ANDROID__)
+#if defined(ASH_OS_NUTTX)
+#include <uv.h>
+#endif  // (ASH_OS_NUTTX)
+
+#if defined(ASH_OS_ANDROID)
 #include <android/looper.h>
-#endif  // defined(__ANDROID__)
+#endif  // defined(ASH_OS_ANDROID)
 
 namespace ash {
 
@@ -52,13 +56,13 @@ class MessageLoop {
   void UnwatchFD(int fd);
 
   static MessageLoop* Create(std::shared_ptr<MessageQueue> queue = nullptr);
-#if defined(__NuttX__)
+#if defined(ASH_OS_NUTTX)
   static MessageLoop* CreateForUV(uv_loop_t* uv_loop = nullptr);
-#endif  // defined(__NuttX__)
+#endif  // defined(ASH_OS_NUTTX)
 
-#if defined(__ANDROID__)
+#if defined(ASH_OS_ANDROID)
   static MessageLoop* CreateForAndroid(ALooper* looper = nullptr);
-#endif  // defined(__ANDROID__)
+#endif  // defined(ASH_OS_ANDROID)
 
  private:
   std::unique_ptr<MessagePump> pump_;

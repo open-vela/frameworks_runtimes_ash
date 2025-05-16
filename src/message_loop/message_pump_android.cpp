@@ -15,7 +15,7 @@
  */
 #include "ash/message_loop/message_pump_android.h"
 
-#if defined(__ANDROID__)
+#if defined(ASH_OS_ANDROID)
 
 #include <fcntl.h>
 #include <unistd.h>
@@ -110,4 +110,4 @@ int MessagePumpAndroid::Callback(int fd, int events, void* data) {
 
 }  // namespace ash
 
-#endif  // defined(__ANDROID__)
+#endif  // defined(ASH_OS_ANDROID)

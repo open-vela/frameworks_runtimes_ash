@@ -14,7 +14,14 @@
  * limitations under the License.
  */
 #include "ash/device_info/device_info.h"
+#include "ash/logging/logging.h"
+#include "ash/macros/compiler_macros.h"
+
+#if defined(ASH_OS_NUTTX)
 #include "uv_ext.h"
+#endif  // defined(ASH_OS_NUTTX)
+
+#define LOG_TAG "DeviceInfo"
 
 namespace ash {
 
@@ -41,6 +48,7 @@ int g_bpp = 0;
 }  // namespace
 
 void DeviceInfo::init() {
+#if defined(ASH_OS_NUTTX)
   uv_devinfo_t devinfo;
   memset(&devinfo, 0, sizeof(devinfo));
   uv_getdeviceinfo(&devinfo);
@@ -62,6 +70,9 @@ void DeviceInfo::init() {
 #ifdef CONFIG_QUICKAPP_TEST_FRAMEWORK
   g_bpp = devinfo.bpp;
 #endif
+#else   // defined(ASH_OS_NUTTX)
+  ASH_LOG(LOG_TAG, FATAL) << "Unsupported OS.";
+#endif  // defined(ASH_OS_NUTTX)
 }
 
 const std::string& DeviceInfo::brand() {
