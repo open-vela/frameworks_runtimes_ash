@@ -73,6 +73,7 @@ target_sources(ash
   include/ash/file/file_path.h
   include/ash/geometry/size.h
   include/ash/logging/logging.h
+  include/ash/macros/compiler_macros.h
   include/ash/memory/lifecycle_watcher.h
   include/ash/memory/weak_ptr.h
   include/ash/message_loop/message_loop.h

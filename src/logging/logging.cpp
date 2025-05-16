@@ -17,10 +17,11 @@
 #include <cassert>
 #include <iostream>
 #include "ash/crash/crash.h"
+#include "ash/macros/compiler_macros.h"
 
-#ifdef __NuttX__
+#if defined(ASH_OS_NUTTX)
 #include <syslog.h>
-#endif
+#endif  // defined(ASH_OS_NUTTX)
 
 namespace ash {
 

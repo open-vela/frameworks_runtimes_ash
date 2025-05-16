@@ -19,7 +19,9 @@
 #include <map>
 #include <string>
 #include "ash/fds/scoped_fd.h"
+#include "ash/macros/compiler_macros.h"
 
+#if defined(ASH_OS_NUTTX)
 namespace ash {
 
 class ZipFile {
@@ -45,5 +47,7 @@ class ZipFile {
 bool repackZip(const char* src, const char* dest);
 
 }  // namespace ash
+
+#endif  // defined(ASH_OS_NUTTX)
 
 #endif  // ASH_ZIP_FILE_H_

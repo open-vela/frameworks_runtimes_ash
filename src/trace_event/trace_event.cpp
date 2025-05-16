@@ -14,23 +14,24 @@
  * limitations under the License.
  */
 #include "ash/trace_event/trace_event.h"
+#include "ash/macros/compiler_macros.h"
 
-#if defined(__NuttX__)
+#if defined(ASH_OS_NUTTX)
 #include <nuttx/sched_note.h>
-#endif  // defined(__NuttX__)
+#endif  // defined(ASH_OS_NUTTX)
 
 namespace ash {
 
 void TraceEvent::Begin(const char* name) {
-#if defined(__NuttX__)
+#if defined(ASH_OS_NUTTX)
   sched_note_beginex(NOTE_TAG_ALWAYS, name);
-#endif  // defined(__NuttX__)
+#endif  // defined(ASH_OS_NUTTX)
 }
 
 void TraceEvent::End(const char* name) {
-#if defined(__NuttX__)
+#if defined(ASH_OS_NUTTX)
   sched_note_endex(NOTE_TAG_ALWAYS, name);
-#endif  // defined(__NuttX__)
+#endif  // defined(ASH_OS_NUTTX)
 }
 
 ScopedTraceEvent::ScopedTraceEvent(const char* name) : name_(name) {

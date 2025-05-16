@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 #include "ash/zip/zip_file.h"
+#include "ash/macros/compiler_macros.h"
+
+#if defined(ASH_OS_NUTTX)
 #include <unistd.h>
 #include "ash/file/file.h"
 #include "ash/logging/logging.h"
@@ -171,3 +174,4 @@ bool repackZip(const char* src, const char* dest) {
 }
 
 }  // namespace ash
+#endif  // defined(ASH_OS_NUTTX)

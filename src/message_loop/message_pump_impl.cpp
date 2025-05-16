@@ -14,8 +14,14 @@
  * limitations under the License.
  */
 #include "ash/message_loop/message_pump_impl.h"
+#include <errno.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <cstring>
+#include <limits>
 
 #define TAG "MessagePumpImpl"
+
 namespace ash {
 
 MessagePumpImpl::MessagePumpImpl() : running_(true) {

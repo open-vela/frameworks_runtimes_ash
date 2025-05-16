@@ -16,7 +16,9 @@
 #ifndef ASH_MESSAGE_LOOP_MESSAGE_PUMP_UV_H_
 #define ASH_MESSAGE_LOOP_MESSAGE_PUMP_UV_H_
 
-#if defined(__NuttX__)
+#include "ash/macros/compiler_macros.h"
+
+#if defined(ASH_OS_NUTTX)
 
 #include <uv.h>
 #include <map>
@@ -57,6 +59,6 @@ class MessagePumpUV : public MessagePump {
 
 }  // namespace ash
 
-#endif  // defined(__NuttX__)
+#endif  // defined(ASH_OS_NUTTX)
 
 #endif  // ASH_MESSAGE_LOOP_MESSAGE_PUMP_UV_H_

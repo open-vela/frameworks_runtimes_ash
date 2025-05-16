@@ -15,6 +15,7 @@
  */
 #include "ash/threading/thread.h"
 #include "ash/logging/logging.h"
+#include "ash/macros/compiler_macros.h"
 #include "ash/message_loop/message_loop.h"
 #include "ash/message_loop/message_loop_scope.h"
 
@@ -25,10 +26,10 @@ Thread::Thread() : message_queue_(std::make_shared<MessageQueue>()) {
   pthread_attr_t attr;
   pthread_attr_init(&attr);
   pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
-#if defined(__NuttX__)
+#if defined(ASH_OS_NUTTX)
   pthread_attr_setstacksize(&attr, CONFIG_QUICKAPP_THREADSTACKSIZE);
   attr.priority = CONFIG_QUICKAPP_PRIORITY;
-#endif  // defined(__NuttX__)
+#endif  // defined(ASH_OS_NUTTX)
 
   int r = pthread_create(&th, &attr, &Thread::Run,
                          new std::shared_ptr<MessageQueue>(message_queue_));

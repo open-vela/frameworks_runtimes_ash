@@ -16,7 +16,7 @@
 #ifndef ASH_MESSAGE_LOOP_MESSAGE_PUMP_ANDROID_H_
 #define ASH_MESSAGE_LOOP_MESSAGE_PUMP_ANDROID_H_
 
-#if defined(__ANDROID__)
+#if defined(ASH_OS_ANDROID)
 
 #include <android/looper.h>
 #include "ash/message_loop/message_pump.h"
@@ -51,6 +51,6 @@ class MessagePumpAndroid : public MessagePump {
 
 }  // namespace ash
 
-#endif  // defined(__ANDROID__)
+#endif  // defined(ASH_OS_ANDROID)
 
 #endif  // ASH_MESSAGE_LOOP_MESSAGE_PUMP_ANDROID_H_
