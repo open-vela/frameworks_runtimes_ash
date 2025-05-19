@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef ASH_SCOPED_SETTER_H_
-#define ASH_SCOPED_SETTER_H_
+#ifndef ASH_UTILS_SCOPED_SETTER_H_
+#define ASH_UTILS_SCOPED_SETTER_H_
 
 #include "ash/memory/disallow_copy.h"
 
@@ -34,4 +34,4 @@ class ScopedSetter : public DisallowCopyAndMove {
 
 }  // namespace ash
 
-#endif  // ASH_SCOPED_SETTER_H_
+#endif  // ASH_UTILS_SCOPED_SETTER_H_

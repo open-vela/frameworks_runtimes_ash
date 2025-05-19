@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef ASH_CONVERTER_H_
-#define ASH_CONVERTER_H_
+#ifndef ASH_STRINGS_STRING_CONVERTER_H_
+#define ASH_STRINGS_STRING_CONVERTER_H_
 
 #include <string>
 
@@ -156,4 +156,4 @@ bool FromString(const std::string& input, T* value) {
 
 }  // namespace ash
 
-#endif  // ASH_CONVERTER_H_
+#endif  // ASH_STRINGS_STRING_CONVERTER_H_

@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef ASH_ZIP_FILE_H_
-#define ASH_ZIP_FILE_H_
+#ifndef ASH_ZIP_ZIP_FILE_H_
+#define ASH_ZIP_ZIP_FILE_H_
 
 #include <map>
 #include <string>
@@ -50,4 +50,4 @@ bool repackZip(const char* src, const char* dest);
 
 #endif  // defined(ASH_OS_NUTTX)
 
-#endif  // ASH_ZIP_FILE_H_
+#endif  // ASH_ZIP_ZIP_FILE_H_

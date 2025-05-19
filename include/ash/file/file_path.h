@@ -13,10 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef ASH_FILE_PATH_H_
-#define ASH_FILE_PATH_H_
+#ifndef ASH_FILE_FILE_PATH_H_
+#define ASH_FILE_FILE_PATH_H_
 
 #include <string>
+#include "ash/macros/compiler_macros.h"
 
 namespace ash {
 
@@ -46,11 +47,11 @@ class FilePath {
   std::string basename_;
   std::string extension_;
   bool force_unix_;
-#if defined(__WINDOWS__)
+#if defined(ASH_OS_WINDOWS)
   bool is_unix_;
-#endif  // defined(__WINDOWS__)
+#endif  // defined(AS_OS_WINDOWS)
 };
 
 }  // namespace ash
 
-#endif  // ASH_FILE_PATH_H_
+#endif  // ASH_FILE_FILE_PATH_H_

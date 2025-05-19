@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef ASH_DEVICE_INFO_H_
-#define ASH_DEVICE_INFO_H_
+#ifndef ASH_DEVICE_INFO_DEVICE_INFO_H_
+#define ASH_DEVICE_INFO_DEVICE_INFO_H_
 
 #include <string>
 
@@ -46,4 +46,4 @@ class DeviceInfo {
 
 }  // namespace ash
 
-#endif  // ASH_DEVICE_INFO_H_
+#endif  // ASH_DEVICE_INFO_DEVICE_INFO_H_

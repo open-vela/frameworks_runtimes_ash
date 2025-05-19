@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef ASH_CRASH_H_
-#define ASH_CRASH_H_
+#ifndef ASH_CRASH_CRASH_H_
+#define ASH_CRASH_CRASH_H_
 
 namespace ash {
 
@@ -22,4 +22,4 @@ void CrashImmediately();
 
 }  // namespace ash
 
-#endif  // ASH_CRASH_H_
+#endif  // ASH_CRASH_CRASH_H_
