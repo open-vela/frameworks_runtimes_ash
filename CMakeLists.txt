@@ -48,7 +48,10 @@ target_sources(ash
   src/file/file.cpp
   src/file/file_path.cpp
   src/logging/logging.cpp
+  src/memory/global_variable.cpp
   src/memory/lifecycle_watcher.cpp
+  src/memory/thread_local.cpp
+  src/memory/variable_segment.cpp
   src/message_loop/message_loop.cpp
   src/message_loop/message_pump_android.cpp
   src/message_loop/message_pump.cpp
@@ -74,7 +77,11 @@ target_sources(ash
   include/ash/geometry/size.h
   include/ash/logging/logging.h
   include/ash/macros/compiler_macros.h
+  include/ash/memory/global_variable.h
+  include/ash/memory/lazy_instance.h
   include/ash/memory/lifecycle_watcher.h
+  include/ash/memory/thread_local.h
+  include/ash/memory/variable_segment.h
   include/ash/memory/weak_ptr.h
   include/ash/message_loop/message_loop.h
   include/ash/message_loop/message_loop_scope.h

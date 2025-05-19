@@ -37,7 +37,10 @@ CXXSRCS += ${CURDIR}/src/crash/crash.cpp \
            ${CURDIR}/src/file/file.cpp \
            ${CURDIR}/src/file/file_path.cpp \
            ${CURDIR}/src/logging/logging.cpp \
+           ${CURDIR}/src/memory/global_variable.cpp \
            ${CURDIR}/src/memory/lifecycle_watcher.cpp \
+           ${CURDIR}/src/memory/thread_local.cpp \
+           ${CURDIR}/src/memory/variable_segment.cpp \
            ${CURDIR}/src/message_loop/message_loop.cpp \
            ${CURDIR}/src/message_loop/message_pump_android.cpp \
            ${CURDIR}/src/message_loop/message_pump.cpp \
