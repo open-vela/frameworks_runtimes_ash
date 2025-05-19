@@ -15,6 +15,8 @@
  */
 
 /**
+ * @file disallow_copy.h
+ *
  * The class DisallowCopy is used to disallow copy constructor and copy
  * assignment. Any object of subclass of DisallowCopy can not be copied,
  * but still can be moved.
