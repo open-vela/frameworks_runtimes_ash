@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef ASH_INPUT_STREAM_H_
-#define ASH_INPUT_STREAM_H_
+#ifndef ASH_STREAM_INPUT_STREAM_H_
+#define ASH_STREAM_INPUT_STREAM_H_
 
 #include <cstddef>
 #include <cstdint>
@@ -45,4 +45,4 @@ class InputStream : public DisallowCopyAndMove {
 
 }  // namespace ash
 
-#endif  // ASH_INPUT_STREAM_H_
+#endif  // ASH_STREAM_INPUT_STREAM_H_

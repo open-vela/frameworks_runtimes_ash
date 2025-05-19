@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef ASH_SCOPED_FD_H_
-#define ASH_SCOPED_FD_H_
+#ifndef ASH_FDS_SCOPED_FD_H_
+#define ASH_FDS_SCOPED_FD_H_
 
 #include <cstddef>
 
@@ -65,4 +65,4 @@ class ScopedFD {
 
 }  // namespace ash
 
-#endif  // ASH_SCOPED_FD_H_
+#endif  // ASH_FDS_SCOPED_FD_H_

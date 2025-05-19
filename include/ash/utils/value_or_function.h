@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef ASH_VALUE_OR_FUNCTION_H_
-#define ASH_VALUE_OR_FUNCTION_H_
+#ifndef ASH_UTILS_VALUE_OR_FUNCTION_H_
+#define ASH_UTILS_VALUE_OR_FUNCTION_H_
 
 #include <functional>
 #include <variant>
@@ -62,4 +62,4 @@ class ValueOrFunction {
 
 }  // namespace ash
 
-#endif  // ASH_VALUE_OR_FUNCTION_H_
+#endif  // ASH_UTILS_VALUE_OR_FUNCTION_H_

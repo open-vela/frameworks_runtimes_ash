@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef ASH_FILE_H_
-#define ASH_FILE_H_
+#ifndef ASH_FILE_FILE_H_
+#define ASH_FILE_FILE_H_
 
 #include <stdint.h>
 #include <functional>
@@ -77,4 +77,4 @@ uint64_t Tell(const ScopedFD& fd);
 
 }  // namespace ash
 
-#endif  // ASH_FILE_H_
+#endif  // ASH_FILE_FILE_H_

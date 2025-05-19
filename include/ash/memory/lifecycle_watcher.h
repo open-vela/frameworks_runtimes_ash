@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef ASH_LIFECYCLE_WATCHER_H_
-#define ASH_LIFECYCLE_WATCHER_H_
+#ifndef ASH_MEMORY_LIFECYCLE_WATCHER_H_
+#define ASH_MEMORY_LIFECYCLE_WATCHER_H_
 
 #include <memory>
 #include "ash/memory/disallow_copy.h"
@@ -33,4 +33,4 @@ using LifecycleWatcherPtr = std::shared_ptr<LifecycleWatcher>;
 
 }  // namespace ash
 
-#endif  // ASH_LIFECYCLE_WATCHER_H_
+#endif  // ASH_MEMORY_LIFECYCLE_WATCHER_H_

@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef ASH_WEAK_PTR_H_
-#define ASH_WEAK_PTR_H_
+#ifndef ASH_MEMORY_WEAK_PTR_H_
+#define ASH_MEMORY_WEAK_PTR_H_
 
 #include <memory>
 #include "ash/memory/lifecycle_watcher.h"
@@ -76,4 +76,4 @@ class SupportsWeakPtr {
 
 }  // namespace ash
 
-#endif  // ASH_WEAK_PTR_H_
+#endif  // ASH_MEMORY_WEAK_PTR_H_

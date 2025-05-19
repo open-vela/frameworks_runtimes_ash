@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef ASH_TASK_RUNNER_H_
-#define ASH_TASK_RUNNER_H_
+#ifndef ASH_TASK_RUNNER_TASK_RUNNER_H_
+#define ASH_TASK_RUNNER_TASK_RUNNER_H_
 
 #include <functional>
 #include "ash/memory/disallow_copy.h"
@@ -33,4 +33,4 @@ class TaskRunner : public DisallowCopyAndMove {
 
 }  // namespace ash
 
-#endif  // ASH_TASK_RUNNER_H_
+#endif  // ASH_TASK_RUNNER_TASK_RUNNER_H_

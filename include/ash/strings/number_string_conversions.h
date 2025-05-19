@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef ASH_NUMBER_STRING_CONVERSIONS_H_
-#define ASH_NUMBER_STRING_CONVERSIONS_H_
+#ifndef ASH_STRINGS_NUMBER_STRING_CONVERSIONS_H_
+#define ASH_STRINGS_NUMBER_STRING_CONVERSIONS_H_
 
 #include <cstdint>
 #include <string>
@@ -29,4 +29,4 @@ std::string intToHexString(uint32_t value, uint32_t width);
 
 }  // namespace ash
 
-#endif  // ASH_NUMBER_STRING_CONVERSIONS_H_
+#endif  // ASH_STRINGS_NUMBER_STRING_CONVERSIONS_H_

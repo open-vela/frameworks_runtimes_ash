@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef ASH_IN_ZIP_H_
-#define ASH_IN_ZIP_H_
+#ifndef ASH_ZIP_IN_ZIP_H_
+#define ASH_ZIP_IN_ZIP_H_
 
 #include <stdint.h>
 #include <map>
@@ -75,4 +75,4 @@ class InZip : public DisallowCopyAndMove {
 
 }  // namespace ash
 
-#endif  // ASH_IN_ZIP_H_
+#endif  // ASH_ZIP_IN_ZIP_H_

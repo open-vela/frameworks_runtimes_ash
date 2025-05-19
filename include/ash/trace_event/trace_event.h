@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef FRAMEWORK_TRACE_EVENT_TRACE_EVENT_H_
-#define FRAMEWORK_TRACE_EVENT_TRACE_EVENT_H_
+#ifndef ASH_TRACE_EVENT_TRACE_EVENT_H_
+#define ASH_TRACE_EVENT_TRACE_EVENT_H_
 
 namespace ash {
 
@@ -43,4 +43,4 @@ class ScopedTraceEvent {
 
 }  // namespace ash
 
-#endif  // FRAMEWORK_TRACE_EVENT_TRACE_EVENT_H_
+#endif  // ASH_TRACE_EVENT_TRACE_EVENT_H_
