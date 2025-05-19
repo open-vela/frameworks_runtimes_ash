@@ -21,12 +21,14 @@
 #include <memory>
 #include <string>
 #include "ash/fds/scoped_fd.h"
+#include "ash/memory/disallow_copy.h"
 
 #define MIN_ECDR_SIZE 22
 #define MAX_ECDR_SIZE 65536
+
 namespace ash {
 
-class InZip {
+class InZip : public DisallowCopyAndMove {
  public:
   enum class CompressionMethod {
     kStore = 0,

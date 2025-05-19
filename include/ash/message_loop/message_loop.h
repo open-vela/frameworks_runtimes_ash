@@ -18,6 +18,7 @@
 
 #include <memory>
 #include "ash/macros/compiler_macros.h"
+#include "ash/memory/disallow_copy.h"
 #include "ash/message_loop/message_pump.h"
 #include "ash/message_loop/message_queue.h"
 
@@ -31,7 +32,7 @@
 
 namespace ash {
 
-class MessageLoop {
+class MessageLoop : public DisallowCopyAndMove {
  public:
   MessageLoop(std::unique_ptr<MessagePump> pump,
               std::shared_ptr<MessageQueue> queue);

@@ -17,11 +17,12 @@
 #define ASH_THREADING_THREAD_H_
 
 #include <pthread.h>
+#include "ash/memory/disallow_copy.h"
 #include "ash/message_loop/message_queue.h"
 
 namespace ash {
 
-class Thread {
+class Thread : public DisallowCopyAndMove {
  public:
   Thread();
   ~Thread();

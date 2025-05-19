@@ -17,10 +17,11 @@
 #define ASH_LIFECYCLE_WATCHER_H_
 
 #include <memory>
+#include "ash/memory/disallow_copy.h"
 
 namespace ash {
 
-class LifecycleWatcher {
+class LifecycleWatcher : public DisallowCopyAndMove {
  public:
   LifecycleWatcher();
   virtual ~LifecycleWatcher();
