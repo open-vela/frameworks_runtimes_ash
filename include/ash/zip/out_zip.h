@@ -22,10 +22,11 @@
 #include <string>
 #include <vector>
 #include "ash/fds/scoped_fd.h"
+#include "ash/memory/disallow_copy.h"
 
 namespace ash {
 
-class OutZip {
+class OutZip : public DisallowCopyAndMove {
  public:
   ~OutZip();
 

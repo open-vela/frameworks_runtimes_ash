@@ -17,11 +17,12 @@
 #define ASH_TASK_RUNNER_H_
 
 #include <functional>
+#include "ash/memory/disallow_copy.h"
 #include "ash/time/duration.h"
 
 namespace ash {
 
-class TaskRunner {
+class TaskRunner : public DisallowCopyAndMove {
  public:
   TaskRunner() = default;
   virtual ~TaskRunner() = default;
