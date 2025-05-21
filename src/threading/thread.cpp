@@ -17,7 +17,6 @@
 #include "ash/logging/logging.h"
 #include "ash/macros/compiler_macros.h"
 #include "ash/message_loop/message_loop.h"
-#include "ash/message_loop/message_loop_scope.h"
 
 namespace ash {
 
@@ -49,9 +48,9 @@ void Thread::Quit() {
 void* Thread::Run(void* arg) {
   std::shared_ptr<MessageQueue>* queue =
       reinterpret_cast<std::shared_ptr<MessageQueue>*>(arg);
-  std::unique_ptr<MessageLoop> message_loop(MessageLoop::Create(*queue));
+  std::unique_ptr<MessageLoop> message_loop(
+      MessageLoop::CreateWithQueue(*queue));
   delete queue;
-  MessageLoopScope message_loop_scope(message_loop.get());
   message_loop->Run();
   return nullptr;
 }

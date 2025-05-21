@@ -74,6 +74,8 @@ target_sources(ash
   include/ash/fds/scoped_fd.h
   include/ash/file/file.h
   include/ash/file/file_path.h
+  include/ash/functional/closure.h
+  include/ash/functional/fn_once.h
   include/ash/geometry/size.h
   include/ash/logging/logging.h
   include/ash/macros/compiler_macros.h
@@ -84,7 +86,6 @@ target_sources(ash
   include/ash/memory/variable_segment.h
   include/ash/memory/weak_ptr.h
   include/ash/message_loop/message_loop.h
-  include/ash/message_loop/message_loop_scope.h
   include/ash/message_loop/message_pump_android.h
   include/ash/message_loop/message_pump.h
   include/ash/message_loop/message_pump_impl.h

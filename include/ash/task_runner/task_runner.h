@@ -17,6 +17,7 @@
 #define ASH_TASK_RUNNER_TASK_RUNNER_H_
 
 #include <functional>
+#include "ash/functional/closure.h"
 #include "ash/memory/disallow_copy.h"
 #include "ash/time/duration.h"
 
@@ -27,8 +28,8 @@ class TaskRunner : public DisallowCopyAndMove {
   TaskRunner() = default;
   virtual ~TaskRunner() = default;
 
-  virtual void PostTask(std::function<void()> task) = 0;
-  virtual void PostDelayedTask(std::function<void()> task, Duration delay) = 0;
+  virtual void PostTask(OnceClosure task) = 0;
+  virtual void PostDelayedTask(OnceClosure task, Duration delay) = 0;
 };
 
 }  // namespace ash

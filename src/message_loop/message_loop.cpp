@@ -16,6 +16,7 @@
 #include "ash/message_loop/message_loop.h"
 #include "ash/logging/logging.h"
 #include "ash/macros/compiler_macros.h"
+#include "ash/memory/thread_local.h"
 #include "ash/message_loop/message_pump_android.h"
 #include "ash/message_loop/message_pump_impl.h"
 #include "ash/message_loop/message_pump_uv.h"
@@ -23,19 +24,24 @@
 namespace ash {
 
 namespace {
-thread_local MessageLoop* tls = nullptr;
+
+THREAD_LOCAL(MessageLoop*) current = nullptr;
+
 }
 
-// TODO(xuyan): MessageLoop need to be refactored to ensure thread-safety.
 MessageLoop::MessageLoop(std::unique_ptr<MessagePump> pump,
                          std::shared_ptr<MessageQueue> queue)
     : pump_(std::move(pump)), queue_(std::move(queue)) {
+  ASH_CHECK_EQ(current.Get(), nullptr);
+  current.Get() = this;
   pump_->queue_ = queue_.get();
   queue_->Startup(pump_.get());
 }
 
 MessageLoop::~MessageLoop() {
   queue_->Shutdown();
+  ASH_CHECK_EQ(current.Get(), this);
+  current.Get() = nullptr;
 }
 
 std::shared_ptr<TaskRunner> MessageLoop::GetTaskRunner() {
@@ -43,25 +49,16 @@ std::shared_ptr<TaskRunner> MessageLoop::GetTaskRunner() {
 }
 
 MessageLoop* MessageLoop::Current() {
-  return tls;
-}
-
-void MessageLoop::SetCurrent(MessageLoop* loop) {
-  tls = loop;
-}
-
-void MessageLoop::ClearAndDestroyCurrentLoop() {
-  MessageLoop* loop = tls;
-  tls = nullptr;
-  if (loop)
-    delete loop;
+  return current.Get();
 }
 
 void MessageLoop::Run() {
+  ASH_CHECK_EQ(current.Get(), this);
   pump_->Run();
 }
 
 void MessageLoop::Quit() {
+  ASH_CHECK_EQ(current.Get(), this);
   pump_->Quit();
 }
 
@@ -69,35 +66,49 @@ void MessageLoop::WatchFD(int fd,
                           FDWatchCB on_can_read,
                           FDWatchCB on_can_write,
                           FDWatchCB on_error) {
+  ASH_CHECK_EQ(current.Get(), this);
   pump_->WatchFD(fd, std::move(on_can_read), std::move(on_can_write),
                  std::move(on_error));
 }
 
 void MessageLoop::UnwatchFD(int fd) {
+  ASH_CHECK_EQ(current.Get(), this);
   pump_->UnwatchFD(fd);
 }
 
-MessageLoop* MessageLoop::Create(std::shared_ptr<MessageQueue> queue) {
-  std::unique_ptr<MessagePump> pump = std::make_unique<MessagePumpImpl>();
-  if (!queue)
-    queue = std::make_shared<MessageQueue>();
-  return new MessageLoop(std::move(pump), std::move(queue));
+std::unique_ptr<MessageLoop> MessageLoop::Create() {
+  return CreateWithQueue(std::make_shared<MessageQueue>());
+}
+
+std::unique_ptr<MessageLoop> MessageLoop::CreateWithQueue(
+    std::shared_ptr<MessageQueue> queue) {
+  return std::make_unique<MessageLoop>(std::make_unique<MessagePumpImpl>(),
+                                       std::move(queue));
 }
 
 #if defined(ASH_OS_NUTTX)
-MessageLoop* MessageLoop::CreateForUV(uv_loop_t* uv_loop) {
-  std::unique_ptr<MessagePump> pump = std::make_unique<MessagePumpUV>(uv_loop);
-  std::shared_ptr<MessageQueue> queue = std::make_shared<MessageQueue>();
-  return new MessageLoop(std::move(pump), std::move(queue));
+std::unique_ptr<MessageLoop> MessageLoop::CreateForUV(uv_loop_t* uv_loop) {
+  return CreateForUVWithQueue(std::make_shared<MessageQueue>(), uv_loop);
+}
+
+std::unique_ptr<MessageLoop> MessageLoop::CreateForUVWithQueue(
+    std::shared_ptr<MessageQueue> queue,
+    uv_loop_t* uv_loop) {
+  return std::make_unique<MessageLoop>(std::make_unique<MessagePumpUV>(uv_loop),
+                                       std::move(queue));
 }
 #endif  // defined(ASH_OS_NUTTX)
 
 #if defined(ASH_OS_ANDROID)
-MessageLoop* MessageLoop::CreateForAndroid(ALooper* looper) {
-  std::unique_ptr<MessagePump> pump =
-      std::make_unique<MessagePumpAndroid>(looper);
-  std::shared_ptr<MessageQueue> queue = std::make_shared<MessageQueue>();
-  return new MessageLoop(std::move(pump), std::move(queue));
+std::unique_ptr<MessageLoop> MessageLoop::CreateForAndroid(ALooper* looper) {
+  return CreateForAndroidWithQueue(std::make_shared<MessageQueue>(), looper);
+}
+
+std::unique_ptr<MessageLoop> MessageLoop::CreateForAndroidWithQueue(
+    std::shared_ptr<MessageQueue> queue,
+    ALooper* looper) {
+  return std::make_unique<MessageLoop>(
+      std::make_unique<MessagePumpAndroid>(looper), std::move(queue));
 }
 #endif  // defined(ASH_OS_ANDROID)
 

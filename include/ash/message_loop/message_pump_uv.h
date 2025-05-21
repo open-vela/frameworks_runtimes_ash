@@ -52,9 +52,11 @@ class MessagePumpUV : public MessagePump {
   void RunCB();
 
   uv_loop_t* loop_;
+  uv_loop_t own_loop_;
   uv_async_t* async_;
   uv_timer_t* timer_;
-  std::map<int, FDWatcher*> watchers_;
+
+  std::map<int, std::unique_ptr<FDWatcher>> watchers_;
 };
 
 }  // namespace ash

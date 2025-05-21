@@ -1,12 +1,11 @@
 #include "ash/memory/thread_local.h"
-#include "ash/macros/compiler_macros.h"
-#include "ash/memory/lazy_instance.h"
 
-#if defined(ASH_OS_NUTTX) && defined(CONFIG_ARCH_SIM)
+#if ASH_THREAD_LOCAL_USE_VARIABLE_SEGMENT
 
 #include <pthread.h>
 #include <mutex>
 #include "ash/crash/crash.h"
+#include "ash/memory/lazy_instance.h"
 
 namespace ash {
 
@@ -49,4 +48,4 @@ uint8_t* GetThreadLocalSegment() {
 
 }  // namespace ash
 
-#endif  // defined(ASH_OS_NUTTX) && defined(CONFIG_ARCH_SIM)
+#endif  // ASH_THREAD_LOCAL_USE_VARIABLE_SEGMENT

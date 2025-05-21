@@ -41,13 +41,10 @@ class MessageLoop : public DisallowCopyAndMove {
   MessageLoop& operator=(const MessageLoop&) = delete;
 
   std::shared_ptr<TaskRunner> GetTaskRunner();
-
-  static MessageLoop* Current();
-  static void SetCurrent(MessageLoop* loop);
-  static void ClearAndDestroyCurrentLoop();
-
   void Run();
   void Quit();
+
+  static MessageLoop* Current();
 
   using FDWatchCB = MessagePump::FDWatchCB;
   void WatchFD(int fd,
@@ -56,13 +53,23 @@ class MessageLoop : public DisallowCopyAndMove {
                FDWatchCB on_error);
   void UnwatchFD(int fd);
 
-  static MessageLoop* Create(std::shared_ptr<MessageQueue> queue = nullptr);
+  static std::unique_ptr<MessageLoop> Create();
+  static std::unique_ptr<MessageLoop> CreateWithQueue(
+      std::shared_ptr<MessageQueue> queue);
+
 #if defined(ASH_OS_NUTTX)
-  static MessageLoop* CreateForUV(uv_loop_t* uv_loop = nullptr);
+  static std::unique_ptr<MessageLoop> CreateForUV(uv_loop_t* uv_loop = nullptr);
+  static std::unique_ptr<MessageLoop> CreateForUVWithQueue(
+      std::shared_ptr<MessageQueue> queue,
+      uv_loop_t* uv_loop = nullptr);
 #endif  // defined(ASH_OS_NUTTX)
 
 #if defined(ASH_OS_ANDROID)
-  static MessageLoop* CreateForAndroid(ALooper* looper = nullptr);
+  static std::unique_ptr<MessageLoop> CreateForAndroid(
+      ALooper* looper = nullptr);
+  static std::unique_ptr<MessageLoop> CreateForAndroidWithQueue(
+      std::shared_ptr<MessageQueue> queue,
+      ALooper* looper = nullptr);
 #endif  // defined(ASH_OS_ANDROID)
 
  private:

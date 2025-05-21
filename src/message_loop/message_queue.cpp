@@ -23,11 +23,11 @@ MessageQueue::MessageQueue()
 
 MessageQueue::~MessageQueue() = default;
 
-void MessageQueue::PostTask(std::function<void()> task) {
+void MessageQueue::PostTask(OnceClosure task) {
   PostDelayedTask(std::move(task), Duration());
 }
 
-void MessageQueue::PostDelayedTask(std::function<void()> task, Duration delay) {
+void MessageQueue::PostDelayedTask(OnceClosure task, Duration delay) {
   Time time = Time::Now() + delay;
   {
     std::unique_lock<std::mutex> lock(mutex_);
@@ -47,13 +47,12 @@ void MessageQueue::Startup(MessagePump* pump) {
 }
 
 void MessageQueue::Shutdown() {
-  // TODO(xuyan): 考虑unique_lock和lock_guard的选择
-  std::unique_lock<std::mutex> lock(mutex_);
+  std::lock_guard<std::mutex> lock(mutex_);
   pump_ = nullptr;
 }
 
 void MessageQueue::ScheduleWork() {
-  std::unique_lock<std::mutex> lock(mutex_);
+  std::lock_guard<std::mutex> lock(mutex_);
   if (!pump_ || tasks_.empty())
     return;
   pump_->Schedule();
@@ -65,12 +64,12 @@ Duration MessageQueue::Drive() {
   std::unique_lock<std::mutex> lock(mutex_);
   next_schedule_time_ = Time::Forever();
   while (!tasks_.empty() && tasks_.top().time <= now) {
-    std::function<void()> task = std::move(tasks_.top().task);
+    OnceClosure task = std::move(const_cast<Task&>(tasks_.top()).task);
     tasks_.pop();
     lock.unlock();
     {
       SCOPED_TRACE_EVENT("MessageQueue::RunTask");
-      task();
+      std::move(task)();
     }
     lock.lock();
   };
