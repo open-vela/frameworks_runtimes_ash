@@ -32,14 +32,12 @@ class MessagePumpUV::FDWatcher {
             FDWatchCB on_error,
             uv_loop_t* loop);
 
-  ~FDWatcher() = default;
-
-  void Destroy();
+  ~FDWatcher();
 
  private:
   static void UVPollCB(uv_poll_t* handle, int status, int events);
 
-  uv_poll_t poll_;
+  uv_poll_t* poll_;
   int fd_;
   FDWatchCB on_can_read_;
   FDWatchCB on_can_write_;
@@ -47,49 +45,62 @@ class MessagePumpUV::FDWatcher {
 };
 
 MessagePumpUV::MessagePumpUV(uv_loop_t* uv_loop) : loop_(uv_loop) {
-  async_ = (uv_async_t*)calloc(1, sizeof(uv_async_t));
-  uv_async_init(loop_, async_, &MessagePumpUV::AsyncCB);
-  uv_handle_set_data((uv_handle_t*)async_, this);
+  if (!loop_) {
+    loop_ = &own_loop_;
+    ASH_CHECK_EQ(uv_loop_init(loop_), 0);
+  }
 
-  timer_ = (uv_timer_t*)calloc(1, sizeof(uv_timer_t));
-  uv_timer_init(loop_, timer_);
+  async_ = static_cast<uv_async_t*>(calloc(1, sizeof(uv_async_t)));
+  ASH_CHECK_EQ(uv_async_init(loop_, async_, &MessagePumpUV::AsyncCB), 0);
+  uv_handle_set_data((uv_handle_t*)async_, this);
+  timer_ = static_cast<uv_timer_t*>(calloc(1, sizeof(uv_timer_t)));
+  ASH_CHECK_EQ(uv_timer_init(loop_, timer_), 0);
   uv_handle_set_data((uv_handle_t*)timer_, this);
 }
 
 MessagePumpUV::~MessagePumpUV() {
-  uv_timer_stop(timer_);
-  uv_close((uv_handle_t*)timer_,
-           [](uv_handle_t* handle) { free((uv_timer_t*)handle); });
-  uv_close((uv_handle_t*)async_,
-           [](uv_handle_t* handle) { free((uv_async_t*)handle); });
+  // Clear watchers to free uv_polls.
+  watchers_.clear();
+  ASH_CHECK_EQ(uv_timer_stop(timer_), 0);
+  uv_close((uv_handle_t*)timer_, [](uv_handle_t* handle) { free(handle); });
+  uv_close(reinterpret_cast<uv_handle_t*>(async_),
+           [](uv_handle_t* handle) { free(handle); });
+  if (loop_ == &own_loop_) {
+    ASH_CHECK_EQ(uv_loop_close(loop_), 0);
+  }
 }
 
 void MessagePumpUV::Schedule() {
   uv_async_send(async_);
 }
 
-void MessagePumpUV::Run() {}
+void MessagePumpUV::Run() {
+  // MessagePumpUV::Run can only be called if the uv loop is owned by the
+  // MessagePumpUV object.
+  ASH_CHECK_EQ(loop_, &own_loop_);
+  ASH_CHECK_EQ(uv_run(loop_, UV_RUN_DEFAULT), 0);
+}
 
-void MessagePumpUV::Quit() {}
+void MessagePumpUV::Quit() {
+  // MessagePumpUV::Quit can only be called if the uv loop is owned by the
+  // MessagePumpUV object.
+  ASH_CHECK_EQ(loop_, &own_loop_);
+  uv_stop(loop_);
+}
 
 void MessagePumpUV::WatchFD(int fd,
                             FDWatchCB on_can_read,
                             FDWatchCB on_can_write,
                             FDWatchCB on_error) {
-  // TODO(xuyan): 检查当前线程是否是消息循环线程
-
   ASH_DCHECK(watchers_.find(fd) == watchers_.end());
-
-  watchers_.emplace(
-      fd, new FDWatcher(fd, std::move(on_can_read), std::move(on_can_write),
-                        std::move(on_error), loop_));
+  watchers_.emplace(fd, std::make_unique<FDWatcher>(
+                            fd, std::move(on_can_read), std::move(on_can_write),
+                            std::move(on_error), loop_));
 }
 
 void MessagePumpUV::UnwatchFD(int fd) {
-  // TODO(xuyan): 检查当前线程是否是消息循环线程
   auto it = watchers_.find(fd);
   ASH_DCHECK(it != watchers_.end());
-  it->second->Destroy();
   watchers_.erase(it);
 }
 
@@ -130,18 +141,17 @@ MessagePumpUV::FDWatcher::FDWatcher(int fd,
   if (on_error_)
     event |= UV_DISCONNECT;
 
-  uv_poll_init(loop, &poll_, fd);
-  uv_handle_set_data((uv_handle_t*)&poll_, this);
-  ASH_CHECK_EQ(
-      uv_poll_start(&poll_, event, &MessagePumpUV::FDWatcher::UVPollCB), 0);
+  poll_ = static_cast<uv_poll_t*>(calloc(1, sizeof(uv_poll_t)));
+  ASH_CHECK_EQ(uv_poll_init(loop, poll_, fd), 0);
+  uv_handle_set_data((uv_handle_t*)poll_, this);
+  ASH_CHECK_EQ(uv_poll_start(poll_, event, &MessagePumpUV::FDWatcher::UVPollCB),
+               0);
 }
 
-void MessagePumpUV::FDWatcher::Destroy() {
-  ASH_CHECK_EQ(uv_poll_stop(&poll_), 0);
-
-  uv_close((uv_handle_t*)&poll_, [](uv_handle_t* handle) {
-    delete reinterpret_cast<FDWatcher*>(uv_handle_get_data(handle));
-  });
+MessagePumpUV::FDWatcher::~FDWatcher() {
+  ASH_CHECK_EQ(uv_poll_stop(poll_), 0);
+  uv_close(reinterpret_cast<uv_handle_t*>(poll_),
+           [](uv_handle_t* handle) { free(handle); });
 }
 
 void MessagePumpUV::FDWatcher::UVPollCB(uv_poll_t* handle,

@@ -30,8 +30,8 @@ class MessageQueue : public TaskRunner {
   MessageQueue();
   ~MessageQueue() override;
 
-  void PostTask(std::function<void()> task) override;
-  void PostDelayedTask(std::function<void()> task, Duration delay) override;
+  void PostTask(OnceClosure task) override;
+  void PostDelayedTask(OnceClosure task, Duration delay) override;
 
   void Startup(MessagePump* pump);
   void Shutdown();
@@ -39,7 +39,7 @@ class MessageQueue : public TaskRunner {
  private:
   struct Task {
     Time time;
-    std::function<void()> task;
+    OnceClosure task;
   };
 
   struct TaskComparator {
