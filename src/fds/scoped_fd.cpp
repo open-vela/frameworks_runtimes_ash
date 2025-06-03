@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 #include "ash/fds/scoped_fd.h"
+#include "ash/logging/logging.h"
 #include <unistd.h>
 
 namespace ash {
@@ -41,21 +42,27 @@ ScopedFD& ScopedFD::operator=(std::nullptr_t) {
 }
 
 ScopedFD& ScopedFD::operator=(int fd) {
-  Reset();
-  fd_ = fd >= 0 ? dup(fd) : -1;
+  if (fd_ != fd) {
+    Reset();
+    fd_ = fd >= 0 ? dup(fd) : -1;
+  }
   return *this;
 }
 
 ScopedFD& ScopedFD::operator=(const ScopedFD& other) {
-  Reset();
-  fd_ = other.fd_ >= 0 ? dup(other.fd_) : -1;
+  if (this != &other) {
+    Reset();
+    fd_ = other.fd_ >= 0 ? dup(other.fd_) : -1;
+  }
   return *this;
 }
 
 ScopedFD& ScopedFD::operator=(ScopedFD&& other) {
-  Reset();
-  fd_ = other.fd_;
-  other.fd_ = -1;
+  if (this != &other) {
+    Reset();
+    fd_ = other.fd_;
+    other.fd_ = -1;
+  }
   return *this;
 }
 
@@ -89,8 +96,10 @@ int ScopedFD::Release() {
 ScopedFD::ScopedFD(int fd, int) : fd_(fd) {}
 
 void ScopedFD::Reset() {
-  if (fd_ >= 0)
-    close(fd_);
+  if (fd_ >= 0) {
+    int r = close(fd_);
+    ASH_DCHECK_EQ(r, 0);
+  }
   fd_ = -1;
 }
 
