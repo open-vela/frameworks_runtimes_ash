@@ -55,8 +55,7 @@ namespace ash {
 // QEMU, because there is no definite way to do that. It is not comprehensive,
 // but enough for our purpose.
 #define ASH_THREAD_LOCAL_USE_VARIABLE_SEGMENT \
-  defined(ASH_OS_NUTTX) &&                    \
-      (defined(CONFIG_ARCH_SIM) || defined(CONFIG_ARCH_CHIP_GOLDFISH_ARM))
+  defined(ASH_OS_NUTTX)
 
 #if ASH_THREAD_LOCAL_USE_VARIABLE_SEGMENT
 
