@@ -122,3 +122,18 @@ if(${CMAKE_PROJECT_NAME} STREQUAL NuttX)
 endif()
 
 # TODO(xuyan15): Support building on other platforms, especially on linux.
+
+if(CONFIG_ASH_UNIT_TEST)
+    include_directories(
+        ${CMAKE_CURRENT_SOURCE_DIR}/include
+    )
+    nuttx_add_application(
+        NAME
+        ash_unit_test
+        SRCS
+        ${CMAKE_CURRENT_SOURCE_DIR}/tests/ash_unit_test.cpp
+        STACKSIZE
+        16384
+        PRIORITY
+        100)
+endif()

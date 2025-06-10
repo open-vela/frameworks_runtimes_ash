@@ -59,4 +59,12 @@ CXXSRCS += ${CURDIR}/src/crash/crash.cpp \
            ${CURDIR}/src/zip/zip_file.cpp \
 
 endif
+
+ifeq ($(CONFIG_ASH_UNIT_TEST), y)
+  PROGNAME += ash_unit_test
+  PRIORITY += 100
+  STACKSIZE += 16384
+  MAINSRC += $(APPDIR)/frameworks/runtimes/ash/tests/ash_unit_test.cpp
+endif
+
 include $(APPDIR)/Application.mk
