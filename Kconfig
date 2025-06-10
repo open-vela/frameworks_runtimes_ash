@@ -17,3 +17,12 @@
 config LIBASH
     bool "Enable ash library."
     default n
+
+
+config ASH_UNIT_TEST
+	depends on LIB_GOOGLETEST && LIBASH
+	bool "Enable ash unit test"
+	default n
+    help
+	  Enables unit tests for ASH components.
+	  Requires GoogleTest and ASH core library.
