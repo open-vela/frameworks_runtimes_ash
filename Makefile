@@ -65,6 +65,7 @@ ifeq ($(CONFIG_ASH_UNIT_TEST), y)
   PRIORITY += 100
   STACKSIZE += 16384
   MAINSRC += $(APPDIR)/frameworks/runtimes/ash/tests/ash_unit_test.cpp
+  CXXSRCS += ${CURDIR}/tests/device_info/device_info_test.cpp
 endif
 
 include $(APPDIR)/Application.mk
