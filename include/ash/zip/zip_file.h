@@ -39,6 +39,10 @@ class ZipFile {
 
   bool loadEntry(const EntryInfo* entry, void* buffer, uint32_t size);
 
+  const std::map<std::string, EntryInfo>& getEntryMap() const {
+    return entries_;
+  };
+
  private:
   ScopedFD fd_;
   std::map<std::string, EntryInfo> entries_;

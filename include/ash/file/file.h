@@ -40,6 +40,8 @@ struct FileInfo {
 bool GetFileInfo(const ScopedFD& fd, FileInfo* info);
 bool GetFileInfo(const std::string& path, FileInfo* info);
 
+std::vector<std::string> ListFiles(const std::string& directory_path);
+
 bool ReadFile(const ScopedFD& fd,
               void* buf,
               size_t buf_size,
