@@ -133,6 +133,7 @@ if(CONFIG_ASH_UNIT_TEST)
         SRCS
         ${CMAKE_CURRENT_SOURCE_DIR}/tests/ash_unit_test.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/tests/device_info/device_info_test.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/tests/fds/scoped_fd_test.cpp
         STACKSIZE
         16384
         PRIORITY
