@@ -17,7 +17,7 @@
 #define ASH_MEMORY_VARIABLE_SEGMENT_H_
 
 #include <functional>
-#include "ash/memory/disallow_copy.h"
+#include "ash/macros/disallow_copy.h"
 
 namespace ash {
 
@@ -39,7 +39,7 @@ namespace ash {
  * dangerous. RegisterVariable must be called before every CreateSegment
  * invocation, or it will cause crash.
  */
-class VariableSegmentDefination : public DisallowCopyAndMove {
+class VariableSegmentDefination {
  public:
   VariableSegmentDefination();
   ~VariableSegmentDefination();
@@ -84,6 +84,7 @@ class VariableSegmentDefination : public DisallowCopyAndMove {
 #if !defined(NDEBUG)
   bool has_been_used_;
 #endif  // !defined(NDEBUG)
+  ASH_DISALLOW_COPY_AND_MOVE(VariableSegmentDefination);
 };
 
 }  // namespace ash

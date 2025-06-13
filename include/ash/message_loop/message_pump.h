@@ -17,14 +17,14 @@
 #define ASH_MESSAGE_LOOP_MESSAGE_PUMP_H_
 
 #include <functional>
-#include "ash/memory/disallow_copy.h"
+#include "ash/macros/disallow_copy.h"
 #include "ash/time/time.h"
 
 namespace ash {
 
 class MessageQueue;
 
-class MessagePump : public DisallowCopyAndMove {
+class MessagePump {
  public:
   MessagePump();
   virtual ~MessagePump();
@@ -49,6 +49,7 @@ class MessagePump : public DisallowCopyAndMove {
   MessageQueue* queue_;
 
   friend class MessageLoop;
+  ASH_DISALLOW_COPY_AND_MOVE(MessagePump);
 };
 
 }  // namespace ash

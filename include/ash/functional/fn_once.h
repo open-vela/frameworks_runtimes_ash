@@ -3,17 +3,18 @@
 
 #include <memory>
 #include <type_traits>
-#include "ash/memory/disallow_copy.h"
+#include "ash/macros/disallow_copy.h"
 
 namespace ash {
 
 template <typename R, typename... Args>
-class FnOnceStateBase : public DisallowCopyAndMove {
+class FnOnceStateBase {
  public:
   FnOnceStateBase() = default;
   virtual ~FnOnceStateBase() = default;
 
   virtual R Run(Args&&... args) && = 0;
+  ASH_DISALLOW_COPY_AND_MOVE(FnOnceStateBase);
 };
 
 template <typename F, typename R, typename... Args>

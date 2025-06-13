@@ -84,7 +84,7 @@
 #define ASH_MEMORY_GLOBAL_VARIABLE_H_
 
 #include "ash/macros/compiler_macros.h"
-#include "ash/memory/disallow_copy.h"
+#include "ash/macros/disallow_copy.h"
 #include "ash/memory/variable_segment.h"
 
 namespace ash {
@@ -95,7 +95,7 @@ VariableSegmentDefination* GetGlobalVariableSegmentDefination();
 uint8_t* GetGlobalVariableSegment();
 
 template <typename T>
-class GlobalVariable : public DisallowCopyAndMove {
+class GlobalVariable {
  public:
   template <typename... Args>
   GlobalVariable(Args&&... args)
@@ -110,10 +110,11 @@ class GlobalVariable : public DisallowCopyAndMove {
 
  private:
   T offset_;
+  ASH_DISALLOW_COPY_AND_MOVE(GlobalVariable);
 };
 
 template <typename T>
-class GlobalVariableWithInitializer : public DisallowCopyAndMove {
+class GlobalVariableWithInitializer {
  public:
   template <typename F>
   GlobalVariableWithInitializer(F initializer)
@@ -121,19 +122,19 @@ class GlobalVariableWithInitializer : public DisallowCopyAndMove {
             GetGlobalVariableSegmentDefination()
                 ->RegisterVariableWithInitializer<T>(std::move(initializer))) {}
   ~GlobalVariableWithInitializer() = default;
-
   T& Get() {
     return *reinterpret_cast<T*>(GetGlobalVariableSegment() + offset_);
   }
 
  private:
   T offset_;
+  ASH_DISALLOW_COPY_AND_MOVE(GlobalVariableWithInitializer);
 };
 
 #else
 
 template <typename T>
-class GlobalVariable : public DisallowCopyAndMove {
+class GlobalVariable {
  public:
   template <typename... Args>
   GlobalVariable(Args&&... args) : value_(std::forward<Args>(args)...) {}
@@ -143,10 +144,11 @@ class GlobalVariable : public DisallowCopyAndMove {
 
  private:
   T value_;
+  ASH_DISALLOW_COPY_AND_MOVE(GlobalVariable);
 };
 
 template <typename T>
-class GlobalVariableWithInitializer : public DisallowCopyAndMove {
+class GlobalVariableWithInitializer {
  public:
   template <typename F>
   GlobalVariableWithInitializer(F initializer) : value_(initializer()) {}
@@ -156,6 +158,7 @@ class GlobalVariableWithInitializer : public DisallowCopyAndMove {
 
  private:
   T value_;
+  ASH_DISALLOW_COPY_AND_MOVE(GlobalVariableWithInitializer);
 };
 
 #endif  // defiend(ASH_OS_NUTTX)

@@ -49,25 +49,17 @@
 
 namespace ash {
 
-class DisallowCopy {
- public:
-  DisallowCopy() = default;
-  ~DisallowCopy() = default;
+#define ASH_DISALLOW_COPY(TypeName)       \
+  TypeName(const TypeName&) = delete; \
+  TypeName& operator=(const TypeName&) = delete; \
+  TypeName(TypeName&&) = default; \
+  TypeName& operator(TypeName&&) = default
 
-  DisallowCopy(const DisallowCopy&) = delete;
-  DisallowCopy(DisallowCopy&&) = default;
-  DisallowCopy& operator=(const DisallowCopy&) = delete;
-  DisallowCopy& operator=(DisallowCopy&&) = default;
-};
-
-class DisallowCopyAndMove : public DisallowCopy {
- public:
-  DisallowCopyAndMove() = default;
-  ~DisallowCopyAndMove() = default;
-
-  DisallowCopyAndMove(DisallowCopyAndMove&&) = delete;
-  DisallowCopyAndMove& operator=(DisallowCopyAndMove&) = delete;
-};
+#define ASH_DISALLOW_COPY_AND_MOVE(TypeName)         \
+  TypeName(const TypeName&) = delete;            \
+  TypeName(TypeName&&) = delete;                 \
+  TypeName& operator=(const TypeName&) = delete; \
+  TypeName& operator=(TypeName&&) = delete
 
 }  // namespace ash
 

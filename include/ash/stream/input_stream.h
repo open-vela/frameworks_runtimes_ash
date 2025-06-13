@@ -19,11 +19,11 @@
 #include <cstddef>
 #include <cstdint>
 #include <string>
-#include "ash/memory/disallow_copy.h"
+#include "ash/macros/disallow_copy.h"
 
 namespace ash {
 
-class InputStream : public DisallowCopyAndMove {
+class InputStream {
  public:
   InputStream(uint8_t* data, size_t size);
   ~InputStream();
@@ -41,6 +41,7 @@ class InputStream : public DisallowCopyAndMove {
  private:
   uint8_t* begin_;
   uint8_t* end_;
+  ASH_DISALLOW_COPY_AND_MOVE(InputStream);
 };
 
 }  // namespace ash

@@ -17,16 +17,17 @@
 #define ASH_MEMORY_LIFECYCLE_WATCHER_H_
 
 #include <memory>
-#include "ash/memory/disallow_copy.h"
+#include "ash/macros/disallow_copy.h"
 
 namespace ash {
 
-class LifecycleWatcher : public DisallowCopyAndMove {
+class LifecycleWatcher {
  public:
   LifecycleWatcher();
   virtual ~LifecycleWatcher();
 
   virtual bool IsAlive() = 0;
+  ASH_DISALLOW_COPY_AND_MOVE(LifecycleWatcher);
 };
 
 using LifecycleWatcherPtr = std::shared_ptr<LifecycleWatcher>;

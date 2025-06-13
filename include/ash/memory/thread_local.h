@@ -46,7 +46,7 @@
 #define ASH_MEMORY_THREAD_LOCAL_H_
 
 #include "ash/macros/compiler_macros.h"
-#include "ash/memory/disallow_copy.h"
+#include "ash/macros/disallow_copy.h"
 #include "ash/memory/variable_segment.h"
 
 namespace ash {
@@ -64,7 +64,7 @@ VariableSegmentDefination* GetThreadLocalSegmentDefination();
 uint8_t* GetThreadLocalSegment();
 
 template <typename T>
-class ThreadLocal : public DisallowCopyAndMove {
+class ThreadLocal {
  public:
   template <typename... Args>
   ThreadLocal(Args&&... args)
@@ -76,10 +76,11 @@ class ThreadLocal : public DisallowCopyAndMove {
 
  private:
   int offset_;
+  ASH_DISALLOW_COPY_AND_MOVE(ThreadLocal);
 };
 
 template <typename T>
-class ThreadLocalWithInitializer : public DisallowCopyAndMove {
+class ThreadLocalWithInitializer {
  public:
   template <typename F>
   ThreadLocalWithInitializer(F initializer)
@@ -91,6 +92,7 @@ class ThreadLocalWithInitializer : public DisallowCopyAndMove {
 
  private:
   int offset_;
+  ASH_DISALLOW_COPY_AND_MOVE(ThreadLocalWithInitializer);
 };
 
 #define THREAD_LOCAL(type) ThreadLocal<type>
@@ -99,7 +101,7 @@ class ThreadLocalWithInitializer : public DisallowCopyAndMove {
 #else  // defined(ASH_OS_NUTTX) && defined(CONFIG_ARCH_SIM)
 
 template <typename T>
-class ThreadLocal : public DisallowCopyAndMove {
+class ThreadLocal {
  public:
   template <typename... Args>
   ThreadLocal(Args&&... args) : value_(std::forward<Args>(args)...) {}
@@ -109,10 +111,11 @@ class ThreadLocal : public DisallowCopyAndMove {
 
  private:
   T value_;
+  ASH_DISALLOW_COPY_AND_MOVE(ThreadLocal);
 };
 
 template <typename T>
-class ThreadLocalWithInitializer : public DisallowCopyAndMove {
+class ThreadLocalWithInitializer {
  public:
   template <typename F>
   ThreadLocalWithInitializer(F initializer) : value_(initializer()) {}
@@ -120,6 +123,7 @@ class ThreadLocalWithInitializer : public DisallowCopyAndMove {
 
  private:
   T value_;
+  ASH_DISALLOW_COPY_AND_MOVE(ThreadLocalWithInitializer);
 };
 
 #define THREAD_LOCAL(type) thread_local ThreadLocal<type>

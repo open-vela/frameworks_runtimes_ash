@@ -22,11 +22,11 @@
 #include <string>
 #include <vector>
 #include "ash/fds/scoped_fd.h"
-#include "ash/memory/disallow_copy.h"
+#include "ash/macros/disallow_copy.h"
 
 namespace ash {
 
-class OutZip : public DisallowCopyAndMove {
+class OutZip {
  public:
   ~OutZip();
 
@@ -73,6 +73,7 @@ class OutZip : public DisallowCopyAndMove {
   CompressionMethod compression_method_;
   std::vector<std::unique_ptr<Entry>> entries_;
   std::vector<Record> records_;
+  ASH_DISALLOW_COPY_AND_MOVE(OutZip);
 };
 
 }  // namespace ash
