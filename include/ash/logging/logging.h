@@ -17,7 +17,7 @@
 #define ASH_LOGGING_H_
 
 #include <sstream>
-#include "ash/memory/disallow_copy.h"
+#include "ash/macros/disallow_copy.h"
 
 #define ASH_LOG_STREAM(tag, level)                                     \
   ::ash::LogStream(tag, ::ash::LogLevel::k##level, __FILE__, __LINE__, \
@@ -79,7 +79,7 @@ enum class LogLevel {
   kFATAL,
 };
 
-class LogStream : public DisallowCopyAndMove {
+class LogStream {
  public:
   LogStream(const char* tag,
             LogLevel level,
@@ -97,11 +97,15 @@ class LogStream : public DisallowCopyAndMove {
   int line_;
   const char* function_;
   std::ostringstream stream_;
+  ASH_DISALLOW_COPY_AND_MOVE(LogStream);
 };
 
-class LogStreamVoidify : public DisallowCopyAndMove {
+class LogStreamVoidify {
  public:
+  LogStreamVoidify() = default;
+  ~LogStreamVoidify() = default;
   void operator&(std::ostream&) {}
+  ASH_DISALLOW_COPY_AND_MOVE(LogStreamVoidify);
 };
 
 }  // namespace ash

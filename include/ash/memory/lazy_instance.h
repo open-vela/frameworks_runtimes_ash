@@ -17,7 +17,7 @@
 #define ASH_MEMORY_LAZY_INSTANCE_H_
 
 #include <atomic>
-#include "ash/memory/disallow_copy.h"
+#include "ash/macros/disallow_copy.h"
 
 namespace ash {
 
@@ -35,7 +35,7 @@ namespace ash {
  * is called.
  */
 template <typename T>
-class LazyInstance : public DisallowCopyAndMove {
+class LazyInstance {
  public:
   LazyInstance() = default;
 
@@ -76,6 +76,7 @@ class LazyInstance : public DisallowCopyAndMove {
   static constexpr uintptr_t kCreating = 1;
   std::atomic<uintptr_t> ptr_;
   alignas(T) char storage_[sizeof(T)];
+  ASH_DISALLOW_COPY_AND_MOVE(LazyInstance);
 };
 
 }  // namespace ash

@@ -18,18 +18,19 @@
 
 #include <functional>
 #include "ash/functional/closure.h"
-#include "ash/memory/disallow_copy.h"
+#include "ash/macros/disallow_copy.h"
 #include "ash/time/duration.h"
 
 namespace ash {
 
-class TaskRunner : public DisallowCopyAndMove {
+class TaskRunner {
  public:
   TaskRunner() = default;
   virtual ~TaskRunner() = default;
 
   virtual void PostTask(OnceClosure task) = 0;
   virtual void PostDelayedTask(OnceClosure task, Duration delay) = 0;
+  ASH_DISALLOW_COPY_AND_MOVE(TaskRunner);
 };
 
 }  // namespace ash

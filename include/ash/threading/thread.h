@@ -17,12 +17,12 @@
 #define ASH_THREADING_THREAD_H_
 
 #include <pthread.h>
-#include "ash/memory/disallow_copy.h"
+#include "ash/macros/disallow_copy.h"
 #include "ash/message_loop/message_queue.h"
 
 namespace ash {
 
-class Thread : public DisallowCopyAndMove {
+class Thread {
  public:
   Thread();
   ~Thread();
@@ -34,6 +34,7 @@ class Thread : public DisallowCopyAndMove {
   static void* Run(void* arg);
 
   std::shared_ptr<MessageQueue> message_queue_;
+  ASH_DISALLOW_COPY_AND_MOVE(Thread);
 };
 
 }  // namespace ash

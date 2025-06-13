@@ -16,12 +16,12 @@
 #ifndef ASH_UTILS_SCOPED_SETTER_H_
 #define ASH_UTILS_SCOPED_SETTER_H_
 
-#include "ash/memory/disallow_copy.h"
+#include "ash/macros/disallow_copy.h"
 
 namespace ash {
 
 template <typename T>
-class ScopedSetter : public DisallowCopyAndMove {
+class ScopedSetter {
  public:
   ScopedSetter(T* ptr, T value) : ptr_(ptr), old_value_(*ptr) { *ptr_ = value; }
 
@@ -30,6 +30,7 @@ class ScopedSetter : public DisallowCopyAndMove {
  private:
   T* ptr_;
   T old_value_;
+  ASH_DISALLOW_COPY_AND_MOVE(ScopedSetter);
 };
 
 }  // namespace ash

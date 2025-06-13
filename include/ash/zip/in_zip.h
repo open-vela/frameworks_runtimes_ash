@@ -21,14 +21,14 @@
 #include <memory>
 #include <string>
 #include "ash/fds/scoped_fd.h"
-#include "ash/memory/disallow_copy.h"
+#include "ash/macros/disallow_copy.h"
 
 #define MIN_ECDR_SIZE 22
 #define MAX_ECDR_SIZE 65536
 
 namespace ash {
 
-class InZip : public DisallowCopyAndMove {
+class InZip {
  public:
   enum class CompressionMethod {
     kStore = 0,
@@ -71,6 +71,7 @@ class InZip : public DisallowCopyAndMove {
 
   ScopedFD fd_;
   std::map<std::string, Entry> entries_;
+  ASH_DISALLOW_COPY_AND_MOVE(InZip);
 };
 
 }  // namespace ash
