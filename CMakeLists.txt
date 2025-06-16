@@ -134,6 +134,7 @@ if(CONFIG_ASH_UNIT_TEST)
         ${CMAKE_CURRENT_SOURCE_DIR}/tests/ash_unit_test.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/tests/device_info/device_info_test.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/tests/fds/scoped_fd_test.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/tests/file/file_path_test.cpp
         STACKSIZE
         16384
         PRIORITY
