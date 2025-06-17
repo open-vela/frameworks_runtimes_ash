@@ -67,7 +67,8 @@ ifeq ($(CONFIG_ASH_UNIT_TEST), y)
   MAINSRC += $(APPDIR)/frameworks/runtimes/ash/tests/ash_unit_test.cpp
   CXXSRCS += ${CURDIR}/tests/device_info/device_info_test.cpp \
              ${CURDIR}/tests/fds/scoped_fd_test.cpp \
-             ${CURDIR}/tests/file/file_path_test.cpp
+             ${CURDIR}/tests/file/file_path_test.cpp \
+             ${CURDIR}/tests/time/duration_test.cpp
 endif
 
 include $(APPDIR)/Application.mk
