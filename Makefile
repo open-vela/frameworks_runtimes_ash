@@ -69,7 +69,8 @@ ifeq ($(CONFIG_ASH_UNIT_TEST), y)
              ${CURDIR}/tests/fds/scoped_fd_test.cpp \
              ${CURDIR}/tests/file/file_path_test.cpp \
              ${CURDIR}/tests/time/duration_test.cpp \
-             ${CURDIR}/tests/time/time_test.cpp
+             ${CURDIR}/tests/time/time_test.cpp \
+             ${CURDIR}/tests/memory/raw_ptr_test.cpp
 endif
 
 include $(APPDIR)/Application.mk
