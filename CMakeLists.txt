@@ -85,6 +85,7 @@ target_sources(ash
   include/ash/memory/thread_local.h
   include/ash/memory/variable_segment.h
   include/ash/memory/weak_ptr.h
+  include/ash/memory/raw_ptr.h
   include/ash/message_loop/message_loop.h
   include/ash/message_loop/message_pump_android.h
   include/ash/message_loop/message_pump.h
