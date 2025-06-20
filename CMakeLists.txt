@@ -136,6 +136,7 @@ if(CONFIG_ASH_UNIT_TEST)
         ${CMAKE_CURRENT_SOURCE_DIR}/tests/device_info/device_info_test.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/tests/fds/scoped_fd_test.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/tests/file/file_path_test.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/tests/file/file_test.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/tests/time/duration_test.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/tests/time/time_test.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/tests/memory/raw_ptr_test.cpp
