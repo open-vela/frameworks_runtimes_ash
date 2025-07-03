@@ -109,7 +109,7 @@ class GlobalVariable {
   }
 
  private:
-  T offset_;
+  int offset_;
   ASH_DISALLOW_COPY_AND_MOVE(GlobalVariable);
 };
 
@@ -127,7 +127,7 @@ class GlobalVariableWithInitializer {
   }
 
  private:
-  T offset_;
+  int offset_;
   ASH_DISALLOW_COPY_AND_MOVE(GlobalVariableWithInitializer);
 };
 
