@@ -21,11 +21,11 @@
 
 namespace ash {
 
-std::string doubleToString(double value);
+std::string DoubleToString(double value);
 
-std::string integerToString(int value);
+std::string IntegerToString(int value);
 
-std::string intToHexString(uint32_t value, uint32_t width);
+std::string IntToHexString(uint32_t value, uint32_t width);
 
 }  // namespace ash
 

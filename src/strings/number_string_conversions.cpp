@@ -20,19 +20,19 @@
 namespace ash {
 // TODO(xuyan): 考虑使用性能刚好的std::from_chars和std::to_chars
 
-std::string doubleToString(double value) {
+std::string DoubleToString(double value) {
   std::ostringstream oss;
   oss << value;
   return oss.str();
 }
 
-std::string integerToString(int value) {
+std::string IntegerToString(int value) {
   std::ostringstream oss;
   oss << value;
   return oss.str();
 }
 
-std::string intToHexString(uint32_t value, uint32_t width) {
+std::string IntToHexString(uint32_t value, uint32_t width) {
   std::ostringstream oss;
   oss << std::hex << std::setw(width) << std::setfill('0') << value;
   return oss.str();
