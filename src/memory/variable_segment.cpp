@@ -75,6 +75,7 @@ uint8_t* VariableSegmentDefination::CreateSegment() {
   size_t align = GetAlignFromSize(8);
   size_t size = AlignTo(total_size_, align);
   uint8_t* segment = static_cast<uint8_t*>(malloc(size));
+  memset(segment, 0, size);
   if (!segment) {
     CrashImmediately();
   }
