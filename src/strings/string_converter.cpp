@@ -17,7 +17,8 @@
 #define ASH_STRING_CONVERTER_H_
 
 #include "ash/strings/string_converter.h"
-
+#include <cerrno>
+#include <cstdlib>
 namespace ash {
 
 bool LiteralProcessor::Build(std::string& output, const char* literal) {
@@ -187,44 +188,22 @@ bool StringProcessor<float>::Parse(const char** input, float* value) {
 
 bool StringProcessor<double>::Build(std::string& output, double value) {
   char buffer[32];
-  snprintf(buffer, sizeof(buffer), "%lf", value);
+  snprintf(buffer, sizeof(buffer), "%.17g", value);
   output.append(buffer);
   return true;
 }
 
 bool StringProcessor<double>::Parse(const char** input, double* value) {
-  const char* p = *input;
-  unsigned long integer = 0;
-  double flag = 1.0;
-  if (*p == '+') {
-    p++;
-  } else if (*p == '-') {
-    p++;
-    flag = -1.0;
-  }
+  char* endptr;
+  errno = 0;
+  *value = strtod(*input, &endptr);
 
-  bool r = StringProcessor<unsigned long>::Parse(&p, &integer);
-  if (*p++ != '.') {
-    if (r) {
-      *value = integer;
-      *input = p - 1;
-      return true;
-    }
+  if (errno == ERANGE)
     return false;
-  }
-
-  if (!r && (*p < '0' || *p > '9'))
+  if (endptr == *input)
     return false;
 
-  double fraction = 0;
-  double factor = 0.1;
-  while (*p >= '0' && *p <= '9') {
-    fraction += factor * (*p - '0');
-    factor *= 0.1;
-    p++;
-  }
-  *value = (integer + fraction) * flag;
-  *input = p;
+  *input = endptr;
   return true;
 }
 
