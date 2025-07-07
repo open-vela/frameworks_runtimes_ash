@@ -109,24 +109,40 @@ bool StringProcessor<long>::Build(std::string& output, long value) {
 bool StringProcessor<long>::Parse(const char** input, long* value) {
   const char* p = *input;
   long result = 0;
-  long flag = 1;
+  int sign = 1;
 
   if (*p == '+') {
     p++;
   } else if (*p == '-') {
+    sign = -1;
     p++;
-    flag = -1;
   }
 
   if (*p < '0' || *p > '9')
     return false;
 
+  const long min_val = LONG_MIN / 10;
+  const long min_digit = -(LONG_MIN % 10);
+
   while (*p >= '0' && *p <= '9') {
-    result = result * 10 + (*p - '0');
+    int digit = *p - '0';
+
+    if (result < min_val || (result == min_val && digit > min_digit)) {
+      return false;
+    }
+
+    result = result * 10 - digit;
     p++;
   }
 
-  *value = result * flag;
+  if (sign == 1) {
+    if (result == LONG_MIN)
+      return false;
+    *value = -result;
+  } else {
+    *value = result;
+  }
+
   *input = p;
   return true;
 }
