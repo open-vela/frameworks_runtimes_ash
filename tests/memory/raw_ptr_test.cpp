@@ -144,7 +144,8 @@ TEST_F(RawPtrTest, ConstArrowOperator) {
   EXPECT_EQ(ptr->derived_data, 20);
 }
 
-// Boolean Conversion Tests =====================================================
+// Boolean Conversion Tests
+// =====================================================
 
 TEST_F(RawPtrTest, BoolConversionValid) {
   RawPtr<int> ptr(&raw_value);
@@ -156,7 +157,8 @@ TEST_F(RawPtrTest, BoolConversionNull) {
   EXPECT_FALSE(ptr);
 }
 
-// Comparison Operator Tests (Member Functions) =========================================
+// Comparison Operator Tests (Member Functions)
+// =========================================
 
 TEST_F(RawPtrTest, EqualitySameType) {
   RawPtr<int> ptr1(&value1);
@@ -242,7 +244,8 @@ TEST_F(RawPtrTest, GreaterThanOrEqualSameType) {
   EXPECT_TRUE(rp3 >= rp3);
 }
 
-// Global Comparison Operator Tests ===============================================
+// Global Comparison Operator Tests
+// ===============================================
 
 TEST_F(RawPtrTest, GlobalEqualityNullptrLeft) {
   RawPtr<int> ptr;

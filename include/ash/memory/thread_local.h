@@ -54,8 +54,7 @@ namespace ash {
 // Use macro CONFIG_ARCH_CHIP_GOLDFISH_ARM to detect if we are building for
 // QEMU, because there is no definite way to do that. It is not comprehensive,
 // but enough for our purpose.
-#define ASH_THREAD_LOCAL_USE_VARIABLE_SEGMENT \
-  defined(ASH_OS_NUTTX)
+#define ASH_THREAD_LOCAL_USE_VARIABLE_SEGMENT defined(ASH_OS_NUTTX)
 
 #if ASH_THREAD_LOCAL_USE_VARIABLE_SEGMENT
 

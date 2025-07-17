@@ -68,7 +68,8 @@ TEST(TimeTest, BoundaryValues) {
 
   // Float boundary (test overflow)
   Time t2 = Time::FromSecondsF(static_cast<double>(kMaxInt64) / 1e9);
-  EXPECT_LT(t2.ToNano(), kMaxInt64);  // Float precision loss should result in smaller value
+  EXPECT_LT(t2.ToNano(),
+            kMaxInt64);  // Float precision loss should result in smaller value
 
   // Negative input
   Time t3 = Time::FromNano(-100);
