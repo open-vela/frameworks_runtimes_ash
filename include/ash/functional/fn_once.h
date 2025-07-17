@@ -58,6 +58,10 @@ class FnOnce<R(Args...)> {
     return std::move(*state).Run(std::forward<Args>(args)...);
   }
 
+  operator bool() const { return !!state_; }
+
+  bool operator!() const { return !state_; }
+
  private:
   std::unique_ptr<FnOnceStateBase<R, Args...>> state_;
 };

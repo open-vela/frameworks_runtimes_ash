@@ -54,23 +54,41 @@ class InZip {
     uint32_t compressed_size_;
   };
 
+  class EntryMap {
+   public:
+    EntryMap(std::map<std::string, Entry> entries);
+    ~EntryMap();
+
+    Entry* GetEntry(const std::string& path);
+    size_t GetEntryCount();
+    std::vector<std::string> List(const std::string& prefix);
+
+   private:
+    std::map<std::string, Entry> entries_;
+  };
+
   static std::unique_ptr<InZip> Open(const std::string& path);
-  static std::unique_ptr<InZip> Open(ScopedFD fd);
 
   size_t GetEntryCount();
   const Entry* GetEntry(const std::string& path);
-  const std::map<std::string, Entry>& GetEntries();
   std::unique_ptr<uint8_t[]> LoadEntry(const Entry* entry,
                                        size_t extra_size = 0);
   std::unique_ptr<uint8_t[]> LoadEntry(const std::string& path,
                                        size_t extra_size = 0);
   bool ExtractEntry(const std::string& path, const std::string& dest);
 
- private:
-  InZip(ScopedFD fd, std::map<std::string, Entry> entries);
+  std::vector<std::string> List(const std::string& prefix);
 
+  std::unique_ptr<InZip> Clone();
+
+ private:
+  InZip(const std::string& path,
+        ScopedFD fd,
+        std::shared_ptr<EntryMap> entry_map);
+
+  std::string path_;
   ScopedFD fd_;
-  std::map<std::string, Entry> entries_;
+  std::shared_ptr<EntryMap> entry_map_;
   ASH_DISALLOW_COPY_AND_MOVE(InZip);
 };
 

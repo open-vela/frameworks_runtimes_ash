@@ -31,7 +31,8 @@ CXXFLAGS += ${INCDIR_PREFIX}$(CURDIR)/include
 CXXFLAGS += ${INCDIR_PREFIX}$(APPDIR)/system/zlib/zlib
 CXXFLAGS += ${INCDIR_PREFIX}$(APPDIR)/system/zlib/zlib/contrib
 
-CXXSRCS += ${CURDIR}/src/crash/crash.cpp \
+CXXSRCS += ${CURDIR}/src/bundle/bundle.cpp \
+           ${CURDIR}/src/crash/crash.cpp \
            ${CURDIR}/src/device_info/device_info.cpp \
            ${CURDIR}/src/fds/scoped_fd.cpp \
            ${CURDIR}/src/file/file.cpp \

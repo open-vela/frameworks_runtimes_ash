@@ -63,16 +63,44 @@ InZip::Entry::Entry(uint32_t offset,
       uncompressed_size_(uncompressed_size),
       compressed_size_(compressed_size) {}
 
+InZip::EntryMap::EntryMap(std::map<std::string, Entry> entries)
+    : entries_(std::move(entries)) {}
+
+InZip::EntryMap::~EntryMap() = default;
+
+InZip::Entry* InZip::EntryMap::GetEntry(const std::string& path) {
+  std::string path_copy(path);
+  if (!path_copy.empty() && path_copy[0] == '/')
+    path_copy.erase(0, 1);
+
+  auto it = entries_.find(path_copy);
+  if (it == entries_.end()) {
+    return nullptr;
+  }
+  return &it->second;
+}
+
+size_t InZip::EntryMap::GetEntryCount() {
+  return entries_.size();
+}
+
+std::vector<std::string> InZip::EntryMap::List(const std::string& prefix) {
+  std::vector<std::string> result;
+  for (auto it = entries_.begin(); it != entries_.end(); ++it) {
+    if (it->first.compare(0, prefix.size(), prefix)) {
+      result.push_back(it->first);
+    }
+  }
+  return result;
+}
+
 std::unique_ptr<InZip> InZip::Open(const std::string& path) {
+  SCOPED_TRACE_EVENT("InZip::Open");
+
   ScopedFD fd = OpenFile(path, OpenMode::kRead);
   if (!fd.IsValid()) {
     return nullptr;
   }
-  return Open(std::move(fd));
-}
-
-std::unique_ptr<InZip> InZip::Open(ScopedFD fd) {
-  SCOPED_TRACE_EVENT("InZip::Open");
 
   std::map<std::string, Entry> entries;
 
@@ -146,46 +174,38 @@ std::unique_ptr<InZip> InZip::Open(ScopedFD fd) {
       ASH_LOG("ASH", ERROR) << "Invalid central directory record";
       break;
     }
-    std::string path(central_directory_stream.ReadString(file_name_length));
+    std::string file_name(
+        central_directory_stream.ReadString(file_name_length));
     central_directory_stream.Skip(extra_field_length + file_comment_length);
 
-    if (path.empty() || path.back() == '/')
+    if (file_name.empty() || file_name.back() == '/')
       continue;
 
     if (compression_method != 0 && compression_method != 8) {
       ASH_LOG("ASH", ERROR)
           << "Unsupported compression method: " << compression_method << " for "
-          << path;
+          << file_name;
       continue;
     }
 
     entries.insert(std::make_pair(
-        path, Entry(offset + 30 + file_name_length + extra_field_length,
-                    static_cast<CompressionMethod>(compression_method),
-                    uncompressed_size, compressed_size)));
+        file_name, Entry(offset + 30 + file_name_length + extra_field_length,
+                         static_cast<CompressionMethod>(compression_method),
+                         uncompressed_size, compressed_size)));
   }
 
-  return std::unique_ptr<InZip>(new InZip(std::move(fd), std::move(entries)));
+  std::shared_ptr<EntryMap> entry_map =
+      std::make_shared<EntryMap>(std::move(entries));
+  return std::unique_ptr<InZip>(
+      new InZip(path, std::move(fd), std::move(entry_map)));
 }
 
 size_t InZip::GetEntryCount() {
-  return entries_.size();
+  return entry_map_->GetEntryCount();
 }
 
 const InZip::Entry* InZip::GetEntry(const std::string& path) {
-  std::string path_copy(path);
-  if (!path_copy.empty() && path_copy[0] == '/')
-    path_copy.erase(0, 1);
-
-  auto it = entries_.find(path_copy);
-  if (it == entries_.end()) {
-    return nullptr;
-  }
-  return &it->second;
-}
-
-const std::map<std::string, InZip::Entry>& InZip::GetEntries() {
-  return entries_;
+  return entry_map_->GetEntry(path);
 }
 
 std::unique_ptr<uint8_t[]> InZip::LoadEntry(const Entry* entry,
@@ -257,7 +277,20 @@ bool InZip::ExtractEntry(const std::string& path, const std::string& dest) {
   return true;
 }
 
-InZip::InZip(ScopedFD fd, std::map<std::string, Entry> entries)
-    : fd_(std::move(fd)), entries_(std::move(entries)) {}
+std::vector<std::string> InZip::List(const std::string& prefix) {
+  return entry_map_->List(prefix);
+}
+
+std::unique_ptr<InZip> InZip::Clone() {
+  ScopedFD fd = OpenFile(path_, OpenMode::kRead);
+  if (!fd.IsValid())
+    return nullptr;
+  return std::unique_ptr<InZip>(new InZip(path_, std::move(fd), entry_map_));
+}
+
+InZip::InZip(const std::string& path,
+             ScopedFD fd,
+             std::shared_ptr<EntryMap> entry_map)
+    : path_(path), fd_(std::move(fd)), entry_map_(std::move(entry_map)) {}
 
 }  // namespace ash
