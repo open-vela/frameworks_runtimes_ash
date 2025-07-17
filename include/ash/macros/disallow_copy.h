@@ -49,13 +49,13 @@
 
 namespace ash {
 
-#define ASH_DISALLOW_COPY(TypeName)       \
-  TypeName(const TypeName&) = delete; \
+#define ASH_DISALLOW_COPY(TypeName)              \
+  TypeName(const TypeName&) = delete;            \
   TypeName& operator=(const TypeName&) = delete; \
-  TypeName(TypeName&&) = default; \
-  TypeName& operator(TypeName&&) = default
+  TypeName(TypeName&&) = default;                \
+  TypeName& operator=(TypeName&&) = default
 
-#define ASH_DISALLOW_COPY_AND_MOVE(TypeName)         \
+#define ASH_DISALLOW_COPY_AND_MOVE(TypeName)     \
   TypeName(const TypeName&) = delete;            \
   TypeName(TypeName&&) = delete;                 \
   TypeName& operator=(const TypeName&) = delete; \
