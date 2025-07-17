@@ -12,4 +12,3 @@ using OnceClosure = FnOnce<void()>;
 }  // namespace ash
 
 #endif  // ASH_FUNCTIONAL_CLOSURE_H_
-

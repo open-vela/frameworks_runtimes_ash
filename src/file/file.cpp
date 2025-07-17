@@ -42,19 +42,18 @@ ScopedFD OpenFile(const std::string& path, OpenMode mode) {
   return ScopedFD::Adopt(open(path.c_str(), flags, auth));
 }
 
-std::vector<std::string> ListFiles(const std::string& directory_path)
-{
-    std::vector<std::string> result;
-    ::DIR* dir = ::opendir(directory_path.c_str());
-    if (dir == nullptr) {
-        return result;
-    }
-    struct ::dirent* entry;
-    while ((entry = ::readdir(dir)) != nullptr) {
-        result.emplace_back(entry->d_name);
-    }
-    ::closedir(dir);
+std::vector<std::string> ListFiles(const std::string& directory_path) {
+  std::vector<std::string> result;
+  ::DIR* dir = ::opendir(directory_path.c_str());
+  if (dir == nullptr) {
     return result;
+  }
+  struct ::dirent* entry;
+  while ((entry = ::readdir(dir)) != nullptr) {
+    result.emplace_back(entry->d_name);
+  }
+  ::closedir(dir);
+  return result;
 }
 
 bool GetFileInfo(const ScopedFD& fd, FileInfo* info) {
