@@ -42,6 +42,7 @@ add_library(ash)
 
 target_sources(ash
   PRIVATE
+  src/bundle/bundle.cpp
   src/crash/crash.cpp
   src/device_info/device_info.cpp
   src/fds/scoped_fd.cpp
@@ -69,6 +70,7 @@ target_sources(ash
   src/zip/out_zip.cpp
   src/zip/zip_file.cpp
   PUBLIC
+  include/ash/bundle/bundle.h
   include/ash/crash/crash.h
   include/ash/device_info/device_info.h
   include/ash/fds/scoped_fd.h

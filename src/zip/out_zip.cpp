@@ -113,6 +113,41 @@ class DataEntry : public OutZip::Entry {
   size_t size_;
 };
 
+class DataProviderEntry : public OutZip::Entry {
+ public:
+  DataProviderEntry(const std::string& path,
+                    OutZip::DataProvider provider,
+                    OutZip::CompressionMethod compression_method)
+      : Entry(path, compression_method),
+        provider_(std::move(provider)),
+        size_(0) {}
+
+  bool IsDirectory() override { return false; }
+
+  std::unique_ptr<uint8_t[]> GetData() override {
+    TakeDataIfNeeded();
+    return std::move(data_);
+  }
+
+  size_t GetSize() override {
+    TakeDataIfNeeded();
+    return size_;
+  }
+
+ private:
+  void TakeDataIfNeeded() {
+    if (provider_) {
+      OutZip::Data data = std::move(provider_)();
+      data_ = std::move(data.data);
+      size_ = data.size;
+    }
+  }
+
+  OutZip::DataProvider provider_;
+  std::unique_ptr<uint8_t[]> data_;
+  size_t size_;
+};
+
 OutZip::OutZip(CompressionMethod compression_method)
     : compression_method_(compression_method) {}
 
@@ -136,6 +171,19 @@ void OutZip::Append(const std::string& path,
     return;
   entries_.emplace_back(
       new DataEntry(path, std::move(data), size, compression_method));
+}
+
+void OutZip::Append(const std::string& path, DataProvider provider) {
+  Append(path, std::move(provider), compression_method_);
+}
+
+void OutZip::Append(const std::string& path,
+                    DataProvider provider,
+                    CompressionMethod compression_method) {
+  if (Contains(path))
+    return;
+  entries_.emplace_back(
+      new DataProviderEntry(path, std::move(provider), compression_method));
 }
 
 bool OutZip::Write(const std::string& path) {

@@ -22,6 +22,7 @@
 #include <string>
 #include <vector>
 #include "ash/fds/scoped_fd.h"
+#include "ash/functional/fn_once.h"
 #include "ash/macros/disallow_copy.h"
 
 namespace ash {
@@ -45,6 +46,19 @@ class OutZip {
   void Append(const std::string& path,
               std::unique_ptr<uint8_t[]> data,
               size_t size,
+              CompressionMethod compression_method);
+
+  struct Data {
+    std::unique_ptr<uint8_t[]> data;
+    size_t size;
+  };
+
+  using DataProvider = FnOnce<Data()>;
+
+  void Append(const std::string& path, DataProvider provider);
+
+  void Append(const std::string& path,
+              DataProvider provider,
               CompressionMethod compression_method);
 
   bool Contains(const std::string& path);
