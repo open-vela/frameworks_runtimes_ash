@@ -112,4 +112,9 @@ std::unique_ptr<MessageLoop> MessageLoop::CreateForAndroidWithQueue(
 }
 #endif  // defined(ASH_OS_ANDROID)
 
+#if defined(ASH_OS_NUTTX)
+uv_loop_t* MessageLoop::GetUVLoop() {
+  return pump_ ? pump_->GetUVLoop() : nullptr;
+};
+#endif  // defined(ASH_OS_NUTTX)
 }  // namespace ash

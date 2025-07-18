@@ -48,6 +48,10 @@ class MessagePumpImpl : public MessagePump {
     FDWatchCB on_error_;
   };
 
+#ifdef ASH_OS_NUTTX
+  uv_loop_t* GetUVLoop() override;
+#endif  // ASH_OS_NUTTX
+
  private:
   bool running_;
   int epoll_;

@@ -70,6 +70,10 @@ class MessageLoop {
       ALooper* looper = nullptr);
 #endif  // defined(ASH_OS_ANDROID)
 
+#if defined(ASH_OS_NUTTX)
+  uv_loop_t* GetUVLoop();
+#endif  // defined(ASH_OS_NUTTX)
+
  private:
   std::unique_ptr<MessagePump> pump_;
   std::shared_ptr<MessageQueue> queue_;

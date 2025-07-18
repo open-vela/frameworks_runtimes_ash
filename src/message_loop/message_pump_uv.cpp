@@ -177,6 +177,10 @@ void MessagePumpUV::FDWatcher::UVPollCB(uv_poll_t* handle,
   }
 }
 
+uv_loop_t* MessagePumpUV::GetUVLoop() {
+  return loop_;
+}
+
 }  // namespace ash
 
 #endif  // defined(ASH_OS_NUTTX)

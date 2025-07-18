@@ -43,6 +43,8 @@ class MessagePumpUV : public MessagePump {
 
   void UnwatchFD(int fd) override;
 
+  uv_loop_t* GetUVLoop() override;
+
  private:
   class FDWatcher;
 
