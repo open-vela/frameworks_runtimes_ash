@@ -11,12 +11,14 @@
 #include "strings/string_converter_test.cpp"
 #include "time/duration_test.cpp"
 #include "time/time_test.cpp"
+#include "utils/scoped_setter_test.cpp"
+#include "utils/value_or_function_test.cpp"
 
 extern "C" int main(int argc, char** argv) {
   ::testing::GTEST_FLAG(filter) =
       "DeviceInfo*:ScopedFD*:File*:FilePath*:Duration*:Time*:RawPtr*:"
       "NumberStringConversion*:StringConverter*:VariableSegment*:FnOnce*:"
-      "*Closure*";
+      "*Closure*:ScopedSetter*:ValueOrFunctionTest*";
   ::testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();
 }

@@ -77,7 +77,9 @@ ifeq ($(CONFIG_ASH_UNIT_TEST), y)
              ${CURDIR}/tests/strings/number_string_conversions_test.cpp \
              ${CURDIR}/tests/strings/string_converter_test.cpp \
              ${CURDIR}/tests/functional/fn_once_test.cpp \
-             ${CURDIR}/tests/functional/closure_test.cpp
+             ${CURDIR}/tests/functional/closure_test.cpp \
+             ${CURDIR}/tests/utils/scoped_setter_test.cpp \
+             ${CURDIR}/tests/utils/value_or_function_test.cpp
 endif
 
 include $(APPDIR)/Application.mk
