@@ -19,6 +19,9 @@
 #include <functional>
 #include "ash/macros/disallow_copy.h"
 #include "ash/time/time.h"
+#ifdef ASH_OS_NUTTX
+#include <uv.h>
+#endif  // ASH_OS_NUTTX
 
 namespace ash {
 
@@ -41,6 +44,10 @@ class MessagePump {
                        FDWatchCB on_can_write,
                        FDWatchCB on_error) = 0;
   virtual void UnwatchFD(int fd) = 0;
+
+#if defined(ASH_OS_NUTTX)
+  virtual uv_loop_t* GetUVLoop() = 0;
+#endif  // defined(ASH_OS_NUTTX)
 
  protected:
   Duration Drive();

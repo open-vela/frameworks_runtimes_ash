@@ -126,4 +126,10 @@ void MessagePumpImpl::UnwatchFD(int fd) {
   return;
 }
 
+#ifdef ASH_OS_NUTTX
+uv_loop_t* MessagePumpImpl::GetUVLoop() {
+  return nullptr;  // Not implemented
+}
+#endif  // ASH_OS_NUTTX
+
 }  // namespace ash
