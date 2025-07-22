@@ -79,7 +79,9 @@ ifeq ($(CONFIG_ASH_UNIT_TEST), y)
              ${CURDIR}/tests/functional/fn_once_test.cpp \
              ${CURDIR}/tests/functional/closure_test.cpp \
              ${CURDIR}/tests/utils/scoped_setter_test.cpp \
-             ${CURDIR}/tests/utils/value_or_function_test.cpp
+             ${CURDIR}/tests/utils/value_or_function_test.cpp \
+             ${CURDIR}/tests/macros/disallow_copy_test.cpp \
+             ${CURDIR}/tests/macros/compiler_macros_test.cpp
 endif
 
 include $(APPDIR)/Application.mk
