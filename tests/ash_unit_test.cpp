@@ -5,6 +5,8 @@
 #include "file/file_test.cpp"
 #include "functional/closure_test.cpp"
 #include "functional/fn_once_test.cpp"
+#include "macros/compiler_macros_test.cpp"
+#include "macros/disallow_copy_test.cpp"
 #include "memory/raw_ptr_test.cpp"
 #include "memory/variable_segment_test.cpp"
 #include "strings/number_string_conversions_test.cpp"
@@ -18,7 +20,8 @@ extern "C" int main(int argc, char** argv) {
   ::testing::GTEST_FLAG(filter) =
       "DeviceInfo*:ScopedFD*:File*:FilePath*:Duration*:Time*:RawPtr*:"
       "NumberStringConversion*:StringConverter*:VariableSegment*:FnOnce*:"
-      "*Closure*:ScopedSetter*:ValueOrFunctionTest*";
+      "*Closure*:ScopedSetter*:ValueOrFunction*:DisallowCopy*:"
+      "CompilerMacros*";
   ::testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();
 }
