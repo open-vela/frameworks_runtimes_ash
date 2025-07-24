@@ -28,7 +28,7 @@ bool Compress(const ScopedFD& fd,
               uint32_t* compressed_size) {
   z_stream stream;
   int err;
-  const size_t kBufferSize = 1024 * 64;
+  const size_t kBufferSize = 1024 * 4;
   uint8_t buffer[kBufferSize];
 
   stream.zalloc = Z_NULL;
@@ -43,24 +43,25 @@ bool Compress(const ScopedFD& fd,
 
   stream.next_in = (Bytef*)data;
   stream.avail_in = size;
-  stream.next_out = (Bytef*)buffer;
-
   do {
-    stream.avail_out = sizeof(buffer);
+    stream.avail_out = kBufferSize;
+    stream.next_out = (Bytef*)buffer;
 
-    err = deflate(&stream, Z_NO_FLUSH);
+    err = deflate(&stream, stream.avail_in ? Z_NO_FLUSH : Z_FINISH);
     if (err != Z_OK && err != Z_STREAM_END) {
       deflateEnd(&stream);
       return false;
     }
 
-    if (!WriteFile(fd, buffer, sizeof(buffer) - stream.avail_out)) {
-      deflateEnd(&stream);
-      return false;
+    size_t have = kBufferSize - stream.avail_out;
+    if (have > 0) {
+      if (!WriteFile(fd, buffer, have)) {
+        deflateEnd(&stream);
+        return false;
+      }
+      *compressed_size += have;
     }
-
-    *compressed_size += sizeof(buffer) - stream.avail_out;
-  } while (err != Z_STREAM_END);
+  } while (stream.avail_out == 0 || err != Z_STREAM_END);
 
   return deflateEnd(&stream) == Z_OK;
 }
@@ -167,8 +168,14 @@ void OutZip::Append(const std::string& path,
                     std::unique_ptr<uint8_t[]> data,
                     size_t size,
                     CompressionMethod compression_method) {
-  if (Contains(path))
-    return;
+  auto it = std::find_if(entries_.begin(), entries_.end(),
+                         [&path](const std::unique_ptr<Entry>& entry) {
+                           return entry->path() == path;
+                         });
+  if (it != entries_.end()) {
+    entries_.erase(it);
+  }
+
   entries_.emplace_back(
       new DataEntry(path, std::move(data), size, compression_method));
 }
@@ -180,8 +187,13 @@ void OutZip::Append(const std::string& path, DataProvider provider) {
 void OutZip::Append(const std::string& path,
                     DataProvider provider,
                     CompressionMethod compression_method) {
-  if (Contains(path))
-    return;
+  auto it = std::find_if(entries_.begin(), entries_.end(),
+                         [&path](const std::unique_ptr<Entry>& entry) {
+                           return entry->path() == path;
+                         });
+  if (it != entries_.end()) {
+    entries_.erase(it);
+  }
   entries_.emplace_back(
       new DataProviderEntry(path, std::move(provider), compression_method));
 }
