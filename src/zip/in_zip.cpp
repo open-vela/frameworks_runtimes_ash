@@ -87,7 +87,7 @@ size_t InZip::EntryMap::GetEntryCount() {
 std::vector<std::string> InZip::EntryMap::List(const std::string& prefix) {
   std::vector<std::string> result;
   for (auto it = entries_.begin(); it != entries_.end(); ++it) {
-    if (it->first.compare(0, prefix.size(), prefix)) {
+    if (it->first.compare(0, prefix.size(), prefix) == 0) {
       result.push_back(it->first);
     }
   }
