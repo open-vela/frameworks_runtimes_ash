@@ -13,31 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef ASH_THREADING_THREAD_H_
-#define ASH_THREADING_THREAD_H_
+#ifndef ASH_MESSAGE_LOOP_MESSAGE_QUEUE_RUNNER_H_
+#define ASH_MESSAGE_LOOP_MESSAGE_QUEUE_RUNNER_H_
 
-#include <pthread.h>
-#include "ash/macros/disallow_copy.h"
+#include <memory>
 #include "ash/message_loop/message_queue.h"
 #include "ash/task_runner/task_runner.h"
 
 namespace ash {
 
-class Thread {
+class MessageQueueRunner : public TaskRunner {
  public:
-  Thread();
-  ~Thread();
+  MessageQueueRunner(std::weak_ptr<MessageQueue> queue);
+  ~MessageQueueRunner();
 
-  std::shared_ptr<TaskRunner> GetTaskRunner();
-  void Quit();
+  void PostTask(OnceClosure task) override;
+  void PostDelayedTask(OnceClosure task, Duration delay) override;
 
  private:
-  static void* Run(void* arg);
-
-  std::shared_ptr<TaskRunner> task_runner_;
-  ASH_DISALLOW_COPY_AND_MOVE(Thread);
+  std::weak_ptr<MessageQueue> queue_;
 };
 
 }  // namespace ash
 
-#endif  // ASH_THREADING_THREAD_H_
+#endif  // ASH_MESSAGE_LOOP_MESSAGE_QUEUE_RUNNER_H_

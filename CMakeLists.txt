@@ -59,6 +59,7 @@ target_sources(ash
   src/message_loop/message_pump_impl.cpp
   src/message_loop/message_pump_uv.cpp
   src/message_loop/message_queue.cpp
+  src/message_loop/message_queue_runner.cpp
   src/stream/input_stream.cpp
   src/strings/number_string_conversions.cpp
   src/strings/string_converter.cpp
@@ -94,6 +95,7 @@ target_sources(ash
   include/ash/message_loop/message_pump_impl.h
   include/ash/message_loop/message_pump_uv.h
   include/ash/message_loop/message_queue.h
+  include/ash/message_loop/message_queue_runner.h
   include/ash/stream/input_stream.h
   include/ash/strings/number_string_conversions.h
   include/ash/strings/string_converter.h

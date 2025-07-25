@@ -25,13 +25,12 @@
 
 namespace ash {
 
-class MessageQueue : public TaskRunner {
+class MessageQueue {
  public:
   MessageQueue();
-  ~MessageQueue() override;
+  ~MessageQueue();
 
-  void PostTask(OnceClosure task) override;
-  void PostDelayedTask(OnceClosure task, Duration delay) override;
+  void PostDelayedTask(OnceClosure task, Duration delay);
 
   void Startup(MessagePump* pump);
   void Shutdown();

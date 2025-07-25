@@ -17,10 +17,14 @@
 #include "ash/logging/logging.h"
 #include "ash/macros/compiler_macros.h"
 #include "ash/message_loop/message_loop.h"
+#include "ash/message_loop/message_queue.h"
+#include "ash/message_loop/message_queue_runner.h"
 
 namespace ash {
 
-Thread::Thread() : message_queue_(std::make_shared<MessageQueue>()) {
+Thread::Thread() {
+  std::shared_ptr<MessageQueue> queue = std::make_shared<MessageQueue>();
+
   pthread_t th;
   pthread_attr_t attr;
   pthread_attr_init(&attr);
@@ -31,25 +35,27 @@ Thread::Thread() : message_queue_(std::make_shared<MessageQueue>()) {
 #endif  // defined(ASH_OS_NUTTX)
 
   int r = pthread_create(&th, &attr, &Thread::Run,
-                         new std::shared_ptr<MessageQueue>(message_queue_));
+                         new std::shared_ptr<MessageQueue>(queue));
   ASH_CHECK(r == 0) << "Failed to create thread";
+
+  task_runner_ = std::make_shared<MessageQueueRunner>(queue);
 }
 
 Thread::~Thread() = default;
 
 std::shared_ptr<TaskRunner> Thread::GetTaskRunner() {
-  return message_queue_;
+  return task_runner_;
 }
 
 void Thread::Quit() {
-  message_queue_->PostTask([]() { MessageLoop::Current()->Quit(); });
+  task_runner_->PostTask([]() { MessageLoop::Current()->Quit(); });
 }
 
 void* Thread::Run(void* arg) {
   std::shared_ptr<MessageQueue>* queue =
       reinterpret_cast<std::shared_ptr<MessageQueue>*>(arg);
-  std::unique_ptr<MessageLoop> message_loop(
-      MessageLoop::CreateWithQueue(*queue));
+  std::unique_ptr<MessageLoop> message_loop =
+      MessageLoop::CreateWithQueue(std::move(*queue));
   delete queue;
   message_loop->Run();
   return nullptr;

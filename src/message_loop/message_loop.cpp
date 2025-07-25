@@ -20,6 +20,7 @@
 #include "ash/message_loop/message_pump_android.h"
 #include "ash/message_loop/message_pump_impl.h"
 #include "ash/message_loop/message_pump_uv.h"
+#include "ash/message_loop/message_queue_runner.h"
 
 namespace ash {
 
@@ -31,7 +32,9 @@ THREAD_LOCAL(MessageLoop*) current = nullptr;
 
 MessageLoop::MessageLoop(std::unique_ptr<MessagePump> pump,
                          std::shared_ptr<MessageQueue> queue)
-    : pump_(std::move(pump)), queue_(std::move(queue)) {
+    : pump_(std::move(pump)),
+      queue_(queue),
+      task_runner_(std::make_shared<MessageQueueRunner>(queue)) {
   ASH_CHECK_EQ(current.Get(), nullptr);
   current.Get() = this;
   pump_->queue_ = queue_.get();
@@ -45,7 +48,7 @@ MessageLoop::~MessageLoop() {
 }
 
 std::shared_ptr<TaskRunner> MessageLoop::GetTaskRunner() {
-  return queue_;
+  return task_runner_;
 }
 
 MessageLoop* MessageLoop::Current() {
