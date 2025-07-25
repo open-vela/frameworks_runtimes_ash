@@ -77,6 +77,7 @@ class MessageLoop {
  private:
   std::unique_ptr<MessagePump> pump_;
   std::shared_ptr<MessageQueue> queue_;
+  std::shared_ptr<TaskRunner> task_runner_;
   ASH_DISALLOW_COPY_AND_MOVE(MessageLoop);
 };
 

@@ -23,10 +23,6 @@ MessageQueue::MessageQueue()
 
 MessageQueue::~MessageQueue() = default;
 
-void MessageQueue::PostTask(OnceClosure task) {
-  PostDelayedTask(std::move(task), Duration());
-}
-
 void MessageQueue::PostDelayedTask(OnceClosure task, Duration delay) {
   Time time = Time::Now() + delay;
   {
