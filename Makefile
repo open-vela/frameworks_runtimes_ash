@@ -84,7 +84,8 @@ ifeq ($(CONFIG_ASH_UNIT_TEST), y)
              ${CURDIR}/tests/macros/disallow_copy_test.cpp \
              ${CURDIR}/tests/macros/compiler_macros_test.cpp \
              ${CURDIR}/tests/zip/in_zip_test.cpp \
-             ${CURDIR}/tests/zip/out_zip_test.cpp
+             ${CURDIR}/tests/zip/out_zip_test.cpp \
+             ${CURDIR}/tests/bundle/bundle_test.cpp
 endif
 
 include $(APPDIR)/Application.mk
