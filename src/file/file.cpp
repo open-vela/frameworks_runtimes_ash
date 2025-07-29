@@ -19,6 +19,9 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include <cstring>
+#include <filesystem>
+#include <queue>
+#include <utility>
 
 namespace ash {
 
@@ -54,6 +57,44 @@ std::vector<std::string> ListFiles(const std::string& directory_path) {
   }
   ::closedir(dir);
   return result;
+}
+
+std::vector<std::string> ListFilesRecursively(
+    const std::string& directory_path) {
+  std::vector<std::string> files;
+
+  std::string root_path = directory_path.empty() ? "." : directory_path;
+  if (!root_path.empty() && root_path.back() == '/') {
+    root_path.pop_back();
+  }
+
+  std::queue<std::pair<std::string, std::string>> dir_queue;
+  dir_queue.push({root_path, ""});
+
+  while (!dir_queue.empty()) {
+    auto [phys_path, rel_path] = dir_queue.front();
+    dir_queue.pop();
+
+    auto entries = ListFiles(phys_path);
+    for (const auto& entry : entries) {
+      if (entry == "." || entry == "..") {
+        continue;
+      }
+
+      std::string child_phys = phys_path + "/" + entry;
+      std::string child_rel = rel_path.empty() ? entry : rel_path + "/" + entry;
+
+      if (IsDirectory(child_phys)) {
+        if (entry[0] == '.')
+          continue;
+        dir_queue.push({child_phys, child_rel});
+      } else {
+        files.push_back(child_rel);
+      }
+    }
+  }
+
+  return files;
 }
 
 bool GetFileInfo(const ScopedFD& fd, FileInfo* info) {

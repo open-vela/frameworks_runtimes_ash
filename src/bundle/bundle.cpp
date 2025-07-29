@@ -85,14 +85,15 @@ bool Bundle::LoadFromDisk(const std::string& name,
 std::vector<std::string> Bundle::ListFiles(const std::string& directory_path) {
   std::vector<std::string> result;
   if (zip_) {
-    std::vector<std::string> result_in_zip = zip_->List(directory_path + "/");
+    std::string prefix = directory_path.empty() ? "" : directory_path + "/";
+    std::vector<std::string> result_in_zip = zip_->List(prefix);
     result.insert(result.end(), result_in_zip.begin(), result_in_zip.end());
   }
 
   std::vector<std::string> result_in_disk =
-      ash::ListFiles(root_ + "/" + directory_path);
+      ash::ListFilesRecursively(root_ + "/" + directory_path);
   for (const std::string& item : result_in_disk) {
-    if (std::find(result.begin(), result.end(), item) != result.end()) {
+    if (std::find(result.begin(), result.end(), item) == result.end()) {
       result.push_back(item);
     }
   }
