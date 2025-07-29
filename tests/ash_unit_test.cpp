@@ -1,4 +1,5 @@
 #include <gtest/gtest.h>
+#include "bundle/bundle_test.cpp"
 #include "device_info/device_info_test.cpp"
 #include "fds/scoped_fd_test.cpp"
 #include "file/file_path_test.cpp"

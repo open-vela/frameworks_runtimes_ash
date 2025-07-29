@@ -155,6 +155,7 @@ if(CONFIG_ASH_UNIT_TEST)
         ${CMAKE_CURRENT_SOURCE_DIR}/tests/macros/compiler_macros_test.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/tests/zip/in_zip_test.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/tests/zip/out_zip_test.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/tests/bundle/bundle_test.cpp
         STACKSIZE
         16384
         PRIORITY
