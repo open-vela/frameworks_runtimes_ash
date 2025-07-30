@@ -124,6 +124,149 @@ TEST_F(FileTest, ListFiles_NonExistingDirectory) {
   EXPECT_TRUE(files.empty());
 }
 
+TEST_F(FileTest, ListFilesRecursively_EmptyDirectory) {
+  auto files = ListFilesRecursively(temp_dir_);
+  EXPECT_TRUE(files.empty());
+}
+
+TEST_F(FileTest, ListFilesRecursively_SingleFile) {
+  CreateTempFile(temp_dir_, "test");
+
+  auto files = ListFilesRecursively(temp_dir_);
+  ASSERT_EQ(files.size(), static_cast<size_t>(1));
+
+  size_t pos = files[0].find_last_of('/');
+  std::string filename =
+      (pos == std::string::npos) ? files[0] : files[0].substr(pos + 1);
+
+  EXPECT_TRUE(filename.find("temp_file_") == 0);
+  EXPECT_TRUE(filename.find(".txt") == filename.size() - 4);
+}
+
+TEST_F(FileTest, ListFilesRecursively_FlatStructure) {
+  std::string file1 = CreateTempFile(temp_dir_);
+  std::string file2 = CreateTempFile(temp_dir_);
+  std::string subdir = CreateTempDir(temp_dir_);
+  std::string file3 = CreateTempFile(subdir);
+
+  auto files = ListFilesRecursively(temp_dir_);
+  ASSERT_EQ(files.size(), static_cast<size_t>(3));
+
+  std::string rel_file3 = file3.substr(temp_dir_.size() + 1);
+
+  std::set<std::string> fileSet(files.begin(), files.end());
+  EXPECT_TRUE(fileSet.find(file1.substr(temp_dir_.size() + 1)) !=
+              fileSet.end());
+  EXPECT_TRUE(fileSet.find(file2.substr(temp_dir_.size() + 1)) !=
+              fileSet.end());
+  EXPECT_TRUE(fileSet.find(rel_file3) != fileSet.end());
+}
+
+TEST_F(FileTest, ListFilesRecursively_DeepNesting) {
+  std::string current = temp_dir_;
+  for (int i = 0; i < 5; i++) {
+    current = CreateTempDir(current);
+  }
+  std::string deepFile = CreateTempFile(current);
+
+  auto files = ListFilesRecursively(temp_dir_);
+  ASSERT_EQ(files.size(), static_cast<size_t>(1));
+
+  std::string relPath = deepFile.substr(temp_dir_.size() + 1);
+  EXPECT_EQ(files[0], relPath);
+}
+
+TEST_F(FileTest, ListFilesRecursively_OnlyFilesNoDirectories) {
+  for (int i = 0; i < 5; i++) {
+    CreateTempFile(temp_dir_);
+  }
+
+  auto files = ListFilesRecursively(temp_dir_);
+  EXPECT_EQ(files.size(), static_cast<size_t>(5));
+
+  for (const auto& file : files) {
+    EXPECT_EQ(file.find('/'), std::string::npos);
+  }
+}
+
+TEST_F(FileTest, ListFilesRecursively_OnlyDirectoriesNoFiles) {
+  std::string current = temp_dir_;
+  for (int i = 0; i < 3; i++) {
+    current = CreateTempDir(current);
+  }
+
+  auto files = ListFilesRecursively(temp_dir_);
+  EXPECT_TRUE(files.empty());
+}
+
+TEST_F(FileTest, ListFilesRecursively_SpecialFilenames) {
+  std::string specialDir = CreateTempDir(temp_dir_);
+  std::string file1 = specialDir + "/file with spaces.txt";
+  std::ofstream(file1.c_str()) << "test";
+
+  std::string file2 = specialDir + "/file!@#$%^&*()_+.txt";
+  std::ofstream(file2.c_str()) << "test";
+
+  std::string file3 = specialDir + "/.hidden_file";
+  std::ofstream(file3.c_str()) << "test";
+
+  auto files = ListFilesRecursively(temp_dir_);
+  ASSERT_EQ(files.size(), static_cast<size_t>(3));
+
+  std::string relDir = specialDir.substr(temp_dir_.size() + 1);
+  std::set<std::string> expected = {relDir + "/file with spaces.txt",
+                                    relDir + "/file!@#$%^&*()_+.txt",
+                                    relDir + "/.hidden_file"};
+
+  std::set<std::string> actual(files.begin(), files.end());
+  EXPECT_EQ(actual, expected);
+}
+
+TEST_F(FileTest, ListFilesRecursively_SkipDotDirectories) {
+  std::string hiddenDir = temp_dir_ + "/.hidden_dir";
+  CreateDirectory(hiddenDir);
+  CreateTempFile(hiddenDir);
+
+  std::string normalDir = CreateTempDir(temp_dir_);
+  std::string normalFile = CreateTempFile(normalDir);
+
+  auto files = ListFilesRecursively(temp_dir_);
+
+  std::string expected = normalFile.substr(temp_dir_.size() + 1);
+
+  ASSERT_EQ(files.size(), static_cast<size_t>(1));
+  EXPECT_EQ(files[0], expected);
+}
+
+TEST_F(FileTest, ListFilesRecursively_NonExistentDirectory) {
+  auto files = ListFilesRecursively(temp_dir_ + "/non_existent");
+  EXPECT_TRUE(files.empty());
+}
+
+TEST_F(FileTest, ListFilesRecursively_FileInsteadOfDirectory) {
+  std::string testFile = CreateTempFile(temp_dir_);
+  auto files = ListFilesRecursively(testFile);
+  EXPECT_TRUE(files.empty());
+}
+
+TEST_F(FileTest, ListFilesRecursively_PermissionDenied) {
+  std::string restrictedDir = CreateTempDir(temp_dir_);
+  std::string accessibleFile = CreateTempFile(temp_dir_);
+  std::string restrictedFile = CreateTempFile(restrictedDir);
+
+  chmod(restrictedDir.c_str(), 0000);
+
+  auto files = ListFilesRecursively(temp_dir_);
+
+  chmod(restrictedDir.c_str(), 0700);
+
+  for (const auto& file : files) {
+    std::cout << "File: " << file << std::endl;
+  }
+
+  ASSERT_EQ(files.size(), static_cast<size_t>(2));
+}
+
 // 4. ReadFile Test Cases
 TEST_F(FileTest, ReadFile_FullFile) {
   std::string path = CreateTempFile(temp_dir_, "Hello");
