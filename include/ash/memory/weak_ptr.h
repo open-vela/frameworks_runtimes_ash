@@ -51,9 +51,9 @@ class WeakPtr {
 
   ~WeakPtr() = default;
 
-  bool IsAlive() const { return ptr_->IsAlive(); }
+  bool IsAlive() const { return ptr_ != nullptr && ptr_->IsAlive(); }
 
-  T* Get() const { return ptr_->Get(); }
+  T* Get() const { return ptr_ != nullptr ? ptr_->Get() : nullptr; }
 
  private:
   std::shared_ptr<WeakPtrImpl<T>> ptr_;
