@@ -22,11 +22,11 @@
 #include <string>
 #include "ash/fds/scoped_fd.h"
 #include "ash/macros/disallow_copy.h"
-
-#define MIN_ECDR_SIZE 22
-#define MAX_ECDR_SIZE 65536
+#include "ash/stream/seekable_raw_input_stream.h"
 
 namespace ash {
+
+class InZipEntryStream;
 
 class InZip {
  public:
@@ -75,6 +75,9 @@ class InZip {
                                        size_t extra_size = 0);
   std::unique_ptr<uint8_t[]> LoadEntry(const std::string& path,
                                        size_t extra_size = 0);
+  std::unique_ptr<InZipEntryStream> LoadEntryAsStream(const Entry* entry);
+  std::unique_ptr<InZipEntryStream> LoadEntryAsStream(const std::string& path);
+
   bool ExtractEntry(const std::string& path, const std::string& dest);
 
   std::vector<std::string> List(const std::string& prefix);
@@ -90,6 +93,27 @@ class InZip {
   ScopedFD fd_;
   std::shared_ptr<EntryMap> entry_map_;
   ASH_DISALLOW_COPY_AND_MOVE(InZip);
+};
+
+class InZipEntryStream : public SeekableRawInputStream {
+ public:
+  InZipEntryStream(ScopedFD fd, uint32_t offset, uint32_t size);
+  ~InZipEntryStream();
+
+  uint32_t Read(void* buffer, uint32_t size) override;
+  bool IsEOF() override;
+  uint32_t GetAvailable() override;
+  uint32_t GetPosition() override;
+  bool Seek(uint32_t position) override;
+  uint32_t GetSize() override;
+
+ private:
+  ScopedFD fd_;
+  uint32_t offset_;
+  uint32_t size_;
+  uint32_t position_;
+
+  ASH_DISALLOW_COPY_AND_MOVE(InZipEntryStream);
 };
 
 }  // namespace ash

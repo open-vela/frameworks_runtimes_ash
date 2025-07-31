@@ -50,6 +50,8 @@ CXXSRCS += ${CURDIR}/src/bundle/bundle.cpp \
            ${CURDIR}/src/message_loop/message_queue.cpp \
            ${CURDIR}/src/message_loop/message_queue_runner.cpp \
            ${CURDIR}/src/stream/input_stream.cpp \
+           ${CURDIR}/src/stream/file_input_stream.cpp \
+           ${CURDIR}/src/stream/raw_input_stream.cpp \
            ${CURDIR}/src/strings/number_string_conversions.cpp \
            ${CURDIR}/src/strings/string_converter.cpp \
            ${CURDIR}/src/threading/thread.cpp \

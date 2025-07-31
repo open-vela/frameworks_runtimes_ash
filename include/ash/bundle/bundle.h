@@ -16,8 +16,10 @@
 #ifndef ASH_BUNDLE_BUNDLE_H_
 #define ASH_BUNDLE_BUNDLE_H_
 
+#include <memory>
 #include <string>
 #include "ash/macros/disallow_copy.h"
+#include "ash/stream/seekable_raw_input_stream.h"
 #include "ash/zip/in_zip.h"
 
 namespace ash {
@@ -36,6 +38,8 @@ class Bundle {
   ~Bundle() = default;
 
   bool Load(const std::string& name, Data* data, size_t extra_bytes = 0);
+
+  std::unique_ptr<SeekableRawInputStream> LoadAsStream(const std::string& name);
 
   BundlePtr Clone();
 

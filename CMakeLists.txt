@@ -61,6 +61,8 @@ target_sources(ash
   src/message_loop/message_queue.cpp
   src/message_loop/message_queue_runner.cpp
   src/stream/input_stream.cpp
+  src/stream/file_input_stream.cpp
+  src/stream/raw_input_stream.cpp
   src/strings/number_string_conversions.cpp
   src/strings/string_converter.cpp
   src/threading/thread.cpp
@@ -98,6 +100,9 @@ target_sources(ash
   include/ash/message_loop/message_queue.h
   include/ash/message_loop/message_queue_runner.h
   include/ash/stream/input_stream.h
+  include/ash/stream/file_input_stream.h
+  include/ash/stream/raw_input_stream.h
+  include/ash/stream/seekable_raw_input_stream.h
   include/ash/strings/number_string_conversions.h
   include/ash/strings/string_converter.h
   include/ash/task_runner/task_runner.h

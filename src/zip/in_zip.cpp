@@ -24,6 +24,9 @@ namespace ash {
 
 namespace {
 
+constexpr size_t kMinEcdrSize = 22;
+constexpr size_t kMaxEcdrSize = 65536;
+
 bool Uncompress(const uint8_t* dest,
                 size_t dest_size,
                 const uint8_t* src,
@@ -106,8 +109,8 @@ std::unique_ptr<InZip> InZip::Open(const std::string& path) {
 
   // TODO(xuyan): Find a better way to locate end of central directory record.
   bool found = false;
-  for (int i = 0; i < MAX_ECDR_SIZE; ++i) {
-    if (!Seek(fd, -MIN_ECDR_SIZE - i, SeekMode::kEnd)) {
+  for (size_t i = 0; i < kMaxEcdrSize; ++i) {
+    if (!Seek(fd, -static_cast<int>(kMinEcdrSize + i), SeekMode::kEnd)) {
       ASH_LOG("ASH", ERROR) << "Failed to seek to end of file";
       return nullptr;
     }
@@ -248,10 +251,28 @@ std::unique_ptr<uint8_t[]> InZip::LoadEntry(const std::string& path,
                                             size_t extra_size) {
   const Entry* entry = GetEntry(path);
   if (!entry) {
-    ASH_LOG("ASH", ERROR) << "Entry not found" << path;
     return nullptr;
   }
   return LoadEntry(entry, extra_size);
+}
+
+std::unique_ptr<InZipEntryStream> InZip::LoadEntryAsStream(const Entry* entry) {
+  // Only support uncompressed data
+  if (entry->compression_method() != CompressionMethod::kStore) {
+    return nullptr;
+  }
+
+  return std::make_unique<InZipEntryStream>(fd_, entry->offset(),
+                                            entry->compressed_size());
+}
+
+std::unique_ptr<InZipEntryStream> InZip::LoadEntryAsStream(
+    const std::string& path) {
+  const Entry* entry = GetEntry(path);
+  if (!entry) {
+    return nullptr;
+  }
+  return LoadEntryAsStream(entry);
 }
 
 bool InZip::ExtractEntry(const std::string& path, const std::string& dest) {
@@ -292,5 +313,46 @@ InZip::InZip(const std::string& path,
              ScopedFD fd,
              std::shared_ptr<EntryMap> entry_map)
     : path_(path), fd_(std::move(fd)), entry_map_(std::move(entry_map)) {}
+
+InZipEntryStream::InZipEntryStream(ScopedFD fd, uint32_t offset, uint32_t size)
+    : fd_(std::move(fd)), offset_(offset), size_(size), position_(0) {}
+
+InZipEntryStream::~InZipEntryStream() = default;
+
+uint32_t InZipEntryStream::Read(void* buffer, uint32_t size) {
+  size = std::min(size, GetAvailable());
+
+  ASH_CHECK(ash::Seek(fd_, offset_ + position_, SeekMode::kBegin));
+
+  size_t bytes_read = 0;
+  ASH_CHECK(ReadFile(fd_, buffer, size, &bytes_read));
+  ASH_CHECK(bytes_read == size);
+  position_ += size;
+  return size;
+}
+
+bool InZipEntryStream::IsEOF() {
+  return GetAvailable() == 0;
+}
+
+uint32_t InZipEntryStream::GetAvailable() {
+  return offset_ + size_ - position_;
+}
+
+uint32_t InZipEntryStream::GetPosition() {
+  return position_;
+}
+
+bool InZipEntryStream::Seek(uint32_t position) {
+  if (position > offset_ + size_)
+    return false;
+
+  position_ = position;
+  return true;
+}
+
+uint32_t InZipEntryStream::GetSize() {
+  return size_;
+}
 
 }  // namespace ash
