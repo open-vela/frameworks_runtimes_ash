@@ -15,6 +15,7 @@
  */
 #include "ash/bundle/bundle.h"
 #include "ash/file/file.h"
+#include "ash/stream/file_input_stream.h"
 
 namespace ash {
 
@@ -40,6 +41,17 @@ bool Bundle::Load(const std::string& name, Data* data, size_t extra_bytes) {
   if (LoadFromZip(name, data, extra_bytes))
     return true;
   return LoadFromDisk(name, data, extra_bytes);
+}
+
+std::unique_ptr<SeekableRawInputStream> Bundle::LoadAsStream(
+    const std::string& name) {
+  if (zip_) {
+    std::unique_ptr<InZipEntryStream> stream = zip_->LoadEntryAsStream(name);
+    if (stream)
+      return stream;
+  }
+
+  return FileInputStream::Create(root_ + "/" + name);
 }
 
 bool Bundle::LoadFromZip(const std::string& name,
