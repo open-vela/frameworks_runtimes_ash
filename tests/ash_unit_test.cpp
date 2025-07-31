@@ -6,6 +6,7 @@
 #include "file/file_test.cpp"
 #include "functional/closure_test.cpp"
 #include "functional/fn_once_test.cpp"
+#include "geometry/size_test.cpp"
 #include "macros/compiler_macros_test.cpp"
 #include "macros/disallow_copy_test.cpp"
 #include "memory/raw_ptr_test.cpp"
