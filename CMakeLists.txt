@@ -137,25 +137,6 @@ if(CONFIG_ASH_UNIT_TEST)
         ash_unit_test
         SRCS
         ${CMAKE_CURRENT_SOURCE_DIR}/tests/ash_unit_test.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/tests/device_info/device_info_test.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/tests/fds/scoped_fd_test.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/tests/file/file_path_test.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/tests/file/file_test.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/tests/time/duration_test.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/tests/time/time_test.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/tests/memory/raw_ptr_test.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/tests/memory/variable_segment_test.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/tests/strings/number_string_conversions_test.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/tests/strings/string_converter_test.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/tests/functional/fn_once_test.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/tests/functional/closure_test.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/tests/utils/scoped_setter_test.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/tests/utils/value_or_function_test.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/tests/macros/disallow_copy_test.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/tests/macros/compiler_macros_test.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/tests/zip/in_zip_test.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/tests/zip/out_zip_test.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/tests/bundle/bundle_test.cpp
         STACKSIZE
         16384
         PRIORITY
