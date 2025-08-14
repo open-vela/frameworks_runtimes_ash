@@ -5,6 +5,7 @@
 #include <pthread.h>
 #include <mutex>
 #include "ash/crash/crash.h"
+#include "ash/memory/global_variable.h"
 #include "ash/memory/lazy_instance.h"
 
 namespace ash {
@@ -13,8 +14,8 @@ namespace {
 
 LazyInstance<VariableSegmentDefination> segment_defination =
     ASH_LAZY_INSTANCE_INITIALIZER;
-LazyInstance<std::mutex> mutex = ASH_LAZY_INSTANCE_INITIALIZER;
-pthread_key_t key = -1;
+GlobalVariable<std::mutex> mutex;
+GlobalVariable<pthread_key_t> key = -1;
 
 }  // namespace
 
@@ -25,8 +26,8 @@ VariableSegmentDefination* GetThreadLocalSegmentDefination() {
 uint8_t* GetThreadLocalSegment() {
   {
     std::lock_guard<std::mutex> lock(mutex.Get());
-    if (key == -1) {
-      int r = pthread_key_create(&key, [](void* segment) {
+    if (key.Get() == -1) {
+      int r = pthread_key_create(&key.Get(), [](void* segment) {
         GetThreadLocalSegmentDefination()->DestroySegment(
             static_cast<uint8_t*>(segment));
       });
@@ -36,10 +37,10 @@ uint8_t* GetThreadLocalSegment() {
     }
   }
 
-  uint8_t* segment = static_cast<uint8_t*>(pthread_getspecific(key));
+  uint8_t* segment = static_cast<uint8_t*>(pthread_getspecific(key.Get()));
   if (segment == nullptr) {
     segment = GetThreadLocalSegmentDefination()->CreateSegment();
-    if (pthread_setspecific(key, segment) < 0) {
+    if (pthread_setspecific(key.Get(), segment) < 0) {
       CrashImmediately();
     }
   }
