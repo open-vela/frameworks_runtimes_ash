@@ -82,6 +82,7 @@ target_sources(ash
   include/ash/geometry/size.h
   include/ash/logging/logging.h
   include/ash/macros/compiler_macros.h
+  include/ash/memory/global_lazy_instance.h
   include/ash/memory/global_variable.h
   include/ash/memory/lazy_instance.h
   include/ash/memory/lifecycle_watcher.h
