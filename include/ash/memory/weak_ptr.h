@@ -64,11 +64,12 @@ class SupportsWeakPtr {
  public:
   SupportsWeakPtr(T* owner) : owner_(std::make_shared<WeakPtrImpl<T>>(owner)) {}
 
-  ~SupportsWeakPtr() { owner_->Reset(); }
-
   WeakPtr<T> AsWeakPtr() { return WeakPtr<T>(owner_); }
 
   void Reset() { owner_->Reset(); }
+
+ protected:
+  ~SupportsWeakPtr() { owner_->Reset(); }
 
  private:
   std::shared_ptr<WeakPtrImpl<T>> owner_;
