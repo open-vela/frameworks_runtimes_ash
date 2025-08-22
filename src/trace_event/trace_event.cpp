@@ -23,15 +23,15 @@
 namespace ash {
 
 void TraceEvent::Begin(const char* name) {
-#if defined(ASH_OS_NUTTX)
+#if defined(ASH_OS_NUTTX) && defined(CONFIG_SYSTEM_TRACE)
   sched_note_beginex(NOTE_TAG_ALWAYS, name);
-#endif  // defined(ASH_OS_NUTTX)
+#endif  // defined(ASH_OS_NUTTX) && defined(CONFIG_SYSTEM_TRACE)
 }
 
 void TraceEvent::End(const char* name) {
-#if defined(ASH_OS_NUTTX)
+#if defined(ASH_OS_NUTTX) && defined(CONFIG_SYSTEM_TRACE)
   sched_note_endex(NOTE_TAG_ALWAYS, name);
-#endif  // defined(ASH_OS_NUTTX)
+#endif  // defined(ASH_OS_NUTTX) && defined(CONFIG_SYSTEM_TRACE)
 }
 
 ScopedTraceEvent::ScopedTraceEvent(const char* name) : name_(name) {
