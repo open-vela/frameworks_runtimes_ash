@@ -20,6 +20,9 @@
 #include "ash/message_loop/message_queue.h"
 #include "ash/message_loop/message_queue_runner.h"
 
+#define DEFAULT_QUICKAPP_THREADSTACKSIZE 131072
+#define DEFAULT_QUICKAPP_PRIORITY 100
+
 namespace ash {
 
 Thread::Thread() {
@@ -30,8 +33,8 @@ Thread::Thread() {
   pthread_attr_init(&attr);
   pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
 #if defined(ASH_OS_NUTTX)
-  pthread_attr_setstacksize(&attr, CONFIG_QUICKAPP_THREADSTACKSIZE);
-  attr.priority = CONFIG_QUICKAPP_PRIORITY;
+  pthread_attr_setstacksize(&attr, DEFAULT_QUICKAPP_THREADSTACKSIZE);
+  attr.priority = DEFAULT_QUICKAPP_PRIORITY;
 #endif  // defined(ASH_OS_NUTTX)
 
   int r = pthread_create(&th, &attr, &Thread::Run,

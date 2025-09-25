@@ -89,7 +89,7 @@
 
 namespace ash {
 
-#if defined(ASH_OS_NUTTX)
+#if defined(ASH_OS_NUTTX) && !defined(CONFIG_BUILD_KERNEL)
 
 VariableSegmentDefination* GetGlobalVariableSegmentDefination();
 uint8_t* GetGlobalVariableSegment();
