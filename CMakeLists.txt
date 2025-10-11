@@ -119,6 +119,19 @@ target_sources(ash
 
 target_include_directories(ash PUBLIC include)
 
+add_library(cash)
+
+target_sources(cash
+  PRIVATE
+  c/src/message_loop/cmessage_loop.cpp
+  c/src/task_runner/ctask_runner.cpp
+  PUBLIC
+  c/include/ash/message_loop/cmessage_loop.h
+  c/include/ash/task_runner/ctask_runner.h
+)
+
+target_include_directories(cash PUBLIC c/include)
+
 # Build on nuttx
 #
 # TODO(xuyan15): Using the root project name to identify the platform is not
@@ -130,6 +143,13 @@ if(${CMAKE_PROJECT_NAME} STREQUAL NuttX)
     ${NUTTX_APPS_DIR}/system/zlib/zlib/contrib)
 
   nuttx_add_external_library(ash)
+  nuttx_add_external_library(cash)
+endif()
+
+if(${CMAKE_PROJECT_NAME} STREQUAL NuttX)
+  nuttx_link_libraries(cash ash)
+else()
+  target_link_libraries(cash PUBLIC ash)
 endif()
 
 # TODO(xuyan15): Support building on other platforms, especially on linux.

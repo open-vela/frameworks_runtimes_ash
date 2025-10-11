@@ -28,6 +28,7 @@ ifeq ($(shell expr $(GCC_VERSION) \>= 13), 1)
 endif
 
 CXXFLAGS += ${INCDIR_PREFIX}$(CURDIR)/include
+CXXFLAGS += ${INCDIR_PREFIX}$(CURDIR)/c/include
 CXXFLAGS += ${INCDIR_PREFIX}$(APPDIR)/system/zlib/zlib
 CXXFLAGS += ${INCDIR_PREFIX}$(APPDIR)/system/zlib/zlib/contrib
 
@@ -60,7 +61,10 @@ CXXSRCS += ${CURDIR}/src/bundle/bundle.cpp \
            ${CURDIR}/src/trace_event/trace_event.cpp \
            ${CURDIR}/src/zip/in_zip.cpp \
            ${CURDIR}/src/zip/out_zip.cpp \
-           ${CURDIR}/src/zip/zip_file.cpp \
+           ${CURDIR}/src/zip/zip_file.cpp
+
+CXXSRCS += ${CURDIR}/c/src/message_loop/cmessage_loop.cpp \
+           ${CURDIR}/c/src/task_runner/ctask_runner.cpp
 
 endif
 
