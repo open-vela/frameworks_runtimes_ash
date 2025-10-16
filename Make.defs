@@ -14,3 +14,5 @@
 #
 
 CONFIGURED_APPS += $(APPDIR)/frameworks/runtimes/ash
+
+CXXFLAGS += ${INCDIR_PREFIX}$(APPDIR)/frameworks/runtimes/ash/include
