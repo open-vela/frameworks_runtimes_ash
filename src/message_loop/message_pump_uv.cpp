@@ -36,6 +36,10 @@ class MessagePumpUV::FDWatcher {
 
  private:
   static void UVPollCB(uv_poll_t* handle, int status, int events);
+  static void HandleError(uv_poll_t* handle);
+  static void HandleReadable(uv_poll_t* handle);
+  static void HandleWritable(uv_poll_t* handle);
+  static void HandleDisconnect(uv_poll_t* handle);
 
   uv_poll_t* poll_;
   int fd_;
@@ -150,30 +154,67 @@ MessagePumpUV::FDWatcher::FDWatcher(int fd,
 
 MessagePumpUV::FDWatcher::~FDWatcher() {
   ASH_CHECK_EQ(uv_poll_stop(poll_), 0);
+  uv_handle_set_data((uv_handle_t*)poll_, nullptr);
   uv_close(reinterpret_cast<uv_handle_t*>(poll_),
            [](uv_handle_t* handle) { free(handle); });
+}
+
+void MessagePumpUV::FDWatcher::HandleError(uv_poll_t* handle) {
+  FDWatcher* watcher =
+      reinterpret_cast<FDWatcher*>(uv_handle_get_data((uv_handle_t*)handle));
+
+  if (watcher && watcher->on_error_) {
+    int fd = watcher->fd_;
+    watcher->on_error_(fd);
+  }
+}
+
+void MessagePumpUV::FDWatcher::HandleReadable(uv_poll_t* handle) {
+  FDWatcher* watcher =
+      reinterpret_cast<FDWatcher*>(uv_handle_get_data((uv_handle_t*)handle));
+
+  if (watcher && watcher->on_can_read_) {
+    int fd = watcher->fd_;
+    watcher->on_can_read_(fd);
+  }
+}
+
+void MessagePumpUV::FDWatcher::HandleWritable(uv_poll_t* handle) {
+  FDWatcher* watcher =
+      reinterpret_cast<FDWatcher*>(uv_handle_get_data((uv_handle_t*)handle));
+
+  if (watcher && watcher->on_can_write_) {
+    int fd = watcher->fd_;
+    watcher->on_can_write_(fd);
+  }
+}
+
+void MessagePumpUV::FDWatcher::HandleDisconnect(uv_poll_t* handle) {
+  FDWatcher* watcher =
+      reinterpret_cast<FDWatcher*>(uv_handle_get_data((uv_handle_t*)handle));
+
+  if (watcher && watcher->on_error_) {
+    int fd = watcher->fd_;
+    watcher->on_error_(fd);
+  }
 }
 
 void MessagePumpUV::FDWatcher::UVPollCB(uv_poll_t* handle,
                                         int status,
                                         int events) {
-  FDWatcher* watcher =
-      reinterpret_cast<FDWatcher*>(uv_handle_get_data((uv_handle_t*)handle));
-  int fd = watcher->fd_;
   if (status != 0) {
-    if (watcher->on_error_)
-      watcher->on_error_(fd);
+    HandleError(handle);
     return;
   }
 
-  if ((events & UV_READABLE) && watcher->on_can_read_) {
-    watcher->on_can_read_(fd);
+  if (events & UV_READABLE) {
+    HandleReadable(handle);
   }
-  if ((events & UV_WRITABLE) && watcher->on_can_write_) {
-    watcher->on_can_write_(fd);
+  if (events & UV_WRITABLE) {
+    HandleWritable(handle);
   }
-  if ((events & UV_DISCONNECT) && watcher->on_error_) {
-    watcher->on_error_(fd);
+  if (events & UV_DISCONNECT) {
+    HandleDisconnect(handle);
   }
 }
 

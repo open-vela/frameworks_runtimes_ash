@@ -53,6 +53,10 @@ class MessagePumpImpl : public MessagePump {
 #endif  // ASH_OS_NUTTX
 
  private:
+  void HandleReadable(int fd);
+  void HandleWritable(int fd);
+  void HandleError(int fd);
+
   bool running_;
   int epoll_;
   int pipefd_[2];

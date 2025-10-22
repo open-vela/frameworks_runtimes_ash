@@ -48,6 +48,27 @@ void MessagePumpImpl::Schedule() {
   write(pipefd_[1], &expirations, sizeof(expirations));
 }
 
+void MessagePumpImpl::HandleReadable(int fd) {
+  auto it = fd_cbs_.find(fd);
+  if (it != fd_cbs_.end() && it->second.on_can_read_) {
+    it->second.on_can_read_(fd);
+  }
+}
+
+void MessagePumpImpl::HandleWritable(int fd) {
+  auto it = fd_cbs_.find(fd);
+  if (it != fd_cbs_.end() && it->second.on_can_write_) {
+    it->second.on_can_write_(fd);
+  }
+}
+
+void MessagePumpImpl::HandleError(int fd) {
+  auto it = fd_cbs_.find(fd);
+  if (it != fd_cbs_.end() && it->second.on_error_) {
+    it->second.on_error_(fd);
+  }
+}
+
 void MessagePumpImpl::Run() {
   while (running_) {
     Duration delay = Drive();
@@ -73,20 +94,16 @@ void MessagePumpImpl::Run() {
           }
         }
       } else {
-        auto it = fd_cbs_.find(events[i].data.fd);
-        if (it == fd_cbs_.end()) {
-          ASH_LOG(TAG, ERROR) << "Unknown fd " << events[i].data.fd;
-          continue;
+        int fd = events[i].data.fd;
+
+        if (events[i].events & EPOLLIN) {
+          HandleReadable(fd);
         }
-        int fd = it->first;
-        if ((events[i].events & EPOLLIN) && it->second.on_can_read_) {
-          it->second.on_can_read_(fd);
+        if (events[i].events & EPOLLOUT) {
+          HandleWritable(fd);
         }
-        if ((events[i].events & EPOLLOUT) && it->second.on_can_write_) {
-          it->second.on_can_write_(fd);
-        }
-        if ((events[i].events & EPOLLERR) && it->second.on_error_) {
-          it->second.on_error_(fd);
+        if (events[i].events & EPOLLERR) {
+          HandleError(fd);
         }
         continue;
       }
