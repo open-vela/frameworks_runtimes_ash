@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 #include "ash/zip/in_zip.h"
+
+#if defined(ASH_HAVE_ZLIB)
+
 #include "ash/file/file.h"
 #include "ash/logging/logging.h"
 #include "ash/stream/input_stream.h"
@@ -356,3 +359,5 @@ uint32_t InZipEntryStream::GetSize() {
 }
 
 }  // namespace ash
+
+#endif  // defined(ASH_HAVE_ZLIB)

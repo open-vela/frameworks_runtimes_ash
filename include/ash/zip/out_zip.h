@@ -16,6 +16,10 @@
 #ifndef ASH_ZIP_OUT_ZIP_H_
 #define ASH_ZIP_OUT_ZIP_H_
 
+#include "ash/macros/compiler_macros.h"
+
+#if defined(ASH_HAVE_ZLIB)
+
 #include <stdint.h>
 #include <map>
 #include <memory>
@@ -91,5 +95,7 @@ class OutZip {
 };
 
 }  // namespace ash
+
+#endif  // defined(ASH_HAVE_ZLIB)
 
 #endif  // ASH_ZIP_OUT_ZIP_H_

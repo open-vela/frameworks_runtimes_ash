@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 #include "ash/zip/out_zip.h"
+
+#if defined(ASH_HAVE_ZLIB)
+
 #include "ash/file/file.h"
 #include "ash/logging/logging.h"
 #include "zlib.h"
@@ -535,3 +538,5 @@ bool OutZip::WriteEndOfCentralDirectory(const ScopedFD& fd,
 }
 
 }  // namespace ash
+
+#endif  // defined(ASH_HAVE_ZLIB)

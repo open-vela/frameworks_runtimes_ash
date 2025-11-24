@@ -88,4 +88,10 @@ static_assert(false, "OS is not supported.")
 static_assert(false, "Compiler is not supported.")
 #endif
 
+#ifndef ASH_HAVE_ZLIB
+#if defined(CONFIG_LIBASH)
+#define ASH_HAVE_ZLIB
+#endif  // defined(CONFIG_LIBASH)
+#endif  // ASH_HAVE_ZLIB
+
 #endif  // ASH_MACROS_COMPILER_MACROS_H_

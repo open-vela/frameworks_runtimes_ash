@@ -34,7 +34,7 @@ bool FilePath::IsRelative() const {
 
 bool FilePath::IsDirectory() const {
 #if defined(__WINDOWS__)
-  const char kSep == force_unix ? '/' : '\\';
+  const char kSep == force_unix_ ? '/' : '\\';
 #else
   const char kSep = '/';
 #endif

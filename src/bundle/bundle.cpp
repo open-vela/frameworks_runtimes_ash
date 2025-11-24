@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 #include "ash/bundle/bundle.h"
+
+#if defined(ASH_HAVE_ZLIB)
+
 #include "ash/file/file.h"
 #include "ash/stream/file_input_stream.h"
 
@@ -113,3 +116,5 @@ std::vector<std::string> Bundle::ListFiles(const std::string& directory_path) {
 }
 
 }  // namespace ash
+
+#endif  // defined(ASH_HAVE_ZLIB)

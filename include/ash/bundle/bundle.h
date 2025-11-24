@@ -16,6 +16,10 @@
 #ifndef ASH_BUNDLE_BUNDLE_H_
 #define ASH_BUNDLE_BUNDLE_H_
 
+#include "ash/macros/compiler_macros.h"
+
+#if defined(ASH_HAVE_ZLIB)
+
 #include <memory>
 #include <string>
 #include "ash/macros/disallow_copy.h"
@@ -59,5 +63,7 @@ class Bundle {
 };
 
 }  // namespace ash
+
+#endif  // defined(ASH_HAVE_ZLIB)
 
 #endif  // ASH_BUNDLE_BUNDLE_H_

@@ -46,9 +46,8 @@ class FilePath {
   std::string directory_;
   std::string basename_;
   std::string extension_;
-  bool force_unix_;
 #if defined(ASH_OS_WINDOWS)
-  bool is_unix_;
+  bool force_unix_;
 #endif  // defined(AS_OS_WINDOWS)
 };
 
