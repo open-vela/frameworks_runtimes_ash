@@ -2,7 +2,7 @@
 #include "ash/macros/compiler_macros.h"
 #include "ash/memory/lazy_instance.h"
 
-#if defined(ASH_OS_NUTTX)  && !defined(CONFIG_BUILD_KERNEL)
+#if defined(ASH_OS_NUTTX) && !defined(CONFIG_BUILD_KERNEL)
 
 #include <nuttx/tls.h>
 #include <mutex>
