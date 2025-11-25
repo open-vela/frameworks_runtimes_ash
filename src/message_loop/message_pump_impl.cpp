@@ -18,7 +18,6 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <cstring>
-#include <limits>
 
 #define TAG "MessagePumpImpl"
 
@@ -72,6 +71,8 @@ void MessagePumpImpl::HandleError(int fd) {
 void MessagePumpImpl::Run() {
   while (running_) {
     Duration delay = Drive();
+    if (!running_)
+      break;
 
     int64_t milli = std::max(delay.ToMilli(), int64_t(0));
     if (milli > int64_t(std::numeric_limits<int>::max()))
@@ -102,7 +103,7 @@ void MessagePumpImpl::Run() {
         if (events[i].events & EPOLLOUT) {
           HandleWritable(fd);
         }
-        if (events[i].events & EPOLLERR) {
+        if (events[i].events & EPOLLERR || events[i].events & EPOLLHUP) {
           HandleError(fd);
         }
         continue;

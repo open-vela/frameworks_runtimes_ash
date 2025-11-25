@@ -58,6 +58,7 @@ CXXSRCS += ${CURDIR}/src/bundle/bundle.cpp \
            ${CURDIR}/src/threading/thread.cpp \
            ${CURDIR}/src/time/duration.cpp \
            ${CURDIR}/src/time/time.cpp \
+           ${CURDIR}/src/timer/timer.cpp \
            ${CURDIR}/src/trace_event/trace_event.cpp \
            ${CURDIR}/src/zip/in_zip.cpp \
            ${CURDIR}/src/zip/out_zip.cpp \

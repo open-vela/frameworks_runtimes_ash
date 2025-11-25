@@ -68,6 +68,7 @@ target_sources(ash
   src/threading/thread.cpp
   src/time/duration.cpp
   src/time/time.cpp
+  src/timer/timer.cpp
   src/trace_event/trace_event.cpp
   src/zip/in_zip.cpp
   src/zip/out_zip.cpp
@@ -109,6 +110,7 @@ target_sources(ash
   include/ash/threading/thread.h
   include/ash/time/duration.h
   include/ash/time/time.h
+  include/ash/timer/timer.h
   include/ash/trace_event/trace_event.h
   include/ash/utils/scoped_setter.h
   include/ash/utils/value_or_function.h
