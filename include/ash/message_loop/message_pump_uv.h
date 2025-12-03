@@ -50,6 +50,8 @@ class MessagePumpUV : public MessagePump {
 
   static void AsyncCB(uv_async_t* async);
   static void TimerCB(uv_timer_t* timer);
+  static void PrepareCB(uv_prepare_t* prepare);
+  static void CheckCB(uv_check_t* check);
 
   void RunCB();
 
@@ -57,6 +59,8 @@ class MessagePumpUV : public MessagePump {
   uv_loop_t own_loop_;
   uv_async_t* async_;
   uv_timer_t* timer_;
+  uv_prepare_t* prepare_;
+  uv_check_t* check_;
 
   std::map<int, std::unique_ptr<FDWatcher>> watchers_;
 };

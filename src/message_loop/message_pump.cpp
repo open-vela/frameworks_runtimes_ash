@@ -26,4 +26,33 @@ Duration MessagePump::Drive() {
   return queue_->Drive();
 }
 
+void MessagePump::AddListener(MessageLoopListener* listener) {
+  listeners_.push_back(listener);
+}
+
+void MessagePump::RemoveListener(MessageLoopListener* listener) {
+  auto it = std::find(listeners_.begin(), listeners_.end(), listener);
+  if (it != listeners_.end()) {
+    listeners_.erase(it);
+  }
+}
+
+void MessagePump::OnPreTask() {
+  std::vector<MessageLoopListener*> listeners = listeners_;
+  for (MessageLoopListener* listener : listeners) {
+    listener->OnPreTask();
+  }
+}
+
+void MessagePump::OnPostTask() {
+  std::vector<MessageLoopListener*> listeners = listeners_;
+  for (MessageLoopListener* listener : listeners) {
+    listener->OnPostTask();
+  }
+}
+
+std::size_t MessagePump::GetTaskSize() {
+  return queue_->GetTaskSize();
+}
+
 }  // namespace ash

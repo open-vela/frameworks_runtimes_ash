@@ -70,7 +70,13 @@ void MessagePumpImpl::HandleError(int fd) {
 
 void MessagePumpImpl::Run() {
   while (running_) {
-    Duration delay = Drive();
+    Duration delay = Duration::Infinity();
+    if (GetTaskSize() > 0) {
+      OnPreTask();
+      delay = Drive();
+      OnPostTask();
+    }
+
     if (!running_)
       break;
 

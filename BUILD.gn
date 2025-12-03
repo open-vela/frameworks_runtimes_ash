@@ -64,6 +64,7 @@ static_library("ash") {
     "include/ash/memory/weak_ptr.h",
     "include/ash/memory/raw_ptr.h",
     "include/ash/message_loop/message_loop.h",
+    "include/ash/message_loop/message_loop_listener.h",
     "include/ash/message_loop/message_pump_android.h",
     "include/ash/message_loop/message_pump.h",
     "include/ash/message_loop/message_pump_impl.h",

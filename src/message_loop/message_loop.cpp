@@ -79,6 +79,16 @@ void MessageLoop::UnwatchFD(int fd) {
   pump_->UnwatchFD(fd);
 }
 
+void MessageLoop::AddListener(MessageLoopListener* listener) {
+  ASH_CHECK_EQ(current.Get(), this);
+  pump_->AddListener(listener);
+}
+
+void MessageLoop::RemoveListener(MessageLoopListener* listener) {
+  ASH_CHECK_EQ(current.Get(), this);
+  pump_->RemoveListener(listener);
+}
+
 std::unique_ptr<MessageLoop> MessageLoop::Create() {
   return CreateWithQueue(std::make_shared<MessageQueue>());
 }

@@ -18,6 +18,7 @@
 
 #include <functional>
 #include "ash/macros/disallow_copy.h"
+#include "ash/message_loop/message_loop_listener.h"
 #include "ash/time/time.h"
 #ifdef ASH_OS_NUTTX
 #include <uv.h>
@@ -45,15 +46,23 @@ class MessagePump {
                        FDWatchCB on_error) = 0;
   virtual void UnwatchFD(int fd) = 0;
 
+  std::size_t GetTaskSize();
+
+  void AddListener(MessageLoopListener* listener);
+  void RemoveListener(MessageLoopListener* listener);
+
 #if defined(ASH_OS_NUTTX)
   virtual uv_loop_t* GetUVLoop() = 0;
 #endif  // defined(ASH_OS_NUTTX)
 
  protected:
   Duration Drive();
+  void OnPreTask();
+  void OnPostTask();
 
  private:
   MessageQueue* queue_;
+  std::vector<MessageLoopListener*> listeners_;
 
   friend class MessageLoop;
   ASH_DISALLOW_COPY_AND_MOVE(MessagePump);

@@ -19,6 +19,7 @@
 #include <memory>
 #include "ash/macros/compiler_macros.h"
 #include "ash/macros/disallow_copy.h"
+#include "ash/message_loop/message_loop_listener.h"
 #include "ash/message_loop/message_pump.h"
 #include "ash/message_loop/message_queue.h"
 
@@ -50,6 +51,9 @@ class MessageLoop {
                FDWatchCB on_can_write,
                FDWatchCB on_error);
   void UnwatchFD(int fd);
+
+  void AddListener(MessageLoopListener* listener);
+  void RemoveListener(MessageLoopListener* listener);
 
   static std::unique_ptr<MessageLoop> Create();
   static std::unique_ptr<MessageLoop> CreateWithQueue(

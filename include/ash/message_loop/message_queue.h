@@ -48,6 +48,8 @@ class MessageQueue {
   void ScheduleWork();
   Duration Drive();
 
+  std::size_t GetTaskSize();
+
   MessagePump* pump_;
   std::priority_queue<Task, std::vector<Task>, TaskComparator> tasks_;
   Time next_schedule_time_;

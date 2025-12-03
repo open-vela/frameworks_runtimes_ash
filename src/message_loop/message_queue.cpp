@@ -77,4 +77,9 @@ bool MessageQueue::TaskComparator::operator()(const Task& lhs,
   return lhs.time > rhs.time;
 }
 
+std::size_t MessageQueue::GetTaskSize() {
+  std::unique_lock<std::mutex> lock(mutex_);
+  return tasks_.size();
+}
+
 }  // namespace ash

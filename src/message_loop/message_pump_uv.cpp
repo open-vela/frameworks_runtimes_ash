@@ -60,6 +60,14 @@ MessagePumpUV::MessagePumpUV(uv_loop_t* uv_loop) : loop_(uv_loop) {
   timer_ = static_cast<uv_timer_t*>(calloc(1, sizeof(uv_timer_t)));
   ASH_CHECK_EQ(uv_timer_init(loop_, timer_), 0);
   uv_handle_set_data((uv_handle_t*)timer_, this);
+  prepare_ = static_cast<uv_prepare_t*>(calloc(1, sizeof(uv_prepare_t)));
+  ASH_CHECK_EQ(uv_prepare_init(loop_, prepare_), 0);
+  uv_handle_set_data((uv_handle_t*)prepare_, this);
+  ASH_CHECK_EQ(uv_prepare_start(prepare_, PrepareCB), 0);
+  check_ = static_cast<uv_check_t*>(calloc(1, sizeof(uv_check_t)));
+  ASH_CHECK_EQ(uv_check_init(loop_, check_), 0);
+  uv_handle_set_data((uv_handle_t*)check_, this);
+  ASH_CHECK_EQ(uv_check_start(check_, CheckCB), 0);
 }
 
 MessagePumpUV::~MessagePumpUV() {
@@ -68,6 +76,12 @@ MessagePumpUV::~MessagePumpUV() {
   ASH_CHECK_EQ(uv_timer_stop(timer_), 0);
   uv_close((uv_handle_t*)timer_, [](uv_handle_t* handle) { free(handle); });
   uv_close(reinterpret_cast<uv_handle_t*>(async_),
+           [](uv_handle_t* handle) { free(handle); });
+  ASH_CHECK_EQ(uv_prepare_stop(prepare_), 0);
+  uv_close(reinterpret_cast<uv_handle_t*>(prepare_),
+           [](uv_handle_t* handle) { free(handle); });
+  ASH_CHECK_EQ(uv_check_stop(check_), 0);
+  uv_close(reinterpret_cast<uv_handle_t*>(check_),
            [](uv_handle_t* handle) { free(handle); });
   if (loop_ == &own_loop_) {
     ASH_CHECK_EQ(uv_loop_close(loop_), 0);
@@ -118,6 +132,18 @@ void MessagePumpUV::TimerCB(uv_timer_t* timer) {
   MessagePumpUV* pump =
       static_cast<MessagePumpUV*>(uv_handle_get_data((uv_handle_t*)timer));
   pump->RunCB();
+}
+
+void MessagePumpUV::PrepareCB(uv_prepare_t* prepare) {
+  MessagePumpUV* pump =
+      static_cast<MessagePumpUV*>(uv_handle_get_data((uv_handle_t*)prepare));
+  pump->OnPreTask();
+}
+
+void MessagePumpUV::CheckCB(uv_check_t* check) {
+  MessagePumpUV* pump =
+      static_cast<MessagePumpUV*>(uv_handle_get_data((uv_handle_t*)check));
+  pump->OnPostTask();
 }
 
 void MessagePumpUV::RunCB() {
