@@ -34,6 +34,8 @@ class MessagePumpUV::FDWatcher {
 
   ~FDWatcher();
 
+  void Start(FDWatchCB on_can_read, FDWatchCB on_can_write, FDWatchCB on_error);
+
  private:
   static void UVPollCB(uv_poll_t* handle, int status, int events);
   static void HandleError(uv_poll_t* handle);
@@ -110,10 +112,16 @@ void MessagePumpUV::WatchFD(int fd,
                             FDWatchCB on_can_read,
                             FDWatchCB on_can_write,
                             FDWatchCB on_error) {
-  ASH_DCHECK(watchers_.find(fd) == watchers_.end());
-  watchers_.emplace(fd, std::make_unique<FDWatcher>(
-                            fd, std::move(on_can_read), std::move(on_can_write),
-                            std::move(on_error), loop_));
+  auto it = watchers_.find(fd);
+  if (it == watchers_.end()) {
+    watchers_.emplace(fd,
+                      std::make_unique<FDWatcher>(fd, std::move(on_can_read),
+                                                  std::move(on_can_write),
+                                                  std::move(on_error), loop_));
+  } else {
+    it->second->Start(std::move(on_can_read), std::move(on_can_write),
+                      std::move(on_error));
+  }
 }
 
 void MessagePumpUV::UnwatchFD(int fd) {
@@ -159,23 +167,11 @@ MessagePumpUV::FDWatcher::FDWatcher(int fd,
                                     FDWatchCB on_can_write,
                                     FDWatchCB on_error,
                                     uv_loop_t* loop)
-    : fd_(fd),
-      on_can_read_(std::move(on_can_read)),
-      on_can_write_(std::move(on_can_write)),
-      on_error_(std::move(on_error)) {
-  int event = 0;
-  if (on_can_read_)
-    event |= UV_READABLE;
-  if (on_can_write_)
-    event |= UV_WRITABLE;
-  if (on_error_)
-    event |= UV_DISCONNECT;
-
+    : fd_(fd) {
   poll_ = static_cast<uv_poll_t*>(calloc(1, sizeof(uv_poll_t)));
   ASH_CHECK_EQ(uv_poll_init(loop, poll_, fd), 0);
   uv_handle_set_data((uv_handle_t*)poll_, this);
-  ASH_CHECK_EQ(uv_poll_start(poll_, event, &MessagePumpUV::FDWatcher::UVPollCB),
-               0);
+  Start(std::move(on_can_read), std::move(on_can_write), std::move(on_error));
 }
 
 MessagePumpUV::FDWatcher::~FDWatcher() {
@@ -183,6 +179,23 @@ MessagePumpUV::FDWatcher::~FDWatcher() {
   uv_handle_set_data((uv_handle_t*)poll_, nullptr);
   uv_close(reinterpret_cast<uv_handle_t*>(poll_),
            [](uv_handle_t* handle) { free(handle); });
+}
+
+void MessagePumpUV::FDWatcher::Start(FDWatchCB on_can_read,
+                                     FDWatchCB on_can_write,
+                                     FDWatchCB on_error) {
+  int event = 0;
+  if (on_can_read)
+    event |= UV_READABLE;
+  if (on_can_write)
+    event |= UV_WRITABLE;
+  if (on_error)
+    event |= UV_DISCONNECT;
+  on_can_read_ = std::move(on_can_read);
+  on_can_write_ = std::move(on_can_write);
+  on_error_ = std::move(on_error);
+  ASH_CHECK_EQ(uv_poll_start(poll_, event, &MessagePumpUV::FDWatcher::UVPollCB),
+               0);
 }
 
 void MessagePumpUV::FDWatcher::HandleError(uv_poll_t* handle) {

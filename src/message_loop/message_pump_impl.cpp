@@ -135,11 +135,14 @@ void MessagePumpImpl::WatchFD(int fd,
     event.events |= EPOLLOUT;
   if (on_error)
     event.events |= EPOLLERR;
-  event.events |= EPOLLET;
   event.data.fd = fd;
-  int ret = epoll_ctl(epoll_, EPOLL_CTL_ADD, fd, &event);
+
+  int mod = fd_cbs_.find(fd) == fd_cbs_.end() ? EPOLL_CTL_ADD : EPOLL_CTL_MOD;
+  int ret = epoll_ctl(epoll_, mod, fd, &event);
   ASH_CHECK_GE(ret, 0) << "WatchFD " << fd << " err: " << strerror(errno);
-  fd_cbs_.try_emplace(fd, FDWatchCBs{on_can_read, on_can_write, on_error});
+  fd_cbs_.insert_or_assign(
+      fd, FDWatchCBs{std::move(on_can_read), std::move(on_can_write),
+                     std::move(on_error)});
   return;
 }
 
