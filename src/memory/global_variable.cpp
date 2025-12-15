@@ -19,7 +19,7 @@
 
 #if defined(ASH_OS_NUTTX) && !defined(CONFIG_BUILD_KERNEL)
 
-#include <nuttx/tls.h>
+#include <nuttx/tls_task.h>
 #include <mutex>
 #include "ash/crash/crash.h"
 
