@@ -21,6 +21,12 @@
 
 namespace ash {
 
+namespace lazy_instance_internal {
+inline std::atomic<uintptr_t>& asAtomic(uintptr_t& a) {
+  return reinterpret_cast<std::atomic<uintptr_t>&>(a);
+}
+}  // namespace lazy_instance_internal
+
 /**
  * LazyInstance is a thread-safe class to declare a lazy initialized variable.
  *
@@ -40,29 +46,30 @@ class LazyInstance {
   LazyInstance() = default;
 
   ~LazyInstance() {
-    uintptr_t ptr = ptr_.load();
+    uintptr_t ptr = lazy_instance_internal::asAtomic(ptr_).load();
     if (ptr == kInitial)
       return;
     while (ptr == kCreating)
-      ptr = ptr_.load();
+      ptr = lazy_instance_internal::asAtomic(ptr_).load();
     reinterpret_cast<T*>(ptr)->~T();
   }
 
   T* Pointer() {
-    uintptr_t p = ptr_.load();
+    uintptr_t p = lazy_instance_internal::asAtomic(ptr_).load();
     if (p > kCreating)
       return reinterpret_cast<T*>(p);
 
     while (p <= kCreating) {
       if (p == kCreating) {
-        p = ptr_.load();
+        p = lazy_instance_internal::asAtomic(ptr_).load();
         continue;
       }
 
       // p == kInitial
-      if (ptr_.compare_exchange_weak(p, kCreating)) {
+      if (lazy_instance_internal::asAtomic(ptr_).compare_exchange_weak(
+              p, kCreating)) {
         p = reinterpret_cast<uintptr_t>(new (storage_) T);
-        ptr_.store(p);
+        lazy_instance_internal::asAtomic(ptr_).store(p);
       }
     }
 
@@ -74,7 +81,7 @@ class LazyInstance {
  private:
   static constexpr uintptr_t kInitial = 0;
   static constexpr uintptr_t kCreating = 1;
-  std::atomic<uintptr_t> ptr_;
+  uintptr_t ptr_;
   alignas(T) char storage_[sizeof(T)];
   ASH_DISALLOW_COPY_AND_MOVE(LazyInstance);
 };
